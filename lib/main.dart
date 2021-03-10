@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jogodavelha/home_page.dart';
+import 'file:///C:/Users/joao.farias/Documents/jogo-da-velha-online/lib/screens/home_page.dart';
 
 void main() => runApp(new MyApp());
 
