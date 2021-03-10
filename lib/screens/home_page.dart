@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/joao.farias/Documents/jogo-da-velha-online/lib/components/custom_dailog.dart';
-import 'file:///C:/Users/joao.farias/Documents/jogo-da-velha-online/lib/components/game_button.dart';
+import '../components/custom_dailog.dart';
+import '../components/game_button.dart';
 
 class HomePage extends StatefulWidget {
   @override

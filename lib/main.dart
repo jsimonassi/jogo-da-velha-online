@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/joao.farias/Documents/jogo-da-velha-online/lib/screens/home_page.dart';
+import './screens/home_page.dart';
+import './screens/login_page.dart';
 
 void main() => runApp(new MyApp());
 
@@ -8,7 +9,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return new MaterialApp(
       theme: new ThemeData(primaryColor: Colors.black),
-      home: new HomePage(),
+      home: new LoginPage(),
     );
   }
 }
