@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:tictactoe/custom_dailog.dart';
-import 'package:tictactoe/game_button.dart';
+import 'package:jogodavelha/custom_dailog.dart';
+import 'package:jogodavelha/game_button.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Tic Tac Toe"),
+          title: new Text("Jogo da velha"),
         ),
         body: new Column(
           mainAxisAlignment: MainAxisAlignment.start,
