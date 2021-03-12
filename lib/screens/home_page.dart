@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../components/custom_dailog.dart';
 import '../components/game_button.dart';
+import '../constants/Constants.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -79,11 +80,10 @@ class _HomePageState extends State<HomePage> {
     }
 
     var r = new Random();
-    var randIndex = r.nextInt(emptyCells.length-1);
+    var randIndex = r.nextInt(emptyCells.length - 1);
     var cellID = emptyCells[randIndex];
-    int i = buttonsList.indexWhere((p)=> p.id == cellID);
+    int i = buttonsList.indexWhere((p) => p.id == cellID);
     playGame(buttonsList[i]);
-
   }
 
   int checkWinner() {
@@ -194,22 +194,22 @@ class _HomePageState extends State<HomePage> {
                     mainAxisSpacing: 9.0),
                 itemCount: buttonsList.length,
                 itemBuilder: (context, i) => new SizedBox(
-                      width: 100.0,
-                      height: 100.0,
-                      child: new RaisedButton(
-                        padding: const EdgeInsets.all(8.0),
-                        onPressed: buttonsList[i].enabled
-                            ? () => playGame(buttonsList[i])
-                            : null,
-                        child: new Text(
-                          buttonsList[i].text,
-                          style: new TextStyle(
-                              color: Colors.white, fontSize: 20.0),
-                        ),
-                        color: buttonsList[i].bg,
-                        disabledColor: buttonsList[i].bg,
-                      ),
+                  width: 100.0,
+                  height: 100.0,
+                  child: new RaisedButton(
+                    padding: const EdgeInsets.all(8.0),
+                    onPressed: buttonsList[i].enabled
+                        ? () => playGame(buttonsList[i])
+                        : null,
+                    child: new Text(
+                      buttonsList[i].text,
+                      style:
+                          new TextStyle(color: MyColors.bgGray, fontSize: 20.0),
                     ),
+                    color: buttonsList[i].bg,
+                    disabledColor: buttonsList[i].bg,
+                  ),
+                ),
               ),
             ),
             new RaisedButton(
