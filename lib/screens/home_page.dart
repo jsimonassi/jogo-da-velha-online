@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../components/custom_dailog.dart';
 import '../components/game_button.dart';
-import '../constants/Constants.dart';
+import '../constants/Colors.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -204,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                     child: new Text(
                       buttonsList[i].text,
                       style:
-                          new TextStyle(color: MyColors.bgGray, fontSize: 20.0),
+                          new TextStyle(color: Colors.amber, fontSize: 20.0),
                     ),
                     color: buttonsList[i].bg,
                     disabledColor: buttonsList[i].bg,

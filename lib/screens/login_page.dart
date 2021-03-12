@@ -1,9 +1,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:jogodavelha/constants/Messages.dart';
 import '../components/custom_dailog.dart';
 import '../components/game_button.dart';
-import '../constants/Constants.dart';
+import '../constants/Colors.dart';
+import '../screens/home_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,26 +20,158 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
   }
 
+  void initLoginFlux(){
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => HomePage())
+    );
+  }
+
+  void initSignUpFlux(){
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-
-        body: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [AppColors.backgroundGrey1, AppColors.backgroundGrey2])),
-            child: Container(
-              child: Center(
-                child: Text(
-                  'Testando',
-                  style: TextStyle(
-                      fontSize: 48.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
+      body: Container(
+        padding: EdgeInsets.only(
+          top:60,
+          left: 40,
+          right: 40
+        ),
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/bg_gradient.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: ListView(
+          children: <Widget>[
+            SizedBox(
+              width: 128,
+              height: 128,
+              child: Image.asset("assets/logo-small.png"),
+            ),
+            SizedBox( //Apenas para colocar um espaço entre a imagem e o input
+              height: 80,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                color: AppColors.whiteLowOpcacity,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(10)
+                )
+              ),
+             padding: EdgeInsets.only(
+               left: 15,
+             ),
+             height: 50,
+             child: TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(
+                      top: 5,
+                      bottom: 5,
+                    ),
+                    labelText: AppMessages.emailPlaceholder,
+                    labelStyle: TextStyle(
+                      color: AppColors.whiteLowOpcacity,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    )
+                ),
+                style: TextStyle( //Texto escrito pelo usário
+                  fontSize: 20,
+                  color: Colors.white,
                 ),
               ),
-            )));
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: AppColors.whiteLowOpcacity,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(10)
+                  )
+              ),
+              padding: EdgeInsets.only(
+                left: 15,
+              ),
+              height: 50,
+              child: TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                obscureText: true,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(
+                        top: 5,
+                      bottom: 5
+                    ),
+                    labelText: AppMessages.passwordPlaceholder,
+                    labelStyle: TextStyle(
+                      color: AppColors.whiteLowOpcacity,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    )
+                ),
+                style: TextStyle( //Texto escrito pelo usário
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 40,
+            ),
+          InkWell(
+            onTap: (){
+              initLoginFlux();
+            },
+            child: new  Container(
+              height: 45,
+              margin: EdgeInsets.only(
+                left: 40,
+                right: 40,
+              ),
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                  color: AppColors.redPrimary,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(5)
+                  )
+              ),
+              child: Text(
+                  AppMessages.initLogin,
+                  style: TextStyle(
+                      color: Colors.white
+                  ),
+                ),
+            ),
+        ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: TextButton(
+                child: Text(
+                  AppMessages.singUpMessage,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400
+                  ),
+                ),
+                onPressed: () => {initSignUpFlux()},
+              )
+            )
+          ],
+        ) /* add child content here */,
+      ),
+    );
   }
 }
