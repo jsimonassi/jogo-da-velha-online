@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'file:///C:/Users/joao.farias/Documents/jogo-da-velha-online/lib/components/custom_dailog.dart';
-import 'file:///C:/Users/joao.farias/Documents/jogo-da-velha-online/lib/components/game_button.dart';
+import '../components/custom_dailog.dart';
+import '../components/game_button.dart';
+import '../Constants/Constants.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -204,7 +205,7 @@ class _HomePageState extends State<HomePage> {
                         child: new Text(
                           buttonsList[i].text,
                           style: new TextStyle(
-                              color: Colors.white, fontSize: 20.0),
+                              color: MyColors.bgGray, fontSize: 20.0),
                         ),
                         color: buttonsList[i].bg,
                         disabledColor: buttonsList[i].bg,
