@@ -6,6 +6,7 @@ import '../components/custom_dailog.dart';
 import '../components/game_button.dart';
 import '../constants/Colors.dart';
 import '../screens/home_page.dart';
+import '../components/RedButton.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -132,26 +133,7 @@ class _LoginPageState extends State<LoginPage> {
             onTap: (){
               initLoginFlux();
             },
-            child: new  Container(
-              height: 45,
-              margin: EdgeInsets.only(
-                left: 40,
-                right: 40,
-              ),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: AppColors.redPrimary,
-                  borderRadius: BorderRadius.all(
-                      Radius.circular(5)
-                  )
-              ),
-              child: Text(
-                  AppMessages.initLogin,
-                  style: TextStyle(
-                      color: Colors.white
-                  ),
-                ),
-            ),
+            child: RedButton(AppMessages.initLogin)
         ),
             SizedBox(
               height: 10,
