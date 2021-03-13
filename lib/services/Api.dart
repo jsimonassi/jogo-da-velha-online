@@ -3,6 +3,12 @@ import '../models/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/*
+Credenciais do Firebase:
+Email: g04vermelhouff@gmail.com
+Senha: UFF@alunos88
+ */
+
 class Api {
 
   static Future createUser(User newUser){ //Todo: Cara, isso aqui tá muito ruim
