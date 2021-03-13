@@ -1,6 +1,7 @@
 class AppMessages {
   static const String appTitle = "Jogo da velha - online";
 
+  static const String namePlaceholder = "Nome:";
   static const String emailPlaceholder = "E-mail:";
   static const String passwordPlaceholder = "Senha:";
   static const String nickNamePlaceholder = "Nickname";

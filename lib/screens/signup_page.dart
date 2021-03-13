@@ -1,21 +1,47 @@
-
-
-import 'package:circular_profile_avatar/circular_profile_avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jogodavelha/models/User.dart';
 import '../Constants/messages.dart';
 import '../Constants/colors.dart';
+import '../Constants/messages.dart';
 import '../components/red_button.dart';
+import '../services/Api.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  _SignUpPageState createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  //controllers
+  TextEditingController _controllerName = TextEditingController();
+  TextEditingController _controllerEmail = TextEditingController();
+  TextEditingController _controllerNickname = TextEditingController();
+  TextEditingController _controllerPassword = TextEditingController();
 
   bool validateInfos(){
-    return true ? true : false; //Todo: Implementar validação de campos
+    //Todo: Melhorar esse tratamentop horrível kjkk
+    return _controllerName.text.isNotEmpty && _controllerEmail.text.isNotEmpty &&
+        _controllerNickname.text.isNotEmpty && _controllerPassword.text.isNotEmpty?
+     true :
+     false;
   }
 
-  void registerNewUser(BuildContext context){ //Todo: Implementar trataivas de erros
-    if(validateInfos()){
-      Navigator.pop(context);
+  void registerNewUser(BuildContext context){
+    if(validateInfos()){//Todo: Mover ações para dentro dos services
+      print("iniciando adição");
+      User newUser = new User();
+      newUser.name = _controllerName.text;
+      newUser.nickname =  _controllerNickname.text;
+      newUser.email = _controllerEmail.text;
+      newUser.password = _controllerPassword.text;
+
+      Api.createUser(newUser) //Todo: Checar como fazer promisses em Dart
+          .then((value) => {print("Deu certo! Gravei isso: $value")})
+          .catchError((error) => {
+            print("Deu erro $error" )
+          });
+      //Navigator.pop(context);
     }
   }
 
@@ -25,7 +51,7 @@ class SignUpPage extends StatelessWidget {
     return new Scaffold(
       body: Container(
         padding: EdgeInsets.only(
-            top:60,
+            top:40,
             left: 40,
             right: 40
         ),
@@ -50,7 +76,7 @@ class SignUpPage extends StatelessWidget {
               )
             ),
             SizedBox(
-              height: 50,
+              height: 30,
             ),
             SizedBox( //TODO: SizedBox aceita onPressed?
                 height: 150,
@@ -74,6 +100,43 @@ class SignUpPage extends StatelessWidget {
               ),
               height: 50,
               child: TextFormField(
+                controller: _controllerName,
+                keyboardType: TextInputType.text,
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.only(
+                      top: 5,
+                      bottom: 5,
+                    ),
+                    labelText: AppMessages.namePlaceholder,
+                    labelStyle: TextStyle(
+                      color: AppColors.whiteLowOpcacity,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    )
+                ),
+                style: TextStyle( //Texto escrito pelo usário
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: AppColors.whiteLowOpcacity,
+                  borderRadius: BorderRadius.all(
+                      Radius.circular(10)
+                  )
+              ),
+              padding: EdgeInsets.only(
+                left: 15,
+              ),
+              height: 50,
+              child: TextFormField(
+                controller: _controllerEmail,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                     border: InputBorder.none,
@@ -109,6 +172,7 @@ class SignUpPage extends StatelessWidget {
               ),
               height: 50,
               child: TextFormField(
+                controller: _controllerNickname,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     border: InputBorder.none,
@@ -144,6 +208,7 @@ class SignUpPage extends StatelessWidget {
               ),
               height: 50,
               child: TextFormField(
+                controller: _controllerPassword,
                 keyboardType: TextInputType.text,
                 obscureText: true,
                 decoration: InputDecoration(

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "130778955864",
+    "project_id": "jogo-da-velha-ac9b0",
+    "storage_bucket": "jogo-da-velha-ac9b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:130778955864:android:18976e6add942db8e24a2d",
+        "android_client_info": {
+          "package_name": "com.grupovermelho.jogodavelha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "130778955864-rlei50t1fds6juluqsjqoipheg5v78v6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDL4was38xcGOgRw6u8qek8pld5hlUtDXY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "130778955864-rlei50t1fds6juluqsjqoipheg5v78v6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
