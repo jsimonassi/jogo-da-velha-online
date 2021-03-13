@@ -36,11 +36,14 @@ class _SignUpPageState extends State<SignUpPage> {
       newUser.email = _controllerEmail.text;
       newUser.password = _controllerPassword.text;
 
-      Api.createUser(newUser) //Todo: Checar como fazer promisses em Dart
-          .then((value) => {print("Deu certo! Gravei isso: $value")})
-          .catchError((error) => {
-            print("Deu erro $error" )
-          });
+      Api.registerUser(newUser) //Todo: Checar como fazer promisses em Dart
+          .then((firebaseUser) => () {
+            newUser.id = firebaseUser.user.uid;
+            print("Cheguei aqui!!!");
+            Api.updateUser(newUser)
+                .then((value) => print("Fluxo finalizado"))
+                .catchError((error) => print("Erro ao adicionar no bd: $error"));
+          }).catchError((error) => print("Deu erro $error" ));
       //Navigator.pop(context);
     }
   }

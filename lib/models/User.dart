@@ -1,6 +1,6 @@
 class User {
   //Atributos do usuário podem ser alterados, desde que seja alterado o toMap()
-  String _idUser;
+  String _id;
   String _name;
   String _nickname;
   String _email;
@@ -14,6 +14,7 @@ class User {
   //pra retornar o que a gente quer. Quase um json
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
+      "id" : this._id,
       "name" : this._name,
       "email" : this._email,
       "nickname": this._nickname,
@@ -24,10 +25,10 @@ class User {
   }
 
 
-  String get idUser => _idUser;
+  String get id => _id;
 
-  set idUser(String value) {
-    _idUser = value;
+  set id(String value) {
+    _id = value;
   }
 
   String get password => _password;
