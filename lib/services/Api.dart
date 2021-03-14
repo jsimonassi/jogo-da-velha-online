@@ -11,32 +11,29 @@ Senha: UFF@alunos88
 
 class Api {
 
-  static Future registerUser(User newUser){ //Todo: Cara, isso aqui tá muito ruim
-    var completer = Completer(); //Iniciando callback
-    FirebaseAuth auth = FirebaseAuth.instance; //Instancia do firebase Auth
-    auth.createUserWithEmailAndPassword(email: newUser.email, password: newUser.password) //Chamando criação do user
-    .then((firebaseUser) => completer.complete())
-    .catchError((error) => completer.completeError(error)); //Deu ruim no Auth
-    return completer.future;
+  static Future<AuthResult> registerUser(User newUser) async {
+    try {
+      FirebaseAuth auth = FirebaseAuth.instance; //Instancia do firebase Auth
+      var firebaseUser = await auth.createUserWithEmailAndPassword(email: newUser.email,
+          password: newUser.password); //Chamando criação do user
+      return firebaseUser;
+    }catch(e){
+      return e;
+    }
   }
 
-  static Future updateUser(User newUser){
-    var completer = Completer(); //Iniciando callback
-    Firestore db = Firestore.instance; //Instancia de Firestore
-    db.collection("users") //Desce em Users
-        .document( newUser.id ) // O nome do documento do usuário é o ID dele
-        .setData(newUser.toMap())//Objeto que será gravado
-        .then((firebaseUser) => completer.complete())
-        .catchError((error) => completer.completeError(error)); //Deu ruim no updateUser
-    return completer.future;
+  static Future<void> updateUser(User newUser) async {
+    try{
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      return await db.collection("users") //Desce em Users
+          .document( newUser.id ) // O nome do documento do usuário é o ID dele
+          .setData(newUser.toMap());
+    }catch(e){
+      return e;
+    }
+  }
+
+  static Future<String> uploadPicture() async {
+
   }
 }
-//Example:
-// Future lookupVersionAsFuture() {
-//   var completer = Completer();
-//
-//   lookupVersion((version) => completer.complete(version));
-//   lookupVersion((_) => completer.completeError('There was a problem!'));
-//
-//   return completer.future;
-// }

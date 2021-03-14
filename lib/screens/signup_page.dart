@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:jogodavelha/models/User.dart';
 import '../Constants/messages.dart';
 import '../Constants/colors.dart';
@@ -18,6 +23,9 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerNickname = TextEditingController();
   TextEditingController _controllerPassword = TextEditingController();
+  File _image;
+  String _tempImageUrl;
+
 
   bool validateInfos(){
     //Todo: Melhorar esse tratamentop horrível kjkk
@@ -27,25 +35,47 @@ class _SignUpPageState extends State<SignUpPage> {
      false;
   }
 
-  void registerNewUser(BuildContext context){
+  void registerUserInfos(User newUser) async {
+    var result = await Api.registerUser(newUser);
+    if (result.user.uid != null){
+      newUser.id = result.user.uid;
+      Api.updateUser(newUser);
+    }
+  }
+
+  void generateUser(BuildContext context){
     if(validateInfos()){//Todo: Mover ações para dentro dos services
-      print("iniciando adição");
       User newUser = new User();
       newUser.name = _controllerName.text;
       newUser.nickname =  _controllerNickname.text;
       newUser.email = _controllerEmail.text;
       newUser.password = _controllerPassword.text;
-
-      Api.registerUser(newUser) //Todo: Checar como fazer promisses em Dart
-          .then((firebaseUser) => () {
-            newUser.id = firebaseUser.user.uid;
-            print("Cheguei aqui!!!");
-            Api.updateUser(newUser)
-                .then((value) => print("Fluxo finalizado"))
-                .catchError((error) => print("Erro ao adicionar no bd: $error"));
-          }).catchError((error) => print("Deu erro $error" ));
-      //Navigator.pop(context);
+      registerUserInfos(newUser);
     }
+  }
+
+  Future<void> _pickerImage() async { //Todo: Apenas rascunho
+    FirebaseAuth auth = FirebaseAuth.instance; //Instancia do firebase Auth
+    auth.signInWithEmailAndPassword(
+        email: "jsimonassi@id.uff.br",
+        password: "12345678").then((value) => () async {
+
+      print("Clicouu");
+      PickedFile selectedImage = await ImagePicker().getImage(source: ImageSource.gallery); //Rapaz, esse flutter é bom mesmo
+      setState(() {
+        _image = File(selectedImage.path);
+        if( _image != null ){
+          FirebaseStorage storage = FirebaseStorage.instance;
+          //Upload da imagem
+          StorageUploadTask task = storage.ref().child("profile.jpg").putFile(_image);
+          //Recuperar url da imagem
+          task.onComplete.then((StorageTaskSnapshot snapshot) => () async {
+            String url = await snapshot.ref.getDownloadURL();
+            print(" Esse é o URL: $url");
+          });
+        }
+      });
+    });
   }
 
 
@@ -81,12 +111,15 @@ class _SignUpPageState extends State<SignUpPage> {
             SizedBox(
               height: 30,
             ),
-            SizedBox( //TODO: SizedBox aceita onPressed?
-                height: 150,
-                width: 150,
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                )
+            GestureDetector(
+              onTap: () => {_pickerImage()},
+              child: CircleAvatar(
+                backgroundColor: Colors.transparent,
+                backgroundImage: _tempImageUrl == null? 
+                ExactAssetImage("assets/profile-icon.png"):
+                NetworkImage(_tempImageUrl),
+                maxRadius: 80.0,
+              ),
             ),
             SizedBox(
               height: 50,
@@ -238,9 +271,9 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             InkWell(
                 onTap: (){
-                  registerNewUser(context);
+                  generateUser(context);
                 },
-                child: RedButton(AppMessages.initLogin)
+                child: RedButton(AppMessages.newAccountButton)
             ),
           ],
         ),
@@ -248,3 +281,4 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 }
+//CircularProgressIndicator
