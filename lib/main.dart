@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import './screens/home_page.dart';
 import './screens/login_page.dart';
-import './constants/Messages.dart';
+import './constants/messages.dart';
 
 void main() => runApp(new MyApp());
 

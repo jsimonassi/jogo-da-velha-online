@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../constants/Colors.dart';
-import '../constants/Messages.dart';
+import '../constants/colors.dart';
+import '../constants/messages.dart';
 
 class RedButton extends StatelessWidget {
 

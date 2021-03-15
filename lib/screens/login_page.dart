@@ -1,12 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:jogodavelha/constants/Messages.dart';
-import '../components/custom_dailog.dart';
-import '../components/game_button.dart';
-import '../constants/Colors.dart';
+import 'package:jogodavelha/constants/messages.dart';
+import 'package:jogodavelha/screens/signup_page.dart';
+import '../constants/colors.dart';
 import '../screens/home_page.dart';
-import '../components/RedButton.dart';
+import '../components/red_button.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -30,7 +27,11 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void initSignUpFlux(){
-
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => SignUpPage())
+    );
   }
 
   @override
