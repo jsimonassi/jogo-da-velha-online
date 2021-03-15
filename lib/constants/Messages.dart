@@ -11,5 +11,10 @@ class AppMessages {
   static const String newAccount = "Nova Conta";
   static const String newAccountButton = "NOVA CONTA";
 
+  //Error Messages
+
+  static const String invalidEmail = "E-mail inválido, tente novamente";
+  static const String invalidPassword = "Senha incorreta, tente novamente";
+  //Add more here...
 
 }

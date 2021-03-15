@@ -4,6 +4,7 @@ import 'package:jogodavelha/screens/SignUp.dart';
 import '../constants/Colors.dart';
 import '../screens/Home.dart';
 import '../components/RedButton.dart';
+import '../services/Api.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -12,18 +13,32 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+  //controllers
+  TextEditingController _controllerEmail = TextEditingController();
+  TextEditingController _controllerPassword = TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
 
+  bool validateInfos(){
+    //Todo: Melhorar esse tratamentop horrível kjkk
+    return _controllerEmail.text.isNotEmpty && _controllerPassword.text.isNotEmpty?
+    true :
+    false;
+  }
+
   void initLoginFlux(){
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => HomePage())
-    );
+    if(validateInfos()) {
+      Api.loginWithEmailAndPassword(_controllerEmail.text, _controllerPassword.text);
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (BuildContext context) => HomePage())
+      // );
+    }
   }
 
   void initSignUpFlux(){
@@ -71,6 +86,7 @@ class _LoginPageState extends State<LoginPage> {
              ),
              height: 50,
              child: TextFormField(
+               controller: _controllerEmail,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                     border: InputBorder.none,
@@ -106,7 +122,8 @@ class _LoginPageState extends State<LoginPage> {
               ),
               height: 50,
               child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
+                controller: _controllerPassword,
+                keyboardType: TextInputType.text,
                 obscureText: true,
                 decoration: InputDecoration(
                     border: InputBorder.none,
