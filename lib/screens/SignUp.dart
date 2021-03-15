@@ -9,7 +9,7 @@ import 'package:jogodavelha/models/User.dart';
 import '../Constants/messages.dart';
 import '../Constants/colors.dart';
 import '../Constants/messages.dart';
-import '../components/red_button.dart';
+import '../components/RedButton.dart';
 import '../services/Api.dart';
 
 class SignUpPage extends StatefulWidget {

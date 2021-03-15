@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jogodavelha/constants/messages.dart';
-import 'package:jogodavelha/screens/signup_page.dart';
-import '../constants/colors.dart';
-import '../screens/home_page.dart';
-import '../components/red_button.dart';
+import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/screens/SignUp.dart';
+import '../constants/Colors.dart';
+import '../screens/Home.dart';
+import '../components/RedButton.dart';
 
 class LoginPage extends StatefulWidget {
   @override
