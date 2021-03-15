@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/messages.dart';
-import 'package:jogodavelha/screens/signup_page.dart';
+import 'package:jogodavelha/screens/signup.dart';
 import '../constants/colors.dart';
-import '../screens/home_page.dart';
+import '../screens/Home_Page.dart';
 import '../components/red_button.dart';
 
 class LoginPage extends StatefulWidget {

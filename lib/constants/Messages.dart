@@ -10,6 +10,9 @@ class AppMessages {
   static const String singUpMessage = "Não tem uma conta? Cadastre-se!";
   static const String newAccount = "Nova Conta";
   static const String newAccountButton = "NOVA CONTA";
+  static const String editAccount = "Editar Conta";
+  static const String saveAccountButton = "SALVAR";
+
 
 
 }
