@@ -273,23 +273,8 @@ class _EditPageState extends State<EditPage> {
 
               InkWell(
                  onTap: (){
-                    final snackBar = SnackBar(duration: new Duration(seconds: 4),
-                      content: new Row(
-                                  children: <Widget>[
-                                    new CircularProgressIndicator(
-                                        valueColor: new AlwaysStoppedAnimation<Color>(
-                                            Colors.red)),
-                                    new Text("  loading...")
-                                  ],
-                                ),
-                      action: SnackBarAction(
-                        label: 'desfazer',
-                        onPressed: () {
-                      // Some code to undo the change.
-                        },
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    // final snackBar =
+                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                  child: TextButton(
                    child:RedButton(AppMessages.saveAccountButton)

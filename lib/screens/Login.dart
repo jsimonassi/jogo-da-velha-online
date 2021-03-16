@@ -4,7 +4,6 @@ import 'package:jogodavelha/screens/Home.dart';
 import 'package:jogodavelha/screens/SignUp.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../constants/Colors.dart';
-import '../screens/Game.dart';
 import '../components/RedButton.dart';
 import '../components/ModalDialog.dart';
 import '../services/Api.dart';
@@ -41,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
             _controllerEmail.text, _controllerPassword.text);
         if (CurrentUser.user != null) {
           Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) => HomePage()));
+              MaterialPageRoute(builder: (BuildContext context) => Home()));
         }
       } else {
         setState(() {
