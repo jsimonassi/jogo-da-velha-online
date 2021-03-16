@@ -54,27 +54,16 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Future<void> _pickerImage() async { //Todo: Apenas rascunho
-    FirebaseAuth auth = FirebaseAuth.instance; //Instancia do firebase Auth
-    auth.signInWithEmailAndPassword(
-        email: "jsimonassi@id.uff.br",
-        password: "12345678").then((value) => () async {
+    PickedFile selectedImage = await ImagePicker().getImage(source: ImageSource.gallery); //Rapaz, esse flutter é bom mesmo
+    setState(() {
+      _image = File(selectedImage.path);
+      if( _image != null ){
 
-      print("Clicouu");
-      PickedFile selectedImage = await ImagePicker().getImage(source: ImageSource.gallery); //Rapaz, esse flutter é bom mesmo
-      setState(() {
-        _image = File(selectedImage.path);
-        if( _image != null ){
-          FirebaseStorage storage = FirebaseStorage.instance;
-          //Upload da imagem
-          StorageUploadTask task = storage.ref().child("profile.jpg").putFile(_image);
-          //Recuperar url da imagem
-          task.onComplete.then((StorageTaskSnapshot snapshot) => () async {
-            String url = await snapshot.ref.getDownloadURL();
-            print(" Esse é o URL: $url");
-          });
-        }
-      });
+        //Recuperar url da imagem
+
+      }
     });
+
   }
 
 
