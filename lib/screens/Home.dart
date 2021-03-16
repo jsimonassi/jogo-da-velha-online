@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import '../components/custom_dailog.dart';
-import '../components/game_button.dart';
-import '../constants/colors.dart';
+import 'package:jogodavelha/components/Custom_Dailog.dart';
+import 'package:jogodavelha/components/Game_Button.dart';
+import 'package:jogodavelha/constants/Colors.dart';
+
 
 class HomePage extends StatefulWidget {
   @override

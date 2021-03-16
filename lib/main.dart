@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import './screens/Home.dart';
 import './screens/Login.dart';
-import './constants/messages.dart';
+import 'package:jogodavelha/constants/Messages.dart';
 
 void main() => runApp(new MyApp());
 
