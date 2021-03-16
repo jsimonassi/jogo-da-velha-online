@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import './screens/Home.dart';
+import 'package:jogodavelha/screens/Home.dart';
+import './screens/Game.dart';
 import './screens/Login.dart';
 import './constants/messages.dart';
 

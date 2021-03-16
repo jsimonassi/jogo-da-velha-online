@@ -21,15 +21,15 @@ class RedButton extends StatelessWidget {
       ),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-          color: AppColors.redPrimary,
-          borderRadius: BorderRadius.all(
-              Radius.circular(5)
-          )
+        color: AppColors.redPrimary,
+        borderRadius: BorderRadius.all(
+          Radius.circular(5)
+        )
       ),
       child: Text(
         this.buttonTitle,
         style: TextStyle(
-            color: Colors.white
+          color: Colors.white
         ),
       ),
     );

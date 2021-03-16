@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/screens/Home.dart';
 import 'package:jogodavelha/screens/SignUp.dart';
 import '../constants/Colors.dart';
-import '../screens/Home.dart';
+import '../screens/Game.dart';
 import '../components/RedButton.dart';
 
 class LoginPage extends StatefulWidget {
@@ -22,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => HomePage())
+            builder: (BuildContext context) => Home())
     );
   }
 
