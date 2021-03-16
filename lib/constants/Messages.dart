@@ -11,7 +11,8 @@ class AppMessages {
   static const String newAccount = "Nova Conta";
   static const String newAccountButton = "NOVA CONTA";
   static const String ok = "OK";
-
+  static const String editAccount = "Editar Conta";
+  static const String saveAccountButton = "SALVAR";
 
   //Error Messages
 
