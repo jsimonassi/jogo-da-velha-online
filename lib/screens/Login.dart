@@ -29,7 +29,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   bool validateInfos() {
-    return _controllerEmail.text.isNotEmpty && _controllerPassword.text.isNotEmpty;
+    return _controllerEmail.text.isNotEmpty &&
+        _controllerPassword.text.isNotEmpty;
   }
 
   void initLoginFlux() async {
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext context) => HomePage()));
         }
-      }else{
+      } else {
         setState(() {
           _errorMenssagesIsVisible = true;
         });
@@ -50,7 +51,7 @@ class _LoginPageState extends State<LoginPage> {
       showDialog(
           context: context,
           builder: (_) => new ModalDialog(AppMessages.error, e.message,
-                  () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
+              () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
     } finally {}
   }
 
@@ -114,15 +115,11 @@ class _LoginPageState extends State<LoginPage> {
             Visibility(
               visible: _errorMenssagesIsVisible,
               child: Container(
-                padding: EdgeInsets.only(
-                    right: 10,
-                    top: 2),
-                child: Text(AppMessages.inputBlank,
+                padding: EdgeInsets.only(right: 10, top: 2),
+                child: Text(
+                  AppMessages.inputBlank,
                   textAlign: TextAlign.end,
-                  style: TextStyle(
-                      color: AppColors.redPrimary,
-                      fontSize: 11
-                  ),
+                  style: TextStyle(color: AppColors.redPrimary, fontSize: 11),
                 ),
               ),
             ),
@@ -159,18 +156,14 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Visibility(
               visible: _errorMenssagesIsVisible,
-                child: Container(
-                  padding: EdgeInsets.only(
-                      right: 10,
-                      top: 2),
-                  child: Text(AppMessages.inputBlank,
-                    textAlign: TextAlign.end,
-                    style: TextStyle(
-                        color: AppColors.redPrimary,
-                        fontSize: 11
-                    ),
-                  ),
+              child: Container(
+                padding: EdgeInsets.only(right: 10, top: 2),
+                child: Text(
+                  AppMessages.inputBlank,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: AppColors.redPrimary, fontSize: 11),
                 ),
+              ),
             ),
             SizedBox(
               height: 40,
