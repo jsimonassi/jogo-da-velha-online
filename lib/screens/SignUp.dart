@@ -6,10 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jogodavelha/models/User.dart';
-import '../Constants/messages.dart';
-import '../Constants/colors.dart';
-import '../Constants/messages.dart';
-import '../components/red_button.dart';
+import '../Constants/Messages.dart';
+import '../Constants/Colors.dart';
+import '../components/RedButton.dart';
 import '../services/Api.dart';
 
 class SignUpPage extends StatefulWidget {
