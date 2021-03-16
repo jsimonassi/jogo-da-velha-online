@@ -15,7 +15,7 @@ class AppMessages {
   static const String saveAccountButton = "SALVAR";
 
   //Error Messages
-
+  static const String inputBlank = "Este campo é obrigatório";
   static const String invalidEmail = "E-mail inválido, tente novamente";
   static const String invalidPassword = "Senha incorreta, tente novamente";
   static const String error = "Deu velha :(";

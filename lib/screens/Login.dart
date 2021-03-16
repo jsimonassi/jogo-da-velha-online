@@ -17,19 +17,19 @@ class _LoginPageState extends State<LoginPage> {
   //controllers
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerPassword = TextEditingController();
+  bool _errorMenssagesIsVisible = false;
 
   @override
   void initState() {
     // TODO: implement initState
+    setState(() {
+      _errorMenssagesIsVisible = false;
+    });
     super.initState();
   }
 
   bool validateInfos() {
-    //Todo: Melhorar esse tratamentop horrível kjkk
-    return _controllerEmail.text.isNotEmpty &&
-            _controllerPassword.text.isNotEmpty
-        ? true
-        : false;
+    return _controllerEmail.text.isNotEmpty && _controllerPassword.text.isNotEmpty;
   }
 
   void initLoginFlux() async {
@@ -41,6 +41,10 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext context) => HomePage()));
         }
+      }else{
+        setState(() {
+          _errorMenssagesIsVisible = true;
+        });
       }
     } catch (e) {
       showDialog(
@@ -107,6 +111,21 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            Visibility(
+              visible: _errorMenssagesIsVisible,
+              child: Container(
+                padding: EdgeInsets.only(
+                    right: 10,
+                    top: 2),
+                child: Text(AppMessages.inputBlank,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(
+                      color: AppColors.redPrimary,
+                      fontSize: 11
+                  ),
+                ),
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
@@ -138,6 +157,21 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
+            Visibility(
+              visible: _errorMenssagesIsVisible,
+                child: Container(
+                  padding: EdgeInsets.only(
+                      right: 10,
+                      top: 2),
+                  child: Text(AppMessages.inputBlank,
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                        color: AppColors.redPrimary,
+                        fontSize: 11
+                    ),
+                  ),
+                ),
+            ),
             SizedBox(
               height: 40,
             ),
@@ -146,9 +180,6 @@ class _LoginPageState extends State<LoginPage> {
                   initLoginFlux();
                 },
                 child: RedButton(AppMessages.initLogin)),
-            SizedBox(
-              height: 10,
-            ),
             Container(
                 alignment: Alignment.center,
                 child: TextButton(
