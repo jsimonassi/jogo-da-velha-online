@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:jogodavelha/constants/Messages.dart';
-
+import '../storage/CurrentUser.dart';
 import '../models/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,25 +14,26 @@ Senha: UFF@alunos88
  */
 
 class Api {
-
   static Future<AuthResult> registerUser(User newUser) async {
     try {
       FirebaseAuth auth = FirebaseAuth.instance; //Instancia do firebase Auth
-      var firebaseUser = await auth.createUserWithEmailAndPassword(email: newUser.email,
+      var firebaseUser = await auth.createUserWithEmailAndPassword(
+          email: newUser.email,
           password: newUser.password); //Chamando criação do user
       return firebaseUser;
-    }catch(e){
+    } catch (e) {
       return e;
     }
   }
 
   static Future<void> updateUser(User newUser) async {
-    try{
+    try {
       Firestore db = Firestore.instance; //Instancia de Firestore
-      return await db.collection("users") //Desce em Users
-          .document( newUser.id ) // O nome do documento do usuário é o ID dele
+      return await db
+          .collection("users") //Desce em Users
+          .document(newUser.id) // O nome do documento do usuário é o ID dele
           .setData(newUser.toMap());
-    }catch(e){
+    } catch (e) {
       return e;
     }
   }
@@ -56,39 +57,47 @@ class Api {
 //     }
 //   }
 
-  static Future<AuthResult> loginWithEmailAndPassword (String email, String password) async {
+  static Future<User> loginWithEmailAndPassword(
+      String email, String password) async {
     try {
       FirebaseAuth auth = FirebaseAuth.instance; //Instancia do firebase Auth
       var result = await auth.signInWithEmailAndPassword(
-          email: email,
-          password: password);
-
-      if(result.user != null){
-        var aux = result.user;
-        print("USER LOGADO: $aux");
-        getUser(result.user.uid);
+          email: email, password: password);
+      if (result.user != null) {
+        CurrentUser.user = await getUser(result.user.uid); //Set usuário atual
+        return CurrentUser.user;
       }
-
-    }catch(e){//Todo:retornar erros aqui
+    } catch (e) {
+      //Todo:retornar erros aqui
       String error = e.code;
       print("Errorrr $error");
-      if(error.contains('ERROR_INVALID_EMAIL')){
+      if (error.contains('ERROR_INVALID_EMAIL')) {
         throw FormatException(AppMessages.invalidEmail);
-      }
-      else if(error.contains('ERROR_WRONG_PASSWORD')){
+      } else if (error.contains('ERROR_WRONG_PASSWORD')) {
         throw FormatException(AppMessages.invalidPassword);
       }
-      throw FormatException(error);//Exception não mapeada
+      throw FormatException(error); //Exception não mapeada
     }
   }
 
   static Future<User> getUser(String uid) async {
-
-    DocumentSnapshot snapshot = await Firestore.instance.collection("users").document(uid).get();
-    Map<String, dynamic> infos = snapshot.data;
-    User user = new User();
-    print("Infos recebidas do DB: $infos");
-    //Todo: Casting pra um object do tipo User, return e trataivas de erros.
+    try {
+      DocumentSnapshot snapshot = await Firestore.instance
+          .collection("users")
+          .document(uid)
+          .get(); //Busca o arquivo
+      Map<String, dynamic> infos =
+          snapshot.data; //Tranforma resultado em um MAp
+      User user = new User();
+      user.name = infos["name"];
+      user.password = infos["password"];
+      user.email = infos["email"];
+      user.nickname = infos["email"];
+      user.urlImage = infos["urlImage"];
+      user.id = infos["id"];
+      return user;
+    } catch (e) {
+      throw FormatException(e.code);
+    }
   }
-
 }
