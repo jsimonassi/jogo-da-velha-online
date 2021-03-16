@@ -5,12 +5,12 @@ import '../components/custom_dailog.dart';
 import '../components/game_button.dart';
 import '../constants/colors.dart';
 
-class HomePage extends StatefulWidget {
+class Game extends StatefulWidget {
   @override
-  _HomePageState createState() => new _HomePageState();
+  _GameState createState() => new _GameState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _GameState extends State<Game> {
   List<GameButton> buttonsList;
   var player1;
   var player2;

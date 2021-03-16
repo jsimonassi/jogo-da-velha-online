@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/screens/Home.dart';
 import 'package:jogodavelha/screens/SignUp.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../constants/Colors.dart';
-import '../screens/Home.dart';
+import '../screens/Game.dart';
 import '../components/RedButton.dart';
 import '../components/ModalDialog.dart';
 import '../services/Api.dart';
