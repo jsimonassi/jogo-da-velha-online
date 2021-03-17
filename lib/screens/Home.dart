@@ -22,9 +22,9 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Container(
                 child: Image.asset(
-                  "assets/logo-small.png",
-                  width: size.width * 0.4,
-                )),
+              "assets/logo-small.png",
+              width: size.width * 0.4,
+            )),
             Container(
                 width: double.infinity,
                 margin: EdgeInsets.symmetric(vertical: 16),
@@ -36,7 +36,8 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CircleAvatar(
-                      backgroundImage: ExactAssetImage("assets/profile-icon.png"),
+                      backgroundImage:
+                          ExactAssetImage("assets/profile-icon.png"),
                       maxRadius: 36.0,
                     ),
                     Text(
