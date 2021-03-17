@@ -38,20 +38,19 @@ class Api {
     }
   }
 
-  // static Future<String> uploadPicture(User user, File image) async {
-  //   try {
-  //       FirebaseStorage storage = FirebaseStorage.instance;
-  //       //Upload da imagem
-  //       StorageUploadTask task = storage.ref().child(user.id+ ".jpg").putFile(
-  //           image);
-  //       task.onComplete.then((StorageTaskSnapshot snapshot) => () async {
-  //         String url = await snapshot.ref.getDownloadURL();
-  //         print(" Esse é o URL: $url");
-  //       });
-  //   }catch(e){
-  //     return e;
-  //   }
-  // }
+  static Future<String> uploadPicture(User user, File image) async {
+    try {
+        FirebaseStorage storage = FirebaseStorage.instance;
+        //Upload da imagem
+        StorageUploadTask task = storage.ref().child(user.id+ ".jpg").putFile(
+            image);
+        task.onComplete.then((StorageTaskSnapshot snapshot) => () async {
+          return await snapshot.ref.getDownloadURL();
+        });
+    }catch(e){
+      return e;
+    }
+  }
 
   static Future<User> loginWithEmailAndPassword(
       String email, String password) async {

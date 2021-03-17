@@ -1,7 +1,4 @@
 import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,6 +7,9 @@ import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import '../components/RedButton.dart';
 import '../services/Api.dart';
+import '../storage/CurrentUser.dart';
+import '../components/ModalDialog.dart';
+import '../screens/MenuNavigation.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -23,7 +23,8 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _controllerNickname = TextEditingController();
   TextEditingController _controllerPassword = TextEditingController();
   File _image;
-  String _tempImageUrl;
+  String _imageUrlPath;
+  String _imageLocalProvider;
 
 
   bool validateInfos(){
@@ -35,11 +36,33 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void registerUserInfos(User newUser) async {
-    var result = await Api.registerUser(newUser);
-    if (result.user.uid != null){
-      newUser.id = result.user.uid;
-      Api.updateUser(newUser);
-    }
+    try {
+      var result = await Api.registerUser(newUser);
+      if (result.user.uid != null) {
+        newUser.id = result.user.uid;
+        if(newUser.id != null){
+          String path = await Api.uploadPicture(newUser, File(_imageLocalProvider));
+          newUser.urlImage = path;
+          await Api.updateUser(newUser);
+          if(CurrentUser.user != null){
+            //Todo: Exibir modal
+            showDialog(
+                context: context,
+                builder: (_) => new ModalDialog(AppMessages.saveSuccess, '',
+                        () {
+                  if (Navigator.canPop(context)){
+                        Navigator.pop(context);
+                        }
+                          //Todo: Remover outras telas da pilha
+                        Navigator.push(context,
+                        MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()));
+                }));
+          }
+        }
+      }
+    }catch(e){
+      print("Erro ao criar usuário $e");
+    }finally{}
   }
 
   void generateUser(BuildContext context){
@@ -53,19 +76,20 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
+  getProfileImage(){
+    if(_imageUrlPath != null)
+      return NetworkImage(_imageUrlPath);
+    else if(_imageLocalProvider != null)
+      return FileImage(File(_imageLocalProvider));
+    return ExactAssetImage("assets/profile-icon.png");
+  }
+
   Future<void> _pickerImage() async { //Todo: Apenas rascunho
     PickedFile selectedImage = await ImagePicker().getImage(source: ImageSource.gallery); //Rapaz, esse flutter é bom mesmo
     setState(() {
-      _image = File(selectedImage.path);
-      if( _image != null ){
-
-        //Recuperar url da imagem
-
-      }
+       _imageLocalProvider = selectedImage.path;
     });
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -103,9 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
               onTap: () => {_pickerImage()},
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                backgroundImage: _tempImageUrl == null? 
-                ExactAssetImage("assets/profile-icon.png"):
-                NetworkImage(_tempImageUrl),
+                backgroundImage: getProfileImage(),
                 maxRadius: 80.0,
               ),
             ),

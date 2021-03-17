@@ -13,6 +13,7 @@ class AppMessages {
   static const String ok = "OK";
   static const String editAccount = "Editar Conta";
   static const String saveAccountButton = "SALVAR";
+  static const String saveSuccess = "Conta criada!";
 
   //Error Messages
   static const String inputBlank = "Este campo é obrigatório";

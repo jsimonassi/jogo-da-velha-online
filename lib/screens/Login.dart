@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Messages.dart';
-import 'package:jogodavelha/screens/Home.dart';
 import 'package:jogodavelha/screens/MenuNavigation.dart';
 import 'package:jogodavelha/screens/SignUp.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
