@@ -88,7 +88,7 @@ class Api {
       user.name = infos["name"];
       user.password = infos["password"];
       user.email = infos["email"];
-      user.nickname = infos["email"];
+      user.nickname = infos["nickname"];
       user.urlImage = infos["urlImage"];
       user.id = infos["id"];
       return user;

@@ -6,4 +6,5 @@ class AppColors {
  static const Color redSecondary = Color(0xffc92323);
  static const Color whiteLowOpcacity = Color(0x34ffffff);
  static const  Color backgroundGreyHistory = Color(0xff3e3e3e);
+ static const  Color bottomNavegationWhite = Color(0xfff0f0f0);
 }

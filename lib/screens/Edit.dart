@@ -11,6 +11,7 @@ import '../components/RedButton.dart';
 import '../services/Api.dart';
 import '../components/SnackBar.dart';
 import '../screens/Login.dart';
+import '../storage/CurrentUser.dart';
 
 class EditPage extends StatefulWidget {
   @override
@@ -19,10 +20,10 @@ class EditPage extends StatefulWidget {
 
 class _EditPageState extends State<EditPage> {
   //controllers
-  TextEditingController _controllerName = TextEditingController();
-  TextEditingController _controllerEmail = TextEditingController();
-  TextEditingController _controllerNickname = TextEditingController();
-  TextEditingController _controllerPassword = TextEditingController();
+  TextEditingController _controllerName = TextEditingController(text: CurrentUser.user.name);
+  TextEditingController _controllerEmail = TextEditingController(text: CurrentUser.user.email);
+  TextEditingController _controllerNickname = TextEditingController(text: CurrentUser.user.nickname);
+  TextEditingController _controllerPassword = TextEditingController(text:CurrentUser.user.password);
   File _image;
   String _tempImageUrl;
 

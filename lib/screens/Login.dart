@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/screens/Home.dart';
+import 'package:jogodavelha/screens/MenuNavigation.dart';
 import 'package:jogodavelha/screens/SignUp.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../constants/Colors.dart';
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
             _controllerEmail.text, _controllerPassword.text);
         if (CurrentUser.user != null) {
           Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) => Home()));
+              MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()));
         }
       } else {
         setState(() {
