@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
+import '../storage/CurrentUser.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -41,7 +42,7 @@ class _HomeState extends State<Home> {
                       maxRadius: 36.0,
                     ),
                     Text(
-                      "Olá, {user}",
+                      "Olá, ${CurrentUser.user.name}",
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
