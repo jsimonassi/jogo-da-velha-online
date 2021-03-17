@@ -64,14 +64,14 @@ class Api {
       }
     } catch (e) {
       //Todo:retornar erros aqui
-      String error = e.code;
-      print("Errorrr $error");
-      if (error.contains('ERROR_INVALID_EMAIL')) {
-        throw FormatException(AppMessages.invalidEmail);
-      } else if (error.contains('ERROR_WRONG_PASSWORD')) {
-        throw FormatException(AppMessages.invalidPassword);
-      }
-      throw FormatException(error); //Exception não mapeada
+      //String error = e.code;
+      print("Errorrr $e");
+      // if (error.contains('ERROR_INVALID_EMAIL')) {
+      //   throw FormatException(AppMessages.invalidEmail);
+      // } else if (error.contains('ERROR_WRONG_PASSWORD')) {
+      //   throw FormatException(AppMessages.invalidPassword);
+      // }
+      // throw FormatException(e.code); //Exception não mapeada
     }
   }
 

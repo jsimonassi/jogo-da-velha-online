@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       showDialog(
           context: context,
-          builder: (_) => new ModalDialog(AppMessages.error, e.message,
+          builder: (_) => new ModalDialog(AppMessages.error, '',
               () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
     } finally {}
   }

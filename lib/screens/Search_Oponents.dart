@@ -2,6 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Search_Oponents extends StatelessWidget{
+  //Todo: Mudar para Statefull
+  //Todo: Não usar AppBar, Fazer tudo no body (O componente do bernardo tem um exemplo de row)
+  // Todo: DataSearch não precisa ser uma classe
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,8 +24,8 @@ class Search_Oponents extends StatelessWidget{
 }
 
 class DataSearch extends SearchDelegate<String>{
-  final listaJogadores =[];
-  final buscaRecentes =[];
+  final listaJogadores =["João", "Pedro"];
+  final buscaRecentes =["Gustavo"];
   @override
   List<Widget> buildActions(BuildContext context) {
     return[
