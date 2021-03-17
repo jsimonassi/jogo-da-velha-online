@@ -40,28 +40,27 @@ class _SignUpPageState extends State<SignUpPage> {
       var result = await Api.registerUser(newUser);
       if (result.user.uid != null) {
         newUser.id = result.user.uid;
-        if(newUser.id != null){
-          String path = await Api.uploadPicture(newUser, File(_imageLocalProvider));
-          newUser.urlImage = path;
-          await Api.updateUser(newUser);
-          if(CurrentUser.user != null){
-            //Todo: Exibir modal
-            showDialog(
-                context: context,
-                builder: (_) => new ModalDialog(AppMessages.saveSuccess, '',
-                        () {
-                  if (Navigator.canPop(context)){
-                        Navigator.pop(context);
-                        }
-                          //Todo: Remover outras telas da pilha
-                        Navigator.push(context,
-                        MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()));
-                }));
-          }
-        }
+        String path = await Api.uploadPicture(newUser, File(_imageLocalProvider));
+        newUser.urlImage = path;
+        await Api.updateUser(newUser);
+        CurrentUser.user = newUser;
+        showDialog(
+            context: context,
+            builder: (_) => new ModalDialog(AppMessages.saveSuccess, '',
+                    () {
+              if (Navigator.canPop(context)){
+                    Navigator.pop(context);
+                    }
+                      //Todo: Remover outras telas da pilha
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()));
+            }));
       }
     }catch(e){
-      print("Erro ao criar usuário $e");
+      showDialog(
+          context: context,
+          builder: (_) => new ModalDialog(AppMessages.error, e.message,
+                  () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
     }finally{}
   }
 

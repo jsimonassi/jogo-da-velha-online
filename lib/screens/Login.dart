@@ -42,6 +42,12 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()));
         }
+        else{
+          showDialog(
+              context: context,
+              builder: (_) => new ModalDialog(AppMessages.error, AppMessages.undefinedUser,
+                      () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
+        }
       } else {
         setState(() {
           _errorMenssagesIsVisible = true;
@@ -50,7 +56,7 @@ class _LoginPageState extends State<LoginPage> {
     } catch (e) {
       showDialog(
           context: context,
-          builder: (_) => new ModalDialog(AppMessages.error, '',
+          builder: (_) => new ModalDialog(AppMessages.error, e.message,
               () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
     } finally {}
   }
