@@ -22,17 +22,20 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerNickname = TextEditingController();
   TextEditingController _controllerPassword = TextEditingController();
-  File _image;
+  bool _errorMenssagesIsVisible = false;
   String _imageUrlPath;
   String _imageLocalProvider;
 
 
   bool validateInfos(){
-    //Todo: Melhorar esse tratamentop horrível kjkk
-    return _controllerName.text.isNotEmpty && _controllerEmail.text.isNotEmpty &&
-        _controllerNickname.text.isNotEmpty && _controllerPassword.text.isNotEmpty?
-     true :
-     false;
+    if(_controllerName.text.isEmpty  || _controllerNickname.text.isEmpty ||
+      !_controllerEmail.text.contains("@") || _controllerPassword.text.length < 6){
+      setState(() {
+        _errorMenssagesIsVisible = true;
+      });
+      return false;
+    }
+    return true;
   }
 
   void registerUserInfos(User newUser) async {
@@ -166,6 +169,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
+            Visibility(
+              visible: _errorMenssagesIsVisible,
+              child: Container(
+                padding: EdgeInsets.only(right: 10, top: 2),
+                child: Text(
+                  AppMessages.inputBlank,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: AppColors.redPrimary, fontSize: 11),
+                ),
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
@@ -199,6 +213,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextStyle( //Texto escrito pelo usário
                   fontSize: 20,
                   color: Colors.white,
+                ),
+              ),
+            ),
+            Visibility(
+              visible: _errorMenssagesIsVisible,
+              child: Container(
+                padding: EdgeInsets.only(right: 10, top: 2),
+                child: Text(
+                  AppMessages.invalidEmailFormat,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: AppColors.redPrimary, fontSize: 11),
                 ),
               ),
             ),
@@ -238,6 +263,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
+            Visibility(
+              visible: _errorMenssagesIsVisible,
+              child: Container(
+                padding: EdgeInsets.only(right: 10, top: 2),
+                child: Text(
+                  AppMessages.inputBlank,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: AppColors.redPrimary, fontSize: 11),
+                ),
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
@@ -272,6 +308,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextStyle( //Texto escrito pelo usário
                   fontSize: 20,
                   color: Colors.white,
+                ),
+              ),
+            ),
+            Visibility(
+              visible: _errorMenssagesIsVisible,
+              child: Container(
+                padding: EdgeInsets.only(right: 10, top: 2),
+                child: Text(
+                  AppMessages.invalidPasswordFormat,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: AppColors.redPrimary, fontSize: 11),
                 ),
               ),
             ),

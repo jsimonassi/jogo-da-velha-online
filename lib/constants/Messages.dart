@@ -24,8 +24,8 @@ class AppMessages {
   static const String undefinedError = "Ocorreu um problema durante a solicitação";
   static const String undefinedUser = "Usuário não encontrado. Verifique os dados e tente novamente.";
   static const String emailAlreadyInUse = "Ops, este email já tem uma conta";
-
-
+  static const String invalidEmailFormat = "Digite um e-mail com formato válido";
+  static const String invalidPasswordFormat = "A senha precisa ter mais de 6 caracters";
 
   //Add more here...
 
