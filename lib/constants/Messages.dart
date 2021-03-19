@@ -1,4 +1,5 @@
 class AppMessages {
+  //Todo: Todas as constantes deveriam ser maiusculas. Dei mole :/
   static const String appTitle = "Jogo da velha - online";
 
   static const String namePlaceholder = "Nome:";
@@ -20,6 +21,12 @@ class AppMessages {
   static const String invalidEmail = "E-mail inválido, tente novamente";
   static const String invalidPassword = "Senha incorreta, tente novamente";
   static const String error = "Deu velha :(";
+  static const String undefinedError = "Ocorreu um problema durante a solicitação";
+  static const String undefinedUser = "Usuário não encontrado. Verifique os dados e tente novamente.";
+  static const String emailAlreadyInUse = "Ops, este email já tem uma conta";
+  static const String invalidEmailFormat = "Digite um e-mail com formato válido";
+  static const String invalidPasswordFormat = "A senha precisa ter mais de 6 caracters";
+
   //Add more here...
 
 }

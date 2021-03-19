@@ -22,11 +22,16 @@ class Api {
           password: newUser.password); //Chamando criação do user
       return firebaseUser;
     } catch (e) {
-      return e;
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      if (error.contains('ERROR_EMAIL_ALREADY_IN_USE')) {
+        throw FormatException(AppMessages.emailAlreadyInUse);
+      }
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
 
-  static Future<void> updateUser(User newUser) async {
+  static Future<void> updateUser(User newUser) async { //Todo: Deve retornar user
     try {
       Firestore db = Firestore.instance; //Instancia de Firestore
       return await db
@@ -42,11 +47,9 @@ class Api {
     try {
         FirebaseStorage storage = FirebaseStorage.instance;
         //Upload da imagem
-        StorageUploadTask task = storage.ref().child(user.id+ ".jpg").putFile(
-            image);
-        task.onComplete.then((StorageTaskSnapshot snapshot) => () async {
-          return await snapshot.ref.getDownloadURL();
-        });
+        StorageUploadTask task = storage.ref().child(user.id+ ".jpg").putFile(image);
+        var dowurl = await (await task.onComplete).ref.getDownloadURL();
+        return dowurl.toString();
     }catch(e){
       return e;
     }
@@ -58,20 +61,17 @@ class Api {
       FirebaseAuth auth = FirebaseAuth.instance; //Instancia do firebase Auth
       var result = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-      if (result.user != null) {
         CurrentUser.user = await getUser(result.user.uid); //Set usuário atual
         return CurrentUser.user;
-      }
     } catch (e) {
-      //Todo:retornar erros aqui
-      //String error = e.code;
+      String error = e.code != null? e.code : '';
       print("Errorrr $e");
-      // if (error.contains('ERROR_INVALID_EMAIL')) {
-      //   throw FormatException(AppMessages.invalidEmail);
-      // } else if (error.contains('ERROR_WRONG_PASSWORD')) {
-      //   throw FormatException(AppMessages.invalidPassword);
-      // }
-      // throw FormatException(e.code); //Exception não mapeada
+      if (error.contains('ERROR_INVALID_EMAIL')) {
+        throw FormatException(AppMessages.invalidEmail);
+      } else if (error.contains('ERROR_WRONG_PASSWORD')) {
+        throw FormatException(AppMessages.invalidPassword);
+      }
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
 
@@ -83,6 +83,7 @@ class Api {
           .get(); //Busca o arquivo
       Map<String, dynamic> infos =
           snapshot.data; //Tranforma resultado em um MAp
+      if(infos == null){return null;} //Usuário não encontrado
       User user = new User();
       user.name = infos["name"];
       user.password = infos["password"];
