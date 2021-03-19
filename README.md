@@ -63,7 +63,7 @@ We developed the following screens as the basis of the application:
 <img src="./Prototipo/login.jpg" width="300"/>  <img src="./Prototipo/profile.jpg" width="300"/><br/>
 <img src="./Prototipo/home.jpg" width="300"/>   <img src="./Prototipo/search.jpg" width="300"/><br/>
 
-#### Doubts and suggestions
+#### Questions and suggestions
 
 João Victor Simonassi - ​jsimonassi@id.uff.br <br/>
 Jonatas Alves - ​jonatasalves@id.uff.br 
