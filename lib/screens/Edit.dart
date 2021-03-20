@@ -270,18 +270,7 @@ class _EditPageState extends State<EditPage> {
               SizedBox(
                 height: 20,
               ),
-
-
-              InkWell(
-                 onTap: (){
-                    // final snackBar =
-                    // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      },
-                 child: TextButton(
-                   child:RedButton(AppMessages.saveAccountButton)
-                 )
-
-              ),
+            RedButton(AppMessages.saveAccountButton, () => {}),
             ],
           ),
         )

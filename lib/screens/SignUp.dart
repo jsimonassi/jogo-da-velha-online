@@ -325,12 +325,7 @@ class _SignUpPageState extends State<SignUpPage> {
             SizedBox(
               height: 20,
             ),
-            InkWell(
-                onTap: (){
-                  generateUser(context);
-                },
-                child: RedButton(AppMessages.newAccountButton)
-            ),
+            RedButton(AppMessages.newAccountButton, () => {generateUser(context)})
           ],
         ),
       )

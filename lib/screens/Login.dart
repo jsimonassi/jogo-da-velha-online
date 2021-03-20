@@ -174,11 +174,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 40,
             ),
-            InkWell(
-                onTap: () {
-                  initLoginFlux();
-                },
-                child: RedButton(AppMessages.initLogin)),
+            RedButton(AppMessages.initLogin, () => {initLoginFlux()}),
             Container(
                 alignment: Alignment.center,
                 child: TextButton(

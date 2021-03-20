@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
+import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/screens/GameMultiplayer.dart';
 import '../storage/CurrentUser.dart';
+import '../components/RedButton.dart';
+import '../screens/Game.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -22,27 +26,36 @@ class _HomeState extends State<Home> {
         child: Column(
           children: <Widget>[
             Container(
+              padding: EdgeInsets.all(10),
+                width: size.width,
+                height: size.height * 0.15,
+                color: AppColors.backgroundGrey2,
                 child: Image.asset(
               "assets/logo-small.png",
               width: size.width * 0.4,
             )),
             Container(
                 width: double.infinity,
-                margin: EdgeInsets.symmetric(vertical: 16),
                 padding: EdgeInsets.symmetric(
                   vertical: 8,
                 ),
-                color: AppColors.whiteLowOpcacity,
+                color: AppColors.backgroundGrey1,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    SizedBox(
+                      width: 20,
+                    ),
                     CircleAvatar(
-                      backgroundImage:
-                          ExactAssetImage("assets/profile-icon.png"),
+                      backgroundImage: CurrentUser.user.urlImage == null? 
+                      ExactAssetImage("assets/profile-icon.png") : NetworkImage(CurrentUser.user.urlImage),
                       maxRadius: 36.0,
+                      backgroundColor: AppColors.backgroundGrey2,
+                    ),
+                    SizedBox(
+                      width: 20,
                     ),
                     Text(
-                      "Olá, ${CurrentUser.user.name}",
+                      AppMessages.hello + CurrentUser.user.name,
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -51,31 +64,22 @@ class _HomeState extends State<Home> {
                     )
                   ],
                 )),
-            Container(
-              width: size.width * 0.8,
-              margin: EdgeInsets.only(bottom: 16),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: FlatButton(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                    color: AppColors.redPrimary,
-                    onPressed: () {},
-                    child: Text("Nova partida",
-                        style: TextStyle(color: Colors.white, fontSize: 16)),
-                  )),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
+           Container(
+             width: size.width * 0.8,
+             child: RedButton(AppMessages.newGame, () => {Navigator.push(context,
+                 MaterialPageRoute(builder: (BuildContext context) => Game()))}),
+           ),
+            SizedBox(
+              height: size.height * 0.03,
             ),
             Container(
               width: size.width * 0.8,
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: FlatButton(
-                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
-                    color: AppColors.redPrimary,
-                    onPressed: () {},
-                    child: Text("Treinar",
-                        style: TextStyle(color: Colors.white, fontSize: 16)),
-                  )),
-            )
+              child: RedButton(AppMessages.newTraining, () => {Navigator.push(context,
+                  MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer()))}),
+            ),
           ],
         ),
       ),

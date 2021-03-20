@@ -15,6 +15,10 @@ class AppMessages {
   static const String editAccount = "Editar Conta";
   static const String saveAccountButton = "SALVAR";
   static const String saveSuccess = "Conta criada!";
+  static const String hello = "Olá, ";
+
+  static const String newGame = "NOVA PARTIDA";
+  static const String newTraining = "TREINAR";
 
   //Error Messages
   static const String inputBlank = "Este campo é obrigatório";

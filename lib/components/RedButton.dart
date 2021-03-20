@@ -6,32 +6,33 @@ import 'package:jogodavelha/constants/Messages.dart';
 class RedButton extends StatelessWidget {
 
   String buttonTitle;
+  VoidCallback callback;
 
-  RedButton(String buttonTitle){
+  RedButton(String buttonTitle, VoidCallback callback){
     this.buttonTitle = buttonTitle;
+    this.callback = callback;
   }
 
   @override
   Widget build(BuildContext context) {
+
     return new Container(
       height: 45,
-      margin: EdgeInsets.only(
-        left: 40,
+      padding: EdgeInsets.only(
         right: 40,
+        left: 40,
       ),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: AppColors.redPrimary,
-        borderRadius: BorderRadius.all(
-          Radius.circular(5)
-        )
-      ),
-      child: Text(
-        this.buttonTitle,
-        style: TextStyle(
-          color: Colors.white
+      child: TextButton(onPressed: this.callback,
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
         ),
-      ),
+        child: Text(
+          this.buttonTitle,
+          style: TextStyle(
+              color: Colors.white
+          ),
+        ),
+      )
     );
   }
 }
