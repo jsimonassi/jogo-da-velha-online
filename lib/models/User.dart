@@ -1,3 +1,5 @@
+import 'package:jogodavelha/constants/Messages.dart';
+
 class User {
   //Atributos do usuário podem ser alterados, desde que seja alterado o toMap()
   String _id;
@@ -59,5 +61,13 @@ class User {
 
   set nickname(String value) {
     _nickname = value;
+  }
+
+  User generateBot(){
+    //Todo: Bots customizados? Implementar lógica aqui!
+    User bot = User();
+    bot.name = AppMessages.botName;
+    bot.nickname = AppMessages.botNickname;
+    return bot;
   }
 }

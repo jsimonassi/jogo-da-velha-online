@@ -22,7 +22,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
         child: SafeArea(
           child: Column(
             children: <Widget> [
-              MultiplayerHeader(CurrentUser.user, CurrentUser.user, true),
+              MultiplayerHeader(CurrentUser.user, CurrentUser.user, true, 00),
             ],
           ),
         ),

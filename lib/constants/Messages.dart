@@ -20,6 +20,10 @@ class AppMessages {
   static const String newGame = "NOVA PARTIDA";
   static const String newTraining = "TREINAR";
 
+  //Bot infos
+  static const String botName = "bot";
+  static const String botNickname = botName;
+
   //Error Messages
   static const String inputBlank = "Este campo é obrigatório";
   static const String invalidEmail = "E-mail inválido, tente novamente";

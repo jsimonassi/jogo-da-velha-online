@@ -9,7 +9,14 @@ class AppColors {
  static const  Color bottomNavegationWhite = Color(0xfff0f0f0);
 
  static const  Color player1Gradient1 = Color(0xFFAD0000);
- static const  Color player1Gradient2 = Color(0xFFD72B2B);
- static const  Color player2Gradient1 = Color(0xFF4B4B4B);
- static const  Color player2Gradient2 = Color(0xFFA8A8A8);
+ static const  Color player1Gradient2 = Color(0xFFEE4141);
+ static const  Color player2Gradient1 = Color(0xFF474747);
+ static const  Color player2Gradient2 = Color(0xFF363636);
+
+ //TableElements Gradientes Default
+ static const  Color defaultElement1 = Color(0xFFFFFFFF);
+ static const  Color defaultElement2 = Color(0xFFC4C4C4);
+ static const  Color defaultElement3 = Color(0xFF979797);
+ static const  Color defaultElement4 = Color(0xFF555555);
+
 }
