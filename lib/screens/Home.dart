@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
            Container(
              width: size.width * 0.8,
              child: RedButton(AppMessages.newGame, () => {Navigator.push(context,
-                 MaterialPageRoute(builder: (BuildContext context) => Game()))}),
+                 MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer()))}),
            ),
             SizedBox(
               height: size.height * 0.03,
@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
             Container(
               width: size.width * 0.8,
               child: RedButton(AppMessages.newTraining, () => {Navigator.push(context,
-                  MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer()))}),
+                  MaterialPageRoute(builder: (BuildContext context) => Game()))}),
             ),
           ],
         ),

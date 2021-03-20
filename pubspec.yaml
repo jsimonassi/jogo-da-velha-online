@@ -55,6 +55,7 @@ flutter:
      - assets/bg_gradient.jpg
      - assets/logo-small.png
      - assets/profile-icon.png
+     - assets/vs-icon.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
