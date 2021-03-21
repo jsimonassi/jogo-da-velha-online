@@ -6,13 +6,15 @@ import 'package:jogodavelha/components/TableElement.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../models/User.dart';
+import '../components/ChatMessage.dart';
+import '../constants/Messages.dart';
 
 class Game extends StatefulWidget {
   @override
   _GameState createState() => _GameState();
 }
-class _GameState extends State<Game> {
 
+class _GameState extends State<Game> {
   User bot = User().generateBot();
   Timer _timer;
   int _currentTime = 0;
@@ -25,7 +27,7 @@ class _GameState extends State<Game> {
     super.initState();
   }
 
-  initTimer (){
+  initTimer() {
     const oneSec = const  Duration(seconds: 1);
     _timer = new Timer.periodic(oneSec, (timer) {
       if(mounted){
@@ -36,79 +38,145 @@ class _GameState extends State<Game> {
     });
   }
 
+  updateAnimations(){
+    //Todo: Atualizar gradientes a cada 5 segundos
+  }
+
   @override
-  void dispose() { //Cancela o cronometro
-    if(_timer != null){
+  void dispose() {
+    //Cancela o cronometro
+    if (_timer != null) {
       _timer.cancel();
     }
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return new Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/bg_gradient.jpg"),
-            fit: BoxFit.cover,
-          ),
+        body: Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("assets/bg_gradient.jpg"),
+          fit: BoxFit.cover,
         ),
-        child: SafeArea(
-          child: Column(
-            children: <Widget> [
-              MultiplayerHeader(CurrentUser.user, bot, true, _currentTime),
+      ),
+      child: SafeArea(
+        /////////////////////////////////////////////////Header
+        child: Column(children: <Widget>[
+          MultiplayerHeader(CurrentUser.user, bot, true, _currentTime),
+          SizedBox(
+            height: 10,
+          ),
+          ListView(
+            shrinkWrap: true, //Que comando mágico é esse???
+            children: <Widget>[
               SizedBox(
-                height: 10,
-              ),
-              Table(
-                children: [
-                  TableRow(
-                    children: <Widget>[
+                width: size.width,
+                child: Table(
+                  ////////////////////////////////////////////////////////GameArea
+                  children: [
+                    TableRow(children: <Widget>[
                       TableElement("a1", true, false, _currentTime, () => {}),
                       TableElement("a2", true, false, _currentTime, () => {}),
                       TableElement("a3", true, false, _currentTime, () => {}),
-                    ]
-                  ),
-                  TableRow(
-                      children: <Widget>[
-                        TableElement("b1", true, false, _currentTime, () => {}),
-                        TableElement("b2", true, false, _currentTime, () => {}),
-                        TableElement("b3", true, false, _currentTime, () => {}),
-                      ]
-                  ),
-                  TableRow(
-                      children: <Widget>[
-                        TableElement("c1", true, false, _currentTime, () => {}),
-                        TableElement("c2", true, false, _currentTime, () => {}),
-                        TableElement("c3", true, false, _currentTime, () => {}),
-                      ]
-                  ),
+                    ]),
+                    TableRow(children: <Widget>[
+                      TableElement("b1", true, false, _currentTime, () => {}),
+                      TableElement("b2", true, false, _currentTime, () => {}),
+                      TableElement("b3", true, false, _currentTime, () => {}),
+                    ]),
+                    TableRow(children: <Widget>[
+                      TableElement("c1", true, false, _currentTime, () => {}),
+                      TableElement("c2", true, false, _currentTime, () => {}),
+                      TableElement("c3", true, false, _currentTime, () => {}),
+                    ]),
+                  ],
+                ),
+              ),
+              Container(
+                ///////////////////////////////////////////////////////Chat
+                width: size.width,
+                height: size.height * 0.2,
+                //Todo: Encontrar uma forma de expandir tudo
+                child: ListView(
+                  shrinkWrap: true, //Que comando mágico é esse???
+                  children: <Widget>[
+                    ChatMessage(
+                      //Todo: Deverá ser adicionado em tempo de execução
+                      messageType: MessageType.sent,
+                      message: "Muito legal esse jogo!",
+                      backgroundColor: AppColors.redPrimary,
+                      textColor: Colors.white,
+                    ),
+                    ChatMessage(
+                      messageType: MessageType.received,
+                      message: "É sim, mas eu vou te ganhar boboca",
+                      backgroundColor: Colors.black,
+                      textColor: Colors.white,
+                    ),
+                    ChatMessage(
+                      messageType: MessageType.sent,
+                      message: "Só desenvolvedor bolado",
+                      backgroundColor: AppColors.redPrimary,
+                      textColor: Colors.white,
+                    ),
+                    ChatMessage(
+                      messageType: MessageType.sent,
+                      message: "Turminha nota mil",
+                      backgroundColor: AppColors.redPrimary,
+                      textColor: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+              Row(
+                //////////////////////////////////////////////////////////Rodapé
+                children: <Widget>[
+                  Expanded(
+                      child: Container(
+                    decoration: BoxDecoration(
+                        color: AppColors.whiteLowOpcacity,
+                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                    padding: EdgeInsets.only(
+                      left: 15,
+                    ),
+                    height: 50,
+                    child: TextFormField(
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.only(
+                            top: 5,
+                            bottom: 5,
+                          ),
+                          labelText: AppMessages.emailPlaceholder,
+                          labelStyle: TextStyle(
+                            color: AppColors.whiteLowOpcacity,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16,
+                          )),
+                      style: TextStyle(
+                        //Texto escrito pelo usário
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                  )),
+                  IconButton(
+                      icon: const Icon(Icons.send),
+                      color: Colors.white,
+                      onPressed: () => {})
                 ],
-              )
+              ),
             ],
           ),
-        ),
+        ]),
       ),
-    );
+    ));
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import 'dart:math';
 //

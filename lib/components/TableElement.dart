@@ -48,9 +48,9 @@ class TableElement extends StatelessWidget {
               end: getEndDirection(),
             ),
           ),
-          width: size.width * 0.25,
-          height: size.width * 0.25,
-          duration: Duration(seconds: 5),
+          width: size.width * 0.20,
+          height: size.width * 0.20,
+          duration: Duration(seconds: 1),
           child: TextButton(
             onPressed: callback,
             child: Text(""),
