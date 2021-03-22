@@ -48,7 +48,7 @@ class _LobbyState extends State<Lobby> {
                     IconButton(
                         color: Colors.white,
                         icon: const Icon(Icons.arrow_back),
-                        onPressed: () {Loading.enableLoading(context);},
+                        onPressed: () {removeUserFromLobby(context);},
                     ),
                     Text(
                       AppMessages.findUsers,
