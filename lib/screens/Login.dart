@@ -7,6 +7,7 @@ import '../constants/Colors.dart';
 import '../components/RedButton.dart';
 import '../components/ModalDialog.dart';
 import '../services/Api.dart';
+import '../components/Loading.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -33,16 +34,19 @@ class _LoginPageState extends State<LoginPage> {
         _controllerPassword.text.isNotEmpty;
   }
 
-  void initLoginFlux() async {
+  void initLoginFlux(BuildContext context) async {
+    Loading.enableLoading(context);
     try {
       if (validateInfos()) {
         await Api.loginWithEmailAndPassword(
             _controllerEmail.text, _controllerPassword.text);
         if (CurrentUser.user != null) {
+          Loading.disableLoading(context);
           Navigator.push(context,
               MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()));
         }
         else{
+          Loading.disableLoading(context);
           showDialog(
               context: context,
               builder: (_) => new ModalDialog(AppMessages.error, AppMessages.undefinedUser,
@@ -54,6 +58,7 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     } catch (e) {
+      Loading.disableLoading(context);
       showDialog(
           context: context,
           builder: (_) => new ModalDialog(AppMessages.error, e.message,
@@ -174,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 40,
             ),
-            RedButton(AppMessages.initLogin, () => {initLoginFlux()}),
+            RedButton(AppMessages.initLogin, () => {initLoginFlux(context)}),
             Container(
                 alignment: Alignment.center,
                 child: TextButton(

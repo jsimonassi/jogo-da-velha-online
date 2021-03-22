@@ -16,30 +16,37 @@ class Game extends StatefulWidget {
 
 class _GameState extends State<Game> {
   User bot = User().generateBot();
-  Timer _timer;
-  int _currentTime = 0;
+  Timer _timer; //Objeto da thread de tempo
+  int _currentTime = 0; //Tempo atual
+  int _currentAnimationTime = 0;
+  int _lastAnimationUpdate = 0; //Apenas para contar de 5 em 5
 
   @override
   void initState() {
-    // TODO: implement initState
     initTimer();
     setState(() {});
     super.initState();
   }
 
   initTimer() {
-    const oneSec = const  Duration(seconds: 1);
+    const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(oneSec, (timer) {
-      if(mounted){
+      if (mounted) {
         setState(() {
           _currentTime++;
+          _lastAnimationUpdate++;
         });
       }
     });
   }
 
-  updateAnimations(){
-    //Todo: Atualizar gradientes a cada 5 segundos
+  updateAnimations() {
+    if( _lastAnimationUpdate > 5){
+      setState(() {
+        _lastAnimationUpdate = 0;
+        _currentAnimationTime++;
+      });
+    }
   }
 
   @override
@@ -54,129 +61,148 @@ class _GameState extends State<Game> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return new Scaffold(
-        body: Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage("assets/bg_gradient.jpg"),
-          fit: BoxFit.cover,
+    var gameArea = Table(
+      children: [
+        TableRow(children: <Widget>[
+          TableElement("a1", true, false, _currentAnimationTime, () => {}),
+          TableElement("a2", true, false, _currentAnimationTime, () => {}),
+          TableElement("a3", true, false, _currentAnimationTime, () => {}),
+        ]),
+        TableRow(children: <Widget>[
+          TableElement("b1", true, false, _currentAnimationTime, () => {}),
+          TableElement("b2", true, false, _currentAnimationTime, () => {}),
+          TableElement("b3", true, false, _currentAnimationTime, () => {}),
+        ]),
+        TableRow(children: <Widget>[
+          TableElement("c1", true, false, _currentAnimationTime, () => {}),
+          TableElement("c2", true, false, _currentAnimationTime, () => {}),
+          TableElement("c3", true, false, _currentAnimationTime, () => {}),
+        ]),
+      ],
+    );
+
+    var chat = ListView(
+      //shrinkWrap: true, //Que comando mágico é esse???
+      children: <Widget>[
+        ChatMessage(
+//Todo: Deverá ser adicionado em tempo de execução
+          messageType: MessageType.sent,
+          message: "Muito legal esse jogo!",
+          backgroundColor: AppColors.redPrimary,
+          textColor: Colors.white,
         ),
-      ),
-      child: SafeArea(
-        /////////////////////////////////////////////////Header
-        child: Column(children: <Widget>[
-          MultiplayerHeader(CurrentUser.user, bot, true, _currentTime),
-          SizedBox(
-            height: 10,
+        ChatMessage(
+          messageType: MessageType.received,
+          message: "É sim, mas eu vou te ganhar boboca",
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+        ),
+        ChatMessage(
+          messageType: MessageType.sent,
+          message: "Só desenvolvedor bolado",
+          backgroundColor: AppColors.redPrimary,
+          textColor: Colors.white,
+        ),
+        ChatMessage(
+          messageType: MessageType.sent,
+          message: "Turminha nota mil",
+          backgroundColor: AppColors.redPrimary,
+          textColor: Colors.white,
+        ),
+      ],
+    );
+
+    var chatInput = Row(
+      children: <Widget>[
+        Expanded(
+            child: Container(
+          decoration: BoxDecoration(
+              color: AppColors.whiteLowOpcacity,
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          padding: EdgeInsets.only(
+            left: 15,
           ),
-          ListView(
-            shrinkWrap: true, //Que comando mágico é esse???
-            children: <Widget>[
-              SizedBox(
-                width: size.width,
-                child: Table(
-                  ////////////////////////////////////////////////////////GameArea
-                  children: [
-                    TableRow(children: <Widget>[
-                      TableElement("a1", true, false, _currentTime, () => {}),
-                      TableElement("a2", true, false, _currentTime, () => {}),
-                      TableElement("a3", true, false, _currentTime, () => {}),
-                    ]),
-                    TableRow(children: <Widget>[
-                      TableElement("b1", true, false, _currentTime, () => {}),
-                      TableElement("b2", true, false, _currentTime, () => {}),
-                      TableElement("b3", true, false, _currentTime, () => {}),
-                    ]),
-                    TableRow(children: <Widget>[
-                      TableElement("c1", true, false, _currentTime, () => {}),
-                      TableElement("c2", true, false, _currentTime, () => {}),
-                      TableElement("c3", true, false, _currentTime, () => {}),
-                    ]),
-                  ],
+          height: 50,
+          child: TextField(
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.only(
+                  top: 5,
+                  bottom: 5,
                 ),
+                labelText: AppMessages.chatPlaceholder,
+                labelStyle: TextStyle(
+                  color: AppColors.whiteLowOpcacity,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                )),
+            style: TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+            ),
+          ),
+        )),
+        IconButton(
+            icon: const Icon(Icons.send),
+            color: Colors.white,
+            onPressed: () => {})
+      ],
+    );
+
+    //Aqui é onde junta tudo!!
+      return Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView( //Tela subir quando teclado aparecer
+            //physics: NeverScrollableScrollPhysics(), //Usuário não pode rolar
+            child: ConstrainedBox( //Tamanho total da tela
+              constraints: BoxConstraints(
+                minWidth: MediaQuery.of(context).size.width,
+                minHeight: MediaQuery.of(context).size.height,
               ),
-              Container(
-                ///////////////////////////////////////////////////////Chat
-                width: size.width,
-                height: size.height * 0.2,
-                //Todo: Encontrar uma forma de expandir tudo
-                child: ListView(
-                  shrinkWrap: true, //Que comando mágico é esse???
-                  children: <Widget>[
-                    ChatMessage(
-                      //Todo: Deverá ser adicionado em tempo de execução
-                      messageType: MessageType.sent,
-                      message: "Muito legal esse jogo!",
-                      backgroundColor: AppColors.redPrimary,
-                      textColor: Colors.white,
-                    ),
-                    ChatMessage(
-                      messageType: MessageType.received,
-                      message: "É sim, mas eu vou te ganhar boboca",
-                      backgroundColor: Colors.black,
-                      textColor: Colors.white,
-                    ),
-                    ChatMessage(
-                      messageType: MessageType.sent,
-                      message: "Só desenvolvedor bolado",
-                      backgroundColor: AppColors.redPrimary,
-                      textColor: Colors.white,
-                    ),
-                    ChatMessage(
-                      messageType: MessageType.sent,
-                      message: "Turminha nota mil",
-                      backgroundColor: AppColors.redPrimary,
-                      textColor: Colors.white,
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                //////////////////////////////////////////////////////////Rodapé
-                children: <Widget>[
-                  Expanded(
-                      child: Container(
+              child: IntrinsicHeight(// ?
+                  child: Container(
                     decoration: BoxDecoration(
-                        color: AppColors.whiteLowOpcacity,
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    padding: EdgeInsets.only(
-                      left: 15,
-                    ),
-                    height: 50,
-                    child: TextFormField(
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.only(
-                            top: 5,
-                            bottom: 5,
-                          ),
-                          labelText: AppMessages.emailPlaceholder,
-                          labelStyle: TextStyle(
-                            color: AppColors.whiteLowOpcacity,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 16,
-                          )),
-                      style: TextStyle(
-                        //Texto escrito pelo usário
-                        fontSize: 20,
-                        color: Colors.white,
+                      image: DecorationImage(
+                        image: AssetImage("assets/bg_gradient.jpg"),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  )),
-                  IconButton(
-                      icon: const Icon(Icons.send),
-                      color: Colors.white,
-                      onPressed: () => {})
-                ],
+                    child: Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        Container(
+                          height: size.height * 0.18, //Todo: Muito ruim
+                          child: MultiplayerHeader(CurrentUser.user, CurrentUser.user, false, _currentTime),
+                        ),
+                        Container(
+                          height: size.height * 0.42, //Todo: Muito ruim
+                          child: gameArea,
+                        ),
+                        Container(
+                          height: size.height * 0.27, //Todo: Muito ruim
+                          child: chat,
+                        ),
+                        Expanded(
+                          child: chatInput,
+                        ),
+                      ],
+                    ),
+                  )
               ),
-            ],
+            ),
           ),
-        ]),
-      ),
-    ));
+        ),
+      );
   }
 }
+
+
+
+
+
+
+
 
 // import 'dart:math';
 //

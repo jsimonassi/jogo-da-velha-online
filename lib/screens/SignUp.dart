@@ -10,6 +10,7 @@ import '../services/Api.dart';
 import '../storage/CurrentUser.dart';
 import '../components/ModalDialog.dart';
 import '../screens/MenuNavigation.dart';
+import '../components/Loading.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -38,15 +39,19 @@ class _SignUpPageState extends State<SignUpPage> {
     return true;
   }
 
-  void registerUserInfos(User newUser) async {
+  void registerUserInfos(User newUser, context) async {
     try {
+      Loading.enableLoading(context);
       var result = await Api.registerUser(newUser);
       if (result.user.uid != null) {
         newUser.id = result.user.uid;
-        String path = await Api.uploadPicture(newUser, File(_imageLocalProvider));
-        newUser.urlImage = path;
+        if(_imageLocalProvider != null){
+          String path = await Api.uploadPicture(newUser, File(_imageLocalProvider));
+          newUser.urlImage = path;
+        }
         await Api.updateUser(newUser);
         CurrentUser.user = newUser;
+        Loading.disableLoading(context);
         showDialog(
             context: context,
             builder: (_) => new ModalDialog(AppMessages.saveSuccess, '',
@@ -60,11 +65,14 @@ class _SignUpPageState extends State<SignUpPage> {
             }));
       }
     }catch(e){
+      Loading.disableLoading(context);
       showDialog(
           context: context,
           builder: (_) => new ModalDialog(AppMessages.error, e.message,
                   () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
-    }finally{}
+    }finally{
+      //Todo: O loading deveria parar aqui, mas precisamos remove-lo antes de exibir uma outra modal
+    }
   }
 
   void generateUser(BuildContext context){
@@ -74,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
       newUser.nickname =  _controllerNickname.text;
       newUser.email = _controllerEmail.text;
       newUser.password = _controllerPassword.text;
-      registerUserInfos(newUser);
+      registerUserInfos(newUser, context);
     }
   }
 

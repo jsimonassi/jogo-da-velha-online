@@ -21,6 +21,7 @@ class AppMessages {
 
   static const String newGame = "NOVA PARTIDA";
   static const String newTraining = "TREINAR";
+  static const String findUsers = "Encontrando jogadores para a partida...";
 
   //Bot infos
   static const String botName = "bot";

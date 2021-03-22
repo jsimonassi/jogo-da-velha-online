@@ -5,6 +5,7 @@ import 'package:jogodavelha/screens/GameMultiplayer.dart';
 import '../storage/CurrentUser.dart';
 import '../components/RedButton.dart';
 import '../screens/Game.dart';
+import '../screens/Lobby.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -70,7 +71,7 @@ class _HomeState extends State<Home> {
            Container(
              width: size.width * 0.8,
              child: RedButton(AppMessages.newGame, () => {Navigator.push(context,
-                 MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer()))}),
+                 MaterialPageRoute(builder: (BuildContext context) => Lobby()))}),
            ),
             SizedBox(
               height: size.height * 0.03,

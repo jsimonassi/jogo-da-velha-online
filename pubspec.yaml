@@ -56,6 +56,7 @@ flutter:
      - assets/logo-small.png
      - assets/profile-icon.png
      - assets/vs-icon.png
+     - assets/go_back-icon.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jogodavelha/constants/Colors.dart';
 import './screens/Login.dart';
 import './constants/Messages.dart';
 
@@ -10,7 +11,10 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       title: AppMessages.appTitle,
       debugShowCheckedModeBanner: false,
-      theme: new ThemeData(primaryColor: Colors.black),
+      theme: new ThemeData(
+          primaryColor: Colors.black,
+        accentColor: AppColors.redPrimary,
+      ),
       home: new LoginPage(),
     );
   }

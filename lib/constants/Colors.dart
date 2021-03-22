@@ -19,4 +19,6 @@ class AppColors {
  static const  Color defaultElement3 = Color(0xFF979797);
  static const  Color defaultElement4 = Color(0xFF585858);
 
+ static const Color backgroundLoading = Color(0xB7000000);
+
 }
