@@ -2,10 +2,12 @@ import 'dart:async';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/screens/Lobby.dart';
 import '../storage/CurrentUser.dart';
 import '../models/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/Lobby.dart';
 
 /*
 Credenciais do Firebase:
@@ -96,4 +98,41 @@ class Api {
       throw FormatException(e.code);
     }
   }
+
+  static Future<void> updateLobby(LobbyModel newLobby) async { //Todo: Deve retornar user
+    try {
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      return await db
+          .collection("lobby") //Desce em Users
+          .document(newLobby.token) // O nome do documento do usuário é o ID dele
+          .setData(newLobby.toMap());
+    } catch (e) {
+      return e;
+    }
+  }
+
+  static Future<List<LobbyModel>> getLobbys() async {
+    try {
+
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("lobby").getDocuments();
+      var list = querySnapshot.documents;
+
+      if(list.isEmpty) return null; //Se lista está vazia, return nulo pra criar um novo lobby
+
+      List<LobbyModel> response = [];
+      for(int i =0; i < list.length; i++){
+        Map<String, dynamic> infos = list[i].data; //Tranforma resultado em um MAp
+        var newLobby = LobbyModel();
+        newLobby.token = infos["token"];
+        newLobby.player1 = infos["player1"];
+        newLobby.player2 = infos["player2"];
+        response.add(newLobby);
+      }
+      return response;
+    } catch (e) {
+      print(e);
+      throw FormatException(e.code);
+    }
+  }
+
 }

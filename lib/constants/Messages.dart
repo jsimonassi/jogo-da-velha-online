@@ -23,6 +23,7 @@ class AppMessages {
   static const String newTraining = "TREINAR";
   static const String findUsers = "Encontrando jogadores para a partida...";
 
+
   //Bot infos
   static const String botName = "bot";
   static const String botNickname = botName;
