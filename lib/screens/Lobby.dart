@@ -50,7 +50,7 @@ class _LobbyState extends State<Lobby> {
         await Api.updateLobby(lobbys[0]);//Passar primeiro lobby disponível
         //Todo: Ir pra tela do game
         Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer()));//Todo: Adicionar contador antes disso
+            MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer(player2)));//Todo: Adicionar contador antes disso
       } else {
         var newLobby = new LobbyModel();
         newLobby.player1 = newLobby.token = CurrentUser.user.id;
@@ -129,7 +129,7 @@ class _LobbyState extends State<Lobby> {
             radius: 80,
             backgroundImage: _player2Image == null
                 ? ExactAssetImage('./assets/profile-icon.png')
-                : NetworkImage(CurrentUser.user.urlImage),
+                : NetworkImage(_player2Image),
           ),
           Text(
             _player2Nickname,
