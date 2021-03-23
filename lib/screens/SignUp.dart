@@ -1,15 +1,16 @@
 import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jogodavelha/models/User.dart';
-import '../Constants/Messages.dart';
-import '../Constants/Colors.dart';
+import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/constants/Colors.dart';
 import '../components/RedButton.dart';
 import '../services/Api.dart';
+import '../storage/CurrentUser.dart';
+import '../components/ModalDialog.dart';
+import '../screens/MenuNavigation.dart';
+import '../components/Loading.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -22,23 +23,55 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerNickname = TextEditingController();
   TextEditingController _controllerPassword = TextEditingController();
-  File _image;
-  String _tempImageUrl;
+  bool _errorMenssagesIsVisible = false;
+  String _imageUrlPath;
+  String _imageLocalProvider;
 
 
   bool validateInfos(){
-    //Todo: Melhorar esse tratamentop horrível kjkk
-    return _controllerName.text.isNotEmpty && _controllerEmail.text.isNotEmpty &&
-        _controllerNickname.text.isNotEmpty && _controllerPassword.text.isNotEmpty?
-     true :
-     false;
+    if(_controllerName.text.isEmpty  || _controllerNickname.text.isEmpty ||
+      !_controllerEmail.text.contains("@") || _controllerPassword.text.length < 6){
+      setState(() {
+        _errorMenssagesIsVisible = true;
+      });
+      return false;
+    }
+    return true;
   }
 
-  void registerUserInfos(User newUser) async {
-    var result = await Api.registerUser(newUser);
-    if (result.user.uid != null){
-      newUser.id = result.user.uid;
-      Api.updateUser(newUser);
+  void registerUserInfos(User newUser, context) async {
+    try {
+      Loading.enableLoading(context);
+      var result = await Api.registerUser(newUser);
+      if (result.user.uid != null) {
+        newUser.id = result.user.uid;
+        if(_imageLocalProvider != null){
+          String path = await Api.uploadPicture(newUser, File(_imageLocalProvider));
+          newUser.urlImage = path;
+        }
+        await Api.updateUser(newUser);
+        CurrentUser.user = newUser;
+        Loading.disableLoading(context);
+        showDialog(
+            context: context,
+            builder: (_) => new ModalDialog(AppMessages.saveSuccess, '',
+                    () {
+              if (Navigator.canPop(context)){
+                    Navigator.pop(context);
+                    }
+                      //Todo: Remover outras telas da pilha
+                    Navigator.push(context,
+                    MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()));
+            }));
+      }
+    }catch(e){
+      Loading.disableLoading(context);
+      showDialog(
+          context: context,
+          builder: (_) => new ModalDialog(AppMessages.error, e.message,
+                  () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
+    }finally{
+      //Todo: O loading deveria parar aqui, mas precisamos remove-lo antes de exibir uma outra modal
     }
   }
 
@@ -49,34 +82,24 @@ class _SignUpPageState extends State<SignUpPage> {
       newUser.nickname =  _controllerNickname.text;
       newUser.email = _controllerEmail.text;
       newUser.password = _controllerPassword.text;
-      registerUserInfos(newUser);
+      registerUserInfos(newUser, context);
     }
   }
 
-  Future<void> _pickerImage() async { //Todo: Apenas rascunho
-    FirebaseAuth auth = FirebaseAuth.instance; //Instancia do firebase Auth
-    auth.signInWithEmailAndPassword(
-        email: "jsimonassi@id.uff.br",
-        password: "12345678").then((value) => () async {
-
-      print("Clicouu");
-      PickedFile selectedImage = await ImagePicker().getImage(source: ImageSource.gallery); //Rapaz, esse flutter é bom mesmo
-      setState(() {
-        _image = File(selectedImage.path);
-        if( _image != null ){
-          FirebaseStorage storage = FirebaseStorage.instance;
-          //Upload da imagem
-          StorageUploadTask task = storage.ref().child("profile.jpg").putFile(_image);
-          //Recuperar url da imagem
-          task.onComplete.then((StorageTaskSnapshot snapshot) => () async {
-            String url = await snapshot.ref.getDownloadURL();
-            print(" Esse é o URL: $url");
-          });
-        }
-      });
-    });
+  getProfileImage(){
+    if(_imageUrlPath != null)
+      return NetworkImage(_imageUrlPath);
+    else if(_imageLocalProvider != null)
+      return FileImage(File(_imageLocalProvider));
+    return ExactAssetImage("assets/profile-icon.png");
   }
 
+  Future<void> _pickerImage() async { //Todo: Apenas rascunho
+    PickedFile selectedImage = await ImagePicker().getImage(source: ImageSource.gallery); //Rapaz, esse flutter é bom mesmo
+    setState(() {
+       _imageLocalProvider = selectedImage.path;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,9 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
               onTap: () => {_pickerImage()},
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                backgroundImage: _tempImageUrl == null? 
-                ExactAssetImage("assets/profile-icon.png"):
-                NetworkImage(_tempImageUrl),
+                backgroundImage: getProfileImage(),
                 maxRadius: 80.0,
               ),
             ),
@@ -156,6 +177,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
+            Visibility(
+              visible: _errorMenssagesIsVisible,
+              child: Container(
+                padding: EdgeInsets.only(right: 10, top: 2),
+                child: Text(
+                  AppMessages.inputBlank,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: AppColors.redPrimary, fontSize: 11),
+                ),
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
@@ -192,6 +224,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
+            Visibility(
+              visible: _errorMenssagesIsVisible,
+              child: Container(
+                padding: EdgeInsets.only(right: 10, top: 2),
+                child: Text(
+                  AppMessages.invalidEmailFormat,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: AppColors.redPrimary, fontSize: 11),
+                ),
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
@@ -225,6 +268,17 @@ class _SignUpPageState extends State<SignUpPage> {
                 style: TextStyle( //Texto escrito pelo usário
                   fontSize: 20,
                   color: Colors.white,
+                ),
+              ),
+            ),
+            Visibility(
+              visible: _errorMenssagesIsVisible,
+              child: Container(
+                padding: EdgeInsets.only(right: 10, top: 2),
+                child: Text(
+                  AppMessages.inputBlank,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: AppColors.redPrimary, fontSize: 11),
                 ),
               ),
             ),
@@ -265,15 +319,21 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
+            Visibility(
+              visible: _errorMenssagesIsVisible,
+              child: Container(
+                padding: EdgeInsets.only(right: 10, top: 2),
+                child: Text(
+                  AppMessages.invalidPasswordFormat,
+                  textAlign: TextAlign.end,
+                  style: TextStyle(color: AppColors.redPrimary, fontSize: 11),
+                ),
+              ),
+            ),
             SizedBox(
               height: 20,
             ),
-            InkWell(
-                onTap: (){
-                  generateUser(context);
-                },
-                child: RedButton(AppMessages.newAccountButton)
-            ),
+            RedButton(AppMessages.newAccountButton, () => {generateUser(context)})
           ],
         ),
       )
