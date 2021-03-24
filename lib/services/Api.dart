@@ -8,7 +8,7 @@ import '../models/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/Lobby.dart';
-
+import '../models/Match.dart';
 /*
 Credenciais do Firebase:
 Email: g04vermelhouff@gmail.com
@@ -135,4 +135,39 @@ class Api {
     }
   }
 
+  static Future<void> updateMatch(Match newMatch) async { //Todo: Deve retornar user
+    try {
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      return await db
+          .collection("matches") //Desce em Users
+          .document("match1") // O nome do documento do usuário é o ID dele
+          .setData(newMatch.toMap());
+    } catch (e) {
+      return e;
+    }
+  }
+
+  static Future<List<Match>> getMatches() async {
+    try {
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("matches").getDocuments();
+      var list = querySnapshot.documents;
+      if(list.isEmpty) return null;
+      List<Match> response = [];
+      for(int i =0; i < list.length; i++){
+        Map<String, dynamic> infos = list[i].data;
+        var newMatch = Match();
+        newMatch.player1 = infos["player1"];
+        newMatch.player2 = infos["player2"];
+        newMatch.winner = infos["winner"];
+        newMatch.timestamp = infos["timestamp"];
+        newMatch.matchtoken = infos["matchtoken"];
+        newMatch.plays = new Map<String, dynamic>.from(infos["plays"]); //Casting para o tipo map
+        response.add(newMatch);
+      }
+      return response;
+    } catch (e) {
+      print(e);
+      throw FormatException(e.code);
+    }
+  }
 }
