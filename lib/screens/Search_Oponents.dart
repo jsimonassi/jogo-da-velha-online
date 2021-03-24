@@ -1,7 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jogodavelha/components/SearchResult.dart';
 
-class Search_Oponents extends StatelessWidget{
+import '../constants/Messages.dart';
+import '../constants/Messages.dart';
+import '../storage/CurrentUser.dart';
+import '../storage/CurrentUser.dart';
+import '../storage/CurrentUser.dart';
+
+class Search_Oponents extends StatelessWidget {
   //Todo: Mudar para Statefull
   //Todo: Não usar AppBar, Fazer tudo no body (O componente do bernardo tem um exemplo de row)
   // Todo: DataSearch não precisa ser uma classe
@@ -9,40 +16,61 @@ class Search_Oponents extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Pesquisar"),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.search),onPressed:(){
-            showSearch(context: context, delegate: DataSearch());
-          })
-        ],
-      ),
-      drawer: Drawer(),
-    );
-  }
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: Text(AppMessages.searchTitle),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  showSearch(context: context, delegate: DataSearch());
+                })
+          ],
+        ),
+        body: Column(
+          //padding: EdgeInsets.only(top: 60, left: 40, right: 40),
+          children: <Widget>[
+            SizedBox(
+              height: 30.00,
+            ),
+            SearchResult(CurrentUser.user.urlImage, CurrentUser.user.nickname, CurrentUser.user.name, 4, 3,
+                AppMessages.redButtonAdd, ()=>{}, ()=>{})
+          ]),
+          //decoration: BoxDecoration(
+            //image: DecorationImage(
+              //image: AssetImage("assets/bg_gradient.jpg"),
+              //fit: BoxFit.cover,
 
+
+        );
+  }
 }
 
-class DataSearch extends SearchDelegate<String>{
-  final listaJogadores =["João", "Pedro"];
-  final buscaRecentes =["Gustavo"];
+class DataSearch extends SearchDelegate<String> {
+  final listaJogadores = ['gustavo', 'leo'];
+  final buscaRecentes = ['berna'];
+
   @override
   List<Widget> buildActions(BuildContext context) {
-    return[
-      IconButton(icon: Icon(Icons.clear), onPressed:() {
-        query = "";
-      })];
+    return [
+      IconButton(
+          icon: Icon(Icons.clear),
+          onPressed: () {
+            query = "";
+          })
+    ];
   }
 
   @override
   Widget buildLeading(BuildContext context) {
-    return IconButton(icon: AnimatedIcon(
-      icon: AnimatedIcons.menu_arrow,
-      progress:transitionAnimation,
-    ),
-    onPressed: (){
-      close(context, null);
-    });
+    return IconButton(
+        icon: AnimatedIcon(
+          icon: AnimatedIcons.menu_arrow,
+          progress: transitionAnimation,
+        ),
+        onPressed: () {
+          close(context, null);
+        });
   }
 
   @override
@@ -61,25 +89,8 @@ class DataSearch extends SearchDelegate<String>{
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList=query.isEmpty?buscaRecentes:listaJogadores.where((p)=>p.startsWith(query)).toList();
-    
-    return ListView.builder(itemBuilder: (context,index)=>ListTile(
-      onTap: (){
-        showResults(context);
-      },
-      leading: Icon(Icons.person),
-      title: RichText(text:TextSpan(
-        text: suggestionList[index].substring(0,query.length),
-        style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),
-        children: [TextSpan(
-          text:suggestionList[index].substring(query.length),
-          style: TextStyle(color :Colors.grey)
-        )],
-        )
-      ),
-    ),
-      itemCount:suggestionList.length,
-    );
+    return SearchResult(CurrentUser.user.urlImage, CurrentUser.user.nickname, CurrentUser.user.name, 4, 3,
+        AppMessages.redButtonAdd, ()=>{}, ()=>{});
+
   }
-  
 }
