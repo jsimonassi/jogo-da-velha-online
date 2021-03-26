@@ -2,6 +2,7 @@
 Responsável por encontrar jogadores para a partida
 */
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/Loading.dart';
@@ -10,7 +11,7 @@ import 'package:jogodavelha/screens/GameMultiplayer.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../constants/Messages.dart';
 import '../services/Api.dart';
-import '../models/Lobby.dart';
+import '../models/LobbyModel.dart';
 import '../models/User.dart';
 
 class Lobby extends StatefulWidget {
@@ -21,8 +22,9 @@ class Lobby extends StatefulWidget {
 class _LobbyState extends State<Lobby> {
 
   String _searchState = AppMessages.findUsers;
-  String _player2Image;
-  String _player2Nickname = "";
+  User _player1 = User();
+  User _player2 = User();
+  LobbyModel currentLobby;
 
   @override
   void initState() {
@@ -30,38 +32,72 @@ class _LobbyState extends State<Lobby> {
     super.initState();
   }
 
-  removeUserFromLobby(context) {
-    //Todo: Remover da lista de lobby lá do bd
-    Navigator.of(context).pop(true);
+  removeUserFromLobby(context) async{
+    Loading.enableLoading(context);
+    try{
+      if(currentLobby.player1 == CurrentUser.user.id){ //Posso só apagar pq foi eu que fiz o Lobby e ninguém entrou
+        await Api.deleteLobby(currentLobby);
+      }else{ //O Lobby é de alguém, então vou sair dele
+          currentLobby.player2 = null;  //Saí dele
+          await Api.updateLobby(currentLobby); //Atualizei o db
+      }
+    }catch(e){
+      print(e);
+    }
+    finally{
+      Loading.disableLoading(context);
+      Navigator.of(context).pop(true);
+    }
   }
 
-  createLobby() async {
+  createLobby() async { //Todo: Validar muito isso aqui!!
     try {
-      List<LobbyModel> lobbys = await Api.getLobbys();
-      if (lobbys != null && lobbys.isNotEmpty) {
-        User player2 = await Api.getUser(lobbys[0].player1);
-        if(player2 != null){ //Todo: Tratar user nulo. É possível??
-          setState(() {
-            _player2Image = player2.urlImage;
-            _player2Nickname = player2.nickname;
-          });
-        }
-        lobbys[0].player2 = CurrentUser.user.id;
-        await Api.updateLobby(lobbys[0]);//Passar primeiro lobby disponível
+      List<LobbyModel> lobbys = await Api.getLobbys();  // Verificar se já existe Lobby
+      if (lobbys != null && lobbys.isNotEmpty) { //Já existe um Lobby criado. Entrar no mesmo:
+        currentLobby = lobbys[0]; //Lobby atual é setado
+        currentLobby.player2 = CurrentUser.user.id; //Informação que estava faltando é o player2
+        await Api.updateLobby(currentLobby);//Agora eu sou o player 2 desse Lobby
+        _updateStates();
         //Todo: Ir pra tela do game
-        Navigator.push(context,
-            MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer(player2)));//Todo: Adicionar contador antes disso
-      } else {
+        //Navigator.push(context,
+        //    MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer(player2)));//Todo: Adicionar contador antes disso
+
+      } else {  //Não existe Lobby Criado. Vou fazer o meu!
         var newLobby = new LobbyModel();
-        newLobby.player1 = newLobby.token = CurrentUser.user.id;
-        Api.updateLobby(newLobby);
-        setState(() {
-          _searchState = "Testando";
-        });
+        newLobby.player1 = CurrentUser.user.id; //Eu sou o player 1 do Lobby
+        currentLobby = newLobby; //Atualiza LobbyCorrente  //Todo: Deve criar listner aqui
+        await Api.updateLobby(newLobby);
+        createListener(); //Cria listener pra esperar outro jogador
       }
     } catch (e) {
       print(e);
     }
+  }
+
+   _updateStates(){
+    Api.getUser(currentLobby.player1).then((user) => {
+      setState((){
+      _player1 = user;
+    })});
+    Api.getUser(currentLobby.player2).then((user) => {
+      setState((){
+        _player2 = user;
+      })});
+  }
+
+  Stream<QuerySnapshot> createListener(){
+    var stream = Api.createListenerFromLobby(currentLobby);
+    stream.listen((obj){ //Callback
+      if(obj.data != null){
+        currentLobby.token = obj.data["token"];
+        currentLobby.player1 = obj.data["player1"];
+        currentLobby.player2 = obj.data["player2"];
+        _updateStates();
+        if(currentLobby.player1 == null && currentLobby.player2 == null){
+          removeUserFromLobby(context);
+        }
+      }
+    });
   }
 
 
@@ -109,15 +145,15 @@ class _LobbyState extends State<Lobby> {
           CircleAvatar(
             backgroundColor: AppColors.backgroundGrey2,
             radius: 80,
-            backgroundImage: CurrentUser.user.urlImage == null
-                ? ExactAssetImage('./assets/profile-icon.png')
-                : NetworkImage(CurrentUser.user.urlImage),
+            backgroundImage: _player1 != null && _player1.urlImage != null
+                ? NetworkImage(_player1.urlImage)
+                : ExactAssetImage('./assets/profile-icon.png'),
           ),
           SizedBox(
             height: size.height * 0.01,
           ),
           Text(
-            CurrentUser.user.nickname,
+            _player1 != null && _player1.nickname != null? _player1.nickname : '',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),
           ),
@@ -127,12 +163,12 @@ class _LobbyState extends State<Lobby> {
           CircleAvatar(
             backgroundColor: AppColors.backgroundGrey2,
             radius: 80,
-            backgroundImage: _player2Image == null
-                ? ExactAssetImage('./assets/profile-icon.png')
-                : NetworkImage(_player2Image),
+            backgroundImage: _player2 != null && _player2.urlImage != null
+                ? NetworkImage(_player2.urlImage)
+                : ExactAssetImage('./assets/profile-icon.png'),
           ),
           Text(
-            _player2Nickname,
+            _player2 != null && _player2.nickname != null? _player2.nickname : '',
             style: TextStyle(
                 color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),
           ),

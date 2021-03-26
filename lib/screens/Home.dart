@@ -15,11 +15,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
-  getMatches() async
-  {
-    var resultado = await Api.getMatches(CurrentUser.user);
-    print(resultado);
-  }
+  // getMatches() async
+  // {
+  //   var resultado = await Api.getMatches(CurrentUser.user);
+  //   print(resultado);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,8 @@ class _HomeState extends State<Home> {
             ),
            Container(
              width: size.width * 0.8,
-             child: RedButton(AppMessages.newGame, () => {getMatches()}),
+             child: RedButton(AppMessages.newGame, () => {Navigator.push(context,
+                 MaterialPageRoute(builder: (BuildContext context) => Lobby()))}),
            ),
             SizedBox(
               height: size.height * 0.03,

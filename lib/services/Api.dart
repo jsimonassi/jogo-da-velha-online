@@ -7,7 +7,7 @@ import '../storage/CurrentUser.dart';
 import '../models/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/Lobby.dart';
+import '../models/LobbyModel.dart';
 import '../models/Match.dart';
 /*
 Credenciais do Firebase:
@@ -95,26 +95,43 @@ class Api {
       user.id = infos["id"];
       return user;
     } catch (e) {
-      throw FormatException(e.code);
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
 
-  static Future<void> updateLobby(LobbyModel newLobby) async { //Todo: Deve retornar user
+  static Future<void> updateLobby(LobbyModel newLobby) async {
     try {
       Firestore db = Firestore.instance; //Instancia de Firestore
       return await db
-          .collection("lobby") //Desce em Users
+          .collection("lobbys") //Desce em Users
           .document(newLobby.token) // O nome do documento do usuário é o ID dele
           .setData(newLobby.toMap());
     } catch (e) {
-      return e;
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
+  static Future<void> deleteLobby(LobbyModel lobby) async {
+    try {
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      return await db
+          .collection("lobbys") //Desce em Users
+          .document(lobby.token) // O nome do documento do usuário é o ID dele
+          .delete();
+    }  catch (e) {
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
 
   static Future<List<LobbyModel>> getLobbys() async {
     try {
-
-      QuerySnapshot querySnapshot = await Firestore.instance.collection("lobby").getDocuments();
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("lobbys").getDocuments();
       var list = querySnapshot.documents;
 
       if(list.isEmpty) return null; //Se lista está vazia, return nulo pra criar um novo lobby
@@ -129,9 +146,23 @@ class Api {
         response.add(newLobby);
       }
       return response;
-    } catch (e) {
-      print(e);
-      throw FormatException(e.code);
+    }  catch (e) {
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
+  static Stream<DocumentSnapshot> createListenerFromLobby(LobbyModel lobby) {
+    try {
+      return Firestore.instance
+          .collection("lobbys")
+          .document(lobby.token)
+          .snapshots();
+    }  catch (e) {
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
 

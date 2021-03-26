@@ -1,4 +1,4 @@
-
+import 'package:uuid/uuid.dart';
 
 class LobbyModel {
 
@@ -6,7 +6,9 @@ class LobbyModel {
   String _player1;
   String _player2;
 
-  LobbyModel();
+  LobbyModel(){
+    this._token = Uuid().v4();
+  }
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
