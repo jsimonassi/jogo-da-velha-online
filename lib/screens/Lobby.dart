@@ -35,11 +35,14 @@ class _LobbyState extends State<Lobby> {
   removeUserFromLobby(context) async{
     Loading.enableLoading(context);
     try{
-      if(currentLobby.player1 == CurrentUser.user.id){ //Posso só apagar pq foi eu que fiz o Lobby e ninguém entrou
-        await Api.deleteLobby(currentLobby);
-      }else{ //O Lobby é de alguém, então vou sair dele
-          currentLobby.player2 = null;  //Saí dele
+      if(currentLobby != null) {//Ainda existe esse Lobby?
+        if (currentLobby.player1 == CurrentUser.user
+            .id) { //Posso só apagar pq foi eu que fiz o Lobby e ninguém entrou
+          await Api.deleteLobby(currentLobby);
+        } else { //O Lobby é de alguém, então vou sair dele
+          currentLobby.player2 = null; //Saí dele
           await Api.updateLobby(currentLobby); //Atualizei o db
+        }
       }
     }catch(e){
       print(e);
@@ -57,7 +60,7 @@ class _LobbyState extends State<Lobby> {
         currentLobby = lobbys[0]; //Lobby atual é setado
         currentLobby.player2 = CurrentUser.user.id; //Informação que estava faltando é o player2
         await Api.updateLobby(currentLobby);//Agora eu sou o player 2 desse Lobby
-        _updateStates();
+        createListener();
         //Todo: Ir pra tela do game
         //Navigator.push(context,
         //    MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer(player2)));//Todo: Adicionar contador antes disso
@@ -93,9 +96,13 @@ class _LobbyState extends State<Lobby> {
         currentLobby.player1 = obj.data["player1"];
         currentLobby.player2 = obj.data["player2"];
         _updateStates();
-        if(currentLobby.player1 == null && currentLobby.player2 == null){
-          removeUserFromLobby(context);
-        }
+      }else{//Lobby morreu
+        currentLobby = null;
+        setState(() {
+          _player1 = null;
+          _player2 = null;
+        });
+        createLobby();
       }
     });
   }
