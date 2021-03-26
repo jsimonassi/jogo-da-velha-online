@@ -35,3 +35,4 @@ Sprint4 - 07/04/2021:
     Todo: Finalizar chat, FixBugs e Possíveis melhorias
 
 Sprint5(Final) - 14/04/2021:
+    Subida pra loja (Será??)
