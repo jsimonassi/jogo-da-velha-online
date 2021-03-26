@@ -140,16 +140,16 @@ class Api {
       Firestore db = Firestore.instance; //Instancia de Firestore
       return await db
           .collection("matches") //Desce em Users
-          .document("match1") // O nome do documento do usuário é o ID dele
+          .document(newMatch.matchtoken) // O nome do documento do usuário é o ID dele
           .setData(newMatch.toMap());
     } catch (e) {
       return e;
     }
   }
 
-  static Future<List<Match>> getMatches() async {
+  static Future<List<Match>> getMatches(User user) async {
     try {
-      QuerySnapshot querySnapshot = await Firestore.instance.collection("matches").getDocuments();
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("matches").where("player1", isEqualTo: user.id).getDocuments();
       var list = querySnapshot.documents;
       if(list.isEmpty) return null;
       List<Match> response = [];

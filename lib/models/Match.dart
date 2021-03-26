@@ -1,4 +1,6 @@
+import 'package:uuid/uuid.dart';
 
+var uuid = Uuid();
 
 class Match {
   //usuario 1, usuario 2, vencedor, data, hora, token
@@ -12,6 +14,7 @@ class Match {
 
   Match(){
     this._plays = new Map();
+    this.matchtoken = uuid.v4();
   }
 
   Map<String, dynamic> toMap(){

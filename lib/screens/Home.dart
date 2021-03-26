@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/screens/GameMultiplayer.dart';
+import 'package:jogodavelha/services/Api.dart';
 import '../storage/CurrentUser.dart';
 import '../components/RedButton.dart';
 import '../screens/Game.dart';
@@ -13,6 +14,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  getMatches() async
+  {
+    var resultado = await Api.getMatches(CurrentUser.user);
+    print(resultado);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -70,8 +78,7 @@ class _HomeState extends State<Home> {
             ),
            Container(
              width: size.width * 0.8,
-             child: RedButton(AppMessages.newGame, () => {Navigator.push(context,
-                 MaterialPageRoute(builder: (BuildContext context) => Lobby()))}),
+             child: RedButton(AppMessages.newGame, () => {getMatches()}),
            ),
             SizedBox(
               height: size.height * 0.03,
