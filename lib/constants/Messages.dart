@@ -7,7 +7,11 @@ class AppMessages {
   static const String passwordPlaceholder = "Senha:";
   static const String nickNamePlaceholder = "Nickname";
   static const String chatPlaceholder = "Escreva sua mensagem...";
-
+  static const String searchTitle ="Buscar Amigos";
+  static const String redButton ='DESAFIAR';
+  static const String wins ='Vitórias:';
+  static const String losses ='Derrotas:';
+  static const String redButtonAdd ='ADICIONAR';
 
   static const String initLogin = "ENTRAR";
   static const String singUpMessage = "Não tem uma conta? Cadastre-se!";
