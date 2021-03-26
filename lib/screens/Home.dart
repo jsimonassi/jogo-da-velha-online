@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:jogodavelha/components/History.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/models/User.dart';
 import 'package:jogodavelha/screens/GameMultiplayer.dart';
 import '../storage/CurrentUser.dart';
 import '../components/RedButton.dart';
@@ -56,7 +58,7 @@ class _HomeState extends State<Home> {
                       width: 20,
                     ),
                     Text(
-                      AppMessages.hello + CurrentUser.user.name,
+                      AppMessages.hello + CurrentUser.user.nickname,
                       style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -78,9 +80,13 @@ class _HomeState extends State<Home> {
             ),
             Container(
               width: size.width * 0.8,
+              margin: EdgeInsets.only(bottom: 10),
               child: RedButton(AppMessages.newTraining, () => {Navigator.push(context,
                   MaterialPageRoute(builder: (BuildContext context) => Game()))}),
             ),
+            Container(
+              child: History(CurrentUser.user, CurrentUser.user, 33, null),
+            )
           ],
         ),
       ),
