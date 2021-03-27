@@ -12,6 +12,8 @@ import '../services/Api.dart';
 import '../components/SnackBar.dart';
 import '../screens/Login.dart';
 import '../storage/CurrentUser.dart';
+import 'package:jogodavelha/components/ModalDialog.dart';
+import 'package:jogodavelha/components/Loading.dart';
 
 class EditPage extends StatefulWidget {
   @override
@@ -25,7 +27,11 @@ class _EditPageState extends State<EditPage> {
   TextEditingController _controllerNickname = TextEditingController(text: CurrentUser.user.nickname);
   TextEditingController _controllerPassword = TextEditingController(text:CurrentUser.user.password);
   File _image;
-  String _tempImageUrl;
+  bool _enabled = false;
+  String _imageLocalProvider;
+  String _imageUrlPath;
+
+  TextEditingController _controller = new TextEditingController();
 
 
   bool validateInfos(){
@@ -36,56 +42,64 @@ class _EditPageState extends State<EditPage> {
     false;
   }
 
-  void registerUserInfos(User newUser) async {
-    var result = await Api.registerUser(newUser);
-    if (result.user.uid != null){
-      newUser.id = result.user.uid;
-      Api.updateUser(newUser);
+
+  void updateUser(BuildContext context) async{
+    User userBackUp =  CurrentUser.user;
+    try{
+      if(validateInfos()){
+        Loading.enableLoading(context);
+
+        CurrentUser.user.name = _controllerName.text;
+        CurrentUser.user.nickname =  _controllerNickname.text;
+
+        if( _imageLocalProvider!=null){
+          CurrentUser.user.urlImage = await Api.uploadPicture(CurrentUser.user, File(_imageLocalProvider));
+        }
+        await Api.updateUser(CurrentUser.user);
+        Loading.disableLoading(context);
+
+        showDialog(
+            context: context,
+            builder: (_) => new ModalDialog(AppMessages.updateSuccess,'',
+                    () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
+      }
     }
+    catch(e)
+    {
+      CurrentUser.user = userBackUp;
+      Loading.disableLoading(context);
+      showDialog(
+          context: context,
+          builder: (_) => new ModalDialog(AppMessages.error, e.message,
+                  () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
+    }
+
   }
 
-  void generateUser(BuildContext context){
-    if(validateInfos()){//Todo: Mover ações para dentro dos services
-      User newUser = new User();
-      newUser.name = _controllerName.text;
-      newUser.nickname =  _controllerNickname.text;
-      newUser.email = _controllerEmail.text;
-      newUser.password = _controllerPassword.text;
-      registerUserInfos(newUser);
-    }
+  getProfileImage(){
+    if(CurrentUser.user.urlImage != null)
+      return NetworkImage(CurrentUser.user.urlImage);
+    else if(_imageLocalProvider != null)
+      return FileImage(File(_imageLocalProvider));
+    return ExactAssetImage("assets/profile-icon.png");
   }
 
   Future<void> _pickerImage() async { //Todo: Apenas rascunho
-    FirebaseAuth auth = FirebaseAuth.instance; //Instancia do firebase Auth
-    auth.signInWithEmailAndPassword(
-        email: "jsimonassi@id.uff.br",
-        password: "12345678").then((value) => () async {
-
-      print("Clicouu");
-      PickedFile selectedImage = await ImagePicker().getImage(source: ImageSource.gallery); //Rapaz, esse flutter é bom mesmo
-      setState(() {
-        _image = File(selectedImage.path);
-        if( _image != null ){
-          FirebaseStorage storage = FirebaseStorage.instance;
-          //Upload da imagem
-          StorageUploadTask task = storage.ref().child("profile.jpg").putFile(_image);
-          //Recuperar url da imagem
-          task.onComplete.then((StorageTaskSnapshot snapshot) => () async {
-            String url = await snapshot.ref.getDownloadURL();
-            print(" Esse é o URL: $url");
-          });
-        }
-      });
+    PickedFile selectedImage = await ImagePicker().getImage(source: ImageSource.gallery); //Rapaz, esse flutter é bom mesmo
+    setState(() {
+      _imageLocalProvider = selectedImage.path;
     });
   }
 
 
+
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
     return new Scaffold(
         body: Container(
           padding: EdgeInsets.only(
-              top:40,
+              top:10,
               left: 40,
               right: 40
           ),
@@ -116,9 +130,7 @@ class _EditPageState extends State<EditPage> {
                 onTap: () => {_pickerImage()},
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
-                  backgroundImage: _tempImageUrl == null?
-                  ExactAssetImage("assets/profile-icon.png"):
-                  NetworkImage(_tempImageUrl),
+                  backgroundImage: getProfileImage(),
                   maxRadius: 80.0,
                 ),
               ),
@@ -172,7 +184,7 @@ class _EditPageState extends State<EditPage> {
                   left: 15,
                 ),
                 height: 50,
-                child: TextFormField(
+                child: TextFormField(enabled: _enabled,
                   controller: _controllerEmail,
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
@@ -188,9 +200,8 @@ class _EditPageState extends State<EditPage> {
                         fontSize: 16,
                       )
                   ),
-                  style: TextStyle( //Texto escrito pelo usário
-                    fontSize: 20,
-                    color: Colors.white,
+                  style: theme.textTheme.subtitle1.copyWith(
+                    color: theme.disabledColor,
                   ),
                 ),
               ),
@@ -244,7 +255,7 @@ class _EditPageState extends State<EditPage> {
                   left: 15,
                 ),
                 height: 50,
-                child: TextFormField(
+                child: TextFormField(enabled: _enabled,
                   controller: _controllerPassword,
                   keyboardType: TextInputType.text,
                   obscureText: true,
@@ -261,16 +272,15 @@ class _EditPageState extends State<EditPage> {
                         fontSize: 16,
                       )
                   ),
-                  style: TextStyle( //Texto escrito pelo usário
-                    fontSize: 20,
-                    color: Colors.white,
+                  style: theme.textTheme.subtitle1.copyWith(
+                    color: theme.disabledColor,
                   ),
                 ),
               ),
               SizedBox(
                 height: 20,
               ),
-            RedButton(AppMessages.saveAccountButton, () => {}),
+            RedButton(AppMessages.saveAccountButton, () => {updateUser(context)}),
             ],
           ),
         )
