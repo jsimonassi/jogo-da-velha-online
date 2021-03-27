@@ -26,6 +26,7 @@ class _LobbyState extends State<Lobby> {
   User _player1 = User();
   User _player2 = User();
   LobbyModel currentLobby;
+  Stream<DocumentSnapshot> stream;
 
   @override
   void initState() {
@@ -37,8 +38,7 @@ class _LobbyState extends State<Lobby> {
     Loading.enableLoading(context);
     try{
       if(currentLobby != null) {//Ainda existe esse Lobby?
-        if (currentLobby.player1 == CurrentUser.user
-            .id) { //Posso só apagar pq foi eu que fiz o Lobby e ninguém entrou
+        if (currentLobby.player1 == CurrentUser.user.id) { //Posso só apagar pq foi eu que fiz o Lobby e ninguém entrou
           await Api.deleteLobby(currentLobby);
         } else { //O Lobby é de alguém, então vou sair dele
           currentLobby.player2 = null; //Saí dele
@@ -92,26 +92,32 @@ class _LobbyState extends State<Lobby> {
     }
   }
 
-  Stream<QuerySnapshot> createListener(){
-    var stream = Api.createListenerFromLobby(currentLobby);
-    stream.listen((obj){ //Callback
-      if(obj.data != null){
-        currentLobby.token = obj.data["token"];
-        currentLobby.player1 = obj.data["player1"];
-        currentLobby.player2 = obj.data["player2"];
-        _updateStates();
-      }else{//Lobby morreu
-        currentLobby = null;
-        setState(() {
-          _player1 = null;
-          _player2 = null;
-        });
-        createLobby();
+  createListener(){
+    stream = Api.createListenerFromLobby(currentLobby);
+    stream.listen((obj){//Callback
+      if(mounted){
+        if(obj.data != null){
+          currentLobby.token = obj.data["token"];
+          currentLobby.player1 = obj.data["player1"];
+          currentLobby.player2 = obj.data["player2"];
+          _updateStates();
+        }else{//Lobby morreu
+          currentLobby = null;
+          setState(() {
+            _player1 = null;
+            _player2 = null;
+          });
+          createLobby();
+        }
       }
     });
   }
 
-
+@override
+  void dispose() {
+    stream = null;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

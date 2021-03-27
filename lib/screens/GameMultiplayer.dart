@@ -8,15 +8,11 @@ import '../models/User.dart';
 import '../components/ChatMessage.dart';
 import '../constants/Messages.dart';
 
-User PLAYER2;
+
 
 class GameMultiplayer extends StatefulWidget {
   @override
   _GameMultiplayerState createState() => _GameMultiplayerState();
-
-    GameMultiplayer(User player2){
-       PLAYER2 = player2;
-    }
 }
 
 class _GameMultiplayerState extends State<GameMultiplayer> {
@@ -179,7 +175,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
                     children: <Widget>[
                       Container(
                         height: size.height * 0.18, //Todo: Muito ruim
-                        child: MultiplayerHeader(CurrentUser.user, PLAYER2, false, _currentTime),
+                        child: MultiplayerHeader(CurrentUser.user, CurrentUser.user, false, _currentTime),
                       ),
                       Container(
                         height: size.height * 0.42, //Todo: Muito ruim

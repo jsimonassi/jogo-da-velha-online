@@ -8,6 +8,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/screens/GameMultiplayer.dart';
+import 'package:jogodavelha/screens/Lobby.dart';
+import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../models/LobbyModel.dart';
 import '../models/User.dart';
 import '../models/Match.dart';
@@ -28,9 +31,7 @@ class _PreMatchState extends State<PreMatch> {
 
   User _player1;
   User _player2;
-  Match _currentMatch;
   int _counter = 5;
-  Timer _timer;
 
   @override
   void initState() {
@@ -39,32 +40,50 @@ class _PreMatchState extends State<PreMatch> {
   }
 
   setVariables() async{
-    Api.getUser(currentLobby.player1).then((p1) { //Todo: Pesquisar como faz Promisses All em Flutter pra melhorar isso aqui
-      setState(() {
-        _player1 = p1;
-      });
+    startTimer();
+    if(currentLobby.player1 == CurrentUser.user.id){
+      _player1 = CurrentUser.user;
       Api.getUser(currentLobby.player2).then((p2) {
         setState(() {
           _player2 = p2;
         });
-        createMatch();
-        startTimer();
       });
-    });
+    }else{
+      _player2 = CurrentUser.user;
+      Api.getUser(currentLobby.player1).then((p1) {
+        setState(() {
+          _player1 = p1;
+        });
+      });
+    }
   }
 
-  createMatch(){
-
+  createMatch() async {
+    try{
+      Match currentMatch = new Match();
+      currentMatch.player1Id = _player1.id;
+      currentMatch.player2Id = _player2.id;
+      currentMatch.matchtoken = currentLobby.token;
+      currentMatch.playerOfTheRound = _player1.id;
+      currentMatch.timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+      await Api.updateMatch(currentMatch);
+      await Api.deleteLobby(currentLobby);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer()));
+    }catch(e){
+      print(e);
+    }
   }
 
   startTimer() {
     const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
+    Timer _timer = new Timer.periodic(
       oneSec,
           (Timer timer) {
         if (_counter == 1) {
           setState(() {
             timer.cancel();
+            createMatch();
           });
         } else {
           setState(() {

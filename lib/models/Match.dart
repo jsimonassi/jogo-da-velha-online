@@ -1,9 +1,4 @@
-import 'package:uuid/uuid.dart';
-
-var uuid = Uuid();
-
 class Match {
-  //usuario 1, usuario 2, vencedor, data, hora, token
 
   String _player1Id;
   String _player2Id;
@@ -11,19 +6,20 @@ class Match {
   Map<String,dynamic> _plays;
   String _timestamp;
   String _matchtoken;
+  String _playerOfTheRound;
 
   Match(){
     this._plays = new Map();
-    this.matchtoken = uuid.v4();
   }
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
-      "player1" : this._player1Id,
-      "player2" : this._player2Id,
+      "player1id" : this._player1Id,
+      "player2id" : this._player2Id,
       "winner" : this._winner,
       "timestamp" : this._timestamp,
       "matchtoken" : this._matchtoken,
+      "player_of_the_round" : this.playerOfTheRound,
       "plays" : this._plays,
     };
     return map;
@@ -33,22 +29,16 @@ class Match {
     this._plays.putIfAbsent(key, () => player);
   }
 
-  String get player1 => _player1Id;
+  String get playerOfTheRound => _playerOfTheRound;
 
-  set player1(String value) {
-    _player1Id = value;
+  set playerOfTheRound(String value) {
+    _playerOfTheRound = value;
   }
 
-  String get player2 => _player2Id;
+  String get matchtoken => _matchtoken;
 
-  set player2(String value) {
-    _player2Id = value;
-  }
-
-  String get winner => _winner;
-
-  set winner(String value) {
-    _winner = value;
+  set matchtoken(String value) {
+    _matchtoken = value;
   }
 
   String get timestamp => _timestamp;
@@ -57,16 +47,27 @@ class Match {
     _timestamp = value;
   }
 
-
   Map<String, dynamic> get plays => _plays;
 
   set plays(Map<String, dynamic> value) {
     _plays = value;
   }
 
-  String get matchtoken => _matchtoken;
+  String get winner => _winner;
 
-  set matchtoken(String value) {
-    _matchtoken = value;
+  set winner(String value) {
+    _winner = value;
+  }
+
+  String get player2Id => _player2Id;
+
+  set player2Id(String value) {
+    _player2Id = value;
+  }
+
+  String get player1Id => _player1Id;
+
+  set player1Id(String value) {
+    _player1Id = value;
   }
 }

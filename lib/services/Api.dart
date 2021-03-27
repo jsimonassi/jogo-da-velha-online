@@ -187,11 +187,12 @@ class Api {
       for(int i =0; i < list.length; i++){
         Map<String, dynamic> infos = list[i].data;
         var newMatch = Match();
-        newMatch.player1 = infos["player1"];
-        newMatch.player2 = infos["player2"];
+        newMatch.player1Id = infos["player1"];
+        newMatch.player2Id = infos["player2"];
         newMatch.winner = infos["winner"];
         newMatch.timestamp = infos["timestamp"];
         newMatch.matchtoken = infos["matchtoken"];
+        newMatch.playerOfTheRound = infos["player_of_the_round"];
         newMatch.plays = new Map<String, dynamic>.from(infos["plays"]); //Casting para o tipo map
         response.add(newMatch);
       }
