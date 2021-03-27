@@ -1,4 +1,5 @@
 import 'package:jogodavelha/constants/Colors.dart';
+import 'package:jogodavelha/models/Match.dart';
 
 import '../models/User.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,16 +7,20 @@ import 'package:flutter/material.dart';
 import '../constants/Colors.dart';
 
 class History extends StatelessWidget {
-  var image1 =
-      'https://esportes.estadao.com.br/blogs/crop/1200x1200/robson-morelli/wp-content/uploads/sites/37/2020/08/neymar_170820203236.jpg';
+  //var image1 =
+   //   'https://esportes.estadao.com.br/blogs/crop/1200x1200/robson-morelli/wp-content/uploads/sites/37/2020/08/neymar_170820203236.jpg';
 
-  //User player1;
-  //User player2;
+  User player1;
+  User player2;
+  int matchNumber;
+  Match match;
 
-  //Historico(player1, player2) {
-  //this.player1 = player1;
-  //this.player2 = player2;
-  //}
+  History(player1, player2, matchNumber, match) {
+    this.player1 = player1;
+    this.player2 = player2;
+    this.matchNumber = matchNumber;
+    this.match = match;
+  }
 
   Widget build(BuildContext context) {
     return Container(
@@ -25,28 +30,38 @@ class History extends StatelessWidget {
         width: 400,
         height: 100,
         padding: EdgeInsets.all(10.0),
+        margin: EdgeInsets.symmetric(vertical: 10),
         color: AppColors.backgroundGreyHistory,
         child: Stack(
           children: <Widget>[
             Row(children: <Widget>[
                 CircleAvatar(
-                    radius: 40,
-                    backgroundImage: image1 == null ?
-                    ExactAssetImage('./assets/profile-icon.png') :
-                    NetworkImage(image1)
+                  maxRadius: 36.0,
+                  backgroundImage: this.player1.urlImage == null ?
+                  ExactAssetImage('./assets/profile-icon.png') :
+                  NetworkImage(this.player1.urlImage)
                 ),
                 SizedBox(
-                  width: 15,
+                  width: 10,
                 ),
                 Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
                   Text(
-                      "Partida",
+                    "Partida #" + this.matchNumber.toString(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    )
+                  ),
+                  Text(
+                      "Vs. " + this.player2.nickname,
                       style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
                       )
                   ),
                   SizedBox(
@@ -54,33 +69,29 @@ class History extends StatelessWidget {
                   ),
                   Text(
                       "15/03/2021 - 22:27",
+                      //this.match.timestamp,
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                      )
+                      color: Colors.white,
+                      fontSize: 12,
+                    )
                   ),
                   Text(
-                      "VENCEU",
+                    "VENCEU",
+                    //this.match.winner,
                     style: TextStyle(
                     color: Colors.white,
-                    fontSize: 30,
-
+                    fontSize: 18,
                   )
                  ),
                 ]),
-          Container(
-
-            alignment: Alignment.centerRight,
-            width: 140,
-            child:
-            CircleAvatar(
-                radius: 40,
-                backgroundImage: image1 == null ?
+              Expanded(child: Container()),
+              CircleAvatar(
+                maxRadius: 36.0,
+                backgroundImage: this.player2.urlImage == null ?
                 ExactAssetImage('./assets/profile-icon.png') :
-                NetworkImage(image1)
-            ),
-          )
-            ]),
+                NetworkImage(this.player2.urlImage)
+              ),
+          ]),
         ]),
       ),
     );
