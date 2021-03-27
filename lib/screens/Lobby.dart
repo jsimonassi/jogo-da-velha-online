@@ -76,6 +76,7 @@ class _LobbyState extends State<Lobby> {
 
    _updateStates(){
     if(currentLobby.player1 != null && currentLobby.player2 != null && currentLobby.token != null){
+      stream = null;
       Navigator.push(context,
          MaterialPageRoute(builder: (BuildContext context) => PreMatch(currentLobby)));
     }else {

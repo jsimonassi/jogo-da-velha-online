@@ -5,23 +5,34 @@ import 'package:jogodavelha/components/TableElement.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../models/User.dart';
+import '../models/Match.dart';
 import '../components/ChatMessage.dart';
 import '../constants/Messages.dart';
 
-
-
 class GameMultiplayer extends StatefulWidget {
+  Match currentMatch;
+  User player1;
+  User player2;
+
+  GameMultiplayer(this.currentMatch, this.player1, this.player2);
   @override
-  _GameMultiplayerState createState() => _GameMultiplayerState();
+  State<StatefulWidget> createState() {
+    return _GameMultiplayerState(this.currentMatch, this.player1, this.player2);
+  }
 }
 
 class _GameMultiplayerState extends State<GameMultiplayer> {
 
+  User _player1;
+  User _player2;
+  Match _currentMatch;
   User bot = User().generateBot();
   Timer _timer; //Objeto da thread de tempo
   int _currentTime = 0; //Tempo atual
   int _currentAnimationTime = 0;
   int _lastAnimationUpdate = 0; //Apenas para contar de 5 em 5
+
+  _GameMultiplayerState(this._currentMatch, this._player1, this._player2);
 
   @override
   void initState() {
@@ -30,16 +41,23 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
     super.initState();
   }
 
-  initTimer() {
+  initTimer()  {
     const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(oneSec, (timer) {
-      if (mounted) {
-        setState(() {
-          _currentTime++;
-          _lastAnimationUpdate++;
-        });
-      }
-    });
+    _timer = new Timer.periodic(oneSec, (Timer timer) {
+        if (_currentTime == 0) {
+          setState(() {
+            _currentTime = 60;
+            _currentMatch.playerOfTheRound = _currentMatch.playerOfTheRound == _player1.id? _player2.id : _player1.id;
+            //timer.cancel();
+          });
+        } else {
+          setState(() {
+            _currentTime--;
+            _lastAnimationUpdate++;
+          });
+        }
+      },
+    );
   }
 
   updateAnimations() {
@@ -175,7 +193,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
                     children: <Widget>[
                       Container(
                         height: size.height * 0.18, //Todo: Muito ruim
-                        child: MultiplayerHeader(CurrentUser.user, CurrentUser.user, false, _currentTime),
+                        child: MultiplayerHeader(_player1, _player2, _currentMatch.playerOfTheRound == _player1.id? true: false, _currentTime),
                       ),
                       Container(
                         height: size.height * 0.42, //Todo: Muito ruim

@@ -67,9 +67,11 @@ class _PreMatchState extends State<PreMatch> {
       currentMatch.playerOfTheRound = _player1.id;
       currentMatch.timestamp = DateTime.now().millisecondsSinceEpoch.toString();
       await Api.updateMatch(currentMatch);
-      await Api.deleteLobby(currentLobby);
+      if(currentLobby.player1 == CurrentUser.user.id){ //Só um pode apagar o Lobby
+        await Api.deleteLobby(currentLobby);
+      }
       Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer()));
+          MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer(currentMatch, _player1, _player2)));
     }catch(e){
       print(e);
     }
