@@ -1,3 +1,5 @@
+V1.2
+
 Sprint1 - 17/03/2021:
 (Apenas tela - sem estar funcionando)
 
