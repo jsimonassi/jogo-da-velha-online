@@ -12,6 +12,8 @@ class AppMessages {
   static const String wins ='Vitórias:';
   static const String losses ='Derrotas:';
   static const String redButtonAdd ='ADICIONAR';
+  static const String initMatch ='Iniciando Partida';
+
 
   static const String initLogin = "ENTRAR";
   static const String singUpMessage = "Não tem uma conta? Cadastre-se!";

@@ -8,7 +8,7 @@ import '../models/User.dart';
 import '../components/ChatMessage.dart';
 import '../constants/Messages.dart';
 
-User PLAYER2; //Todo: Gambiarra
+User PLAYER2;
 
 class GameMultiplayer extends StatefulWidget {
   @override

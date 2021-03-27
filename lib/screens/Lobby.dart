@@ -2,18 +2,19 @@
 Responsável por encontrar jogadores para a partida
 */
 
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/Loading.dart';
 import 'package:jogodavelha/constants/Colors.dart';
-import 'package:jogodavelha/screens/GameMultiplayer.dart';
+import 'package:jogodavelha/screens/PreMatch.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../constants/Messages.dart';
 import '../services/Api.dart';
 import '../models/LobbyModel.dart';
 import '../models/User.dart';
-
+//Todo: Acho que tratei todos os cenários, mas é bom validar com a equipe.
 class Lobby extends StatefulWidget {
   @override
   _LobbyState createState() => _LobbyState();
@@ -61,10 +62,6 @@ class _LobbyState extends State<Lobby> {
         currentLobby.player2 = CurrentUser.user.id; //Informação que estava faltando é o player2
         await Api.updateLobby(currentLobby);//Agora eu sou o player 2 desse Lobby
         createListener();
-        //Todo: Ir pra tela do game
-        //Navigator.push(context,
-        //    MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer(player2)));//Todo: Adicionar contador antes disso
-
       } else {  //Não existe Lobby Criado. Vou fazer o meu!
         var newLobby = new LobbyModel();
         newLobby.player1 = CurrentUser.user.id; //Eu sou o player 1 do Lobby
@@ -78,14 +75,21 @@ class _LobbyState extends State<Lobby> {
   }
 
    _updateStates(){
-    Api.getUser(currentLobby.player1).then((user) => {
-      setState((){
-      _player1 = user;
-    })});
-    Api.getUser(currentLobby.player2).then((user) => {
-      setState((){
-        _player2 = user;
-      })});
+    if(currentLobby.player1 != null && currentLobby.player2 != null && currentLobby.token != null){
+      Navigator.push(context,
+         MaterialPageRoute(builder: (BuildContext context) => PreMatch(currentLobby)));
+    }else {
+      Api.getUser(currentLobby.player1).then((user) =>
+      {
+        setState(() {
+          _player1 = user;
+        })});
+      Api.getUser(currentLobby.player2).then((user) =>
+      {
+        setState(() {
+          _player2 = user;
+        })});
+    }
   }
 
   Stream<QuerySnapshot> createListener(){
