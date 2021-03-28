@@ -153,7 +153,7 @@ class Api {
     }
   }
 
-  static Stream<DocumentSnapshot> createListenerFromLobby(LobbyModel lobby) {
+  static Stream<DocumentSnapshot> createListenerForLobby(LobbyModel lobby) {
     try {
       return Firestore.instance
           .collection("lobbys")
@@ -202,4 +202,18 @@ class Api {
       throw FormatException(e.code);
     }
   }
+
+  static Stream<DocumentSnapshot> createListenerForMatch(Match match) {
+    try {
+      return Firestore.instance
+          .collection("matches")
+          .document(match.matchtoken)
+          .snapshots();
+    }  catch (e) {
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
 }

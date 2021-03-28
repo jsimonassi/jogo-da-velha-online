@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/MultiplayerHeader.dart';
 import 'package:jogodavelha/components/TableElement.dart';
 import 'package:jogodavelha/constants/Colors.dart';
+import 'package:jogodavelha/constants/Numbers.dart';
+import 'package:jogodavelha/services/Api.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../models/User.dart';
 import '../models/Match.dart';
@@ -29,44 +32,73 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   User bot = User().generateBot();
   Timer _timer; //Objeto da thread de tempo
   int _currentTime = 0; //Tempo atual
-  int _currentAnimationTime = 0;
-  int _lastAnimationUpdate = 0; //Apenas para contar de 5 em 5
+  Stream<DocumentSnapshot> _stream;
 
   _GameMultiplayerState(this._currentMatch, this._player1, this._player2);
 
   @override
   void initState() {
     initTimer();
-    setState(() {});
+    initListener();
     super.initState();
   }
 
-  initTimer()  {
+  initTimer()  { //Apenas um contatador pra tudo. Evite criar outro!
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(oneSec, (Timer timer) {
-        if (_currentTime == 0) {
+        if (_currentTime <= 0) {
           setState(() {
-            _currentTime = 60;
-            _currentMatch.playerOfTheRound = _currentMatch.playerOfTheRound == _player1.id? _player2.id : _player1.id;
-            //timer.cancel();
+            _currentTime = AppNumbers.maxTimerValue;
+            alterPlayerOfTheRound();
           });
         } else {
           setState(() {
             _currentTime--;
-            _lastAnimationUpdate++;
           });
         }
       },
     );
   }
 
-  updateAnimations() {
-    if( _lastAnimationUpdate > 5){
-      setState(() {
-        _lastAnimationUpdate = 0;
-        _currentAnimationTime++;
+  // Métodos de controle da partida
+  alterPlayerOfTheRound(){
+    _currentMatch.playerOfTheRound = _currentMatch.playerOfTheRound == _player1.id? _player2.id : _player1.id;
+    updateCurrentMatch();
+  }
+
+  makeAPlay(String key){
+    _currentMatch.setMatchPlays(key, _currentMatch.playerOfTheRound); //Atualiza currentMatch com jogada atual
+    updateCurrentMatch(); //Manda atualização para o bd
+    setState(() {
+      _currentTime = 0;  //Seta timer da rodada p/ 0 e troca de jogador
+    });
+  }
+
+  //Métodos de atualização do banco e listeners
+  updateCurrentMatch(){
+    Api.updateMatch(_currentMatch);
+  }
+
+  initListener(){
+    try{
+      _stream = Api.createListenerForMatch(_currentMatch);
+      _stream.listen((obj){//Callback
+        if(mounted){
+          if(obj.data != null){
+            _currentMatch.player1Id = obj.data["player1id"];
+            _currentMatch.player2Id = obj.data["player2id"];
+            _currentMatch.winner = obj.data["winner"];
+            _currentMatch.plays = obj.data["plays"];
+            _currentMatch.matchtoken = obj.data["matchtoken"];
+            _currentMatch.timestamp = obj.data["timestamp"];
+            _currentMatch.playerOfTheRound = obj.data["player_of_the_round"];
+          }
+        }
       });
+    }catch(e){
+      print(e);
     }
+
   }
 
   @override
@@ -74,6 +106,9 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
     //Cancela o cronometro
     if (_timer != null) {
       _timer.cancel();
+      setState(() {
+        _stream = null;
+      });
     }
     super.dispose();
   }
@@ -84,19 +119,19 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
     var gameArea = Table(
       children: [
         TableRow(children: <Widget>[
-          TableElement("a1", true, false, _currentAnimationTime, () => {}),
-          TableElement("a2", true, false, _currentAnimationTime, () => {}),
-          TableElement("a3", true, false, _currentAnimationTime, () => {}),
+          TableElement("a1", _currentMatch, _currentTime, () => {makeAPlay("a1")}),
+          TableElement("a2", _currentMatch, _currentTime, () => {makeAPlay("a2")}),
+          TableElement("a3", _currentMatch, _currentTime, () => {makeAPlay("a3")}),
         ]),
         TableRow(children: <Widget>[
-          TableElement("b1", true, false, _currentAnimationTime, () => {}),
-          TableElement("b2", true, false, _currentAnimationTime, () => {}),
-          TableElement("b3", true, false, _currentAnimationTime, () => {}),
+          TableElement("b1", _currentMatch, _currentTime, () => {makeAPlay("b1")}),
+          TableElement("b2", _currentMatch, _currentTime, () => {makeAPlay("b2")}),
+          TableElement("b3", _currentMatch, _currentTime, () => {makeAPlay("b3")}),
         ]),
         TableRow(children: <Widget>[
-          TableElement("c1", true, false, _currentAnimationTime, () => {}),
-          TableElement("c2", true, false, _currentAnimationTime, () => {}),
-          TableElement("c3", true, false, _currentAnimationTime, () => {}),
+          TableElement("c1", _currentMatch, _currentTime, () => {makeAPlay("c1")}),
+          TableElement("c2", _currentMatch, _currentTime, () => {makeAPlay("c2")}),
+          TableElement("c3", _currentMatch, _currentTime, () => {makeAPlay("c3")}),
         ]),
       ],
     );

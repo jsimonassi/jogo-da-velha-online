@@ -94,7 +94,7 @@ class _LobbyState extends State<Lobby> {
   }
 
   createListener(){
-    stream = Api.createListenerFromLobby(currentLobby);
+    stream = Api.createListenerForLobby(currentLobby);
     stream.listen((obj){//Callback
       if(mounted){
         if(obj.data != null){

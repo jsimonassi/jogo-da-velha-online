@@ -58,6 +58,8 @@ flutter:
      - assets/profile-icon.png
      - assets/vs-icon.png
      - assets/go_back-icon.png
+     - assets/o-icon.png
+     - assets/x-icon.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,22 +1,53 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
+import '../models/Match.dart';
 
 class TableElement extends StatelessWidget {
 
   String id; //Identifica qual é o botão
-  bool isX; // Se for X, deve exibir X, se não, exibir O)
-  bool wasPressed; //Se foi pressionado, exibir valor.
   VoidCallback callback;
   int currentTime;
+  Match currentMatch;
+  String pressedBy;
 
-  TableElement(this.id, this.isX, this.wasPressed, this.currentTime, this.callback);
+  TableElement(this.id, this.currentMatch, this.currentTime, this.callback);
+
+  bool wasPressed(){
+    return this.currentMatch.plays[id] != null;
+  }
+
+  bool wasPressedByP1(){
+    return currentMatch.plays[id] == currentMatch.player1Id;
+  }
+
+  getXorO(){
+    if(wasPressed() && wasPressedByP1()){ //Quem pressionou foi o player 1?
+     return Image.asset('./assets/x-icon.png');
+    }else if(wasPressed()) { //Quem pressionou foi o Player 2?
+      return Image.asset('./assets/o-icon.png');
+    }
+    return null; //Ninguém pressionou
+  }
 
   getBackgroundGradient(){
-    if(this.currentTime != null && this.currentTime % 2 == 0){
-      return [AppColors.defaultElement1, AppColors.defaultElement2, AppColors.defaultElement3, AppColors.defaultElement4];
+    var colors1;
+    var colors2;
+    if(wasPressed() && wasPressedByP1()){
+      colors1 =  [AppColors.pressedP1Button1, AppColors.pressedP1Button2, AppColors.pressedP1Button3, AppColors.pressedP1Button4];
+      colors2 = [AppColors.pressedP1Button1, AppColors.pressedP1Button2, AppColors.pressedP1Button3, AppColors.pressedP1Button4];
+    }else if(wasPressed()){
+      colors1 =  [AppColors.pressedP2Button1, AppColors.pressedP2Button2, AppColors.pressedP2Button3, AppColors.pressedP2Button4];
+      colors2 = [AppColors.pressedP2Button1, AppColors.pressedP2Button2, AppColors.pressedP2Button3, AppColors.pressedP2Button4];
+    }else{
+      colors1 =  [AppColors.notPressedButton1, AppColors.notPressedButton2, AppColors.notPressedButton3, AppColors.notPressedButton4];
+      colors2 = [AppColors.notPressedButton4, AppColors.notPressedButton3, AppColors.notPressedButton2, AppColors.notPressedButton1];
     }
-    return [AppColors.defaultElement4, AppColors.defaultElement3, AppColors.defaultElement2, AppColors.defaultElement1];
+
+    if(this.currentTime != null && this.currentTime % 2 == 0){
+      return colors1;
+    }
+    return colors2;
   }
 
   getBeginDirection(){
@@ -50,13 +81,16 @@ class TableElement extends StatelessWidget {
           ),
           width: size.width * 0.20,
           height: size.width * 0.20,
-          duration: Duration(seconds: 1),
+          duration: Duration(seconds: 1), //Não vai chegar a 15 se o current time for menor que isso
           child: TextButton(
             onPressed: callback,
-            child: Text(""),
+            child: AnimatedContainer( //Todo: Ia ser massa se a imagem fosse crescendo
+              duration: Duration(seconds: 1),
+              child: getXorO()
+                ),
+              ),
+            ),
           ),
-        ),
-      )
     );
   }
 }

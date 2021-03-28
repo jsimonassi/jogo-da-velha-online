@@ -64,19 +64,13 @@ class _GameState extends State<Game> {
     var gameArea = Table(
       children: [
         TableRow(children: <Widget>[
-          TableElement("a1", true, false, _currentAnimationTime, () => {}),
-          TableElement("a2", true, false, _currentAnimationTime, () => {}),
-          TableElement("a3", true, false, _currentAnimationTime, () => {}),
+
         ]),
         TableRow(children: <Widget>[
-          TableElement("b1", true, false, _currentAnimationTime, () => {}),
-          TableElement("b2", true, false, _currentAnimationTime, () => {}),
-          TableElement("b3", true, false, _currentAnimationTime, () => {}),
+
         ]),
         TableRow(children: <Widget>[
-          TableElement("c1", true, false, _currentAnimationTime, () => {}),
-          TableElement("c2", true, false, _currentAnimationTime, () => {}),
-          TableElement("c3", true, false, _currentAnimationTime, () => {}),
+
         ]),
       ],
     );

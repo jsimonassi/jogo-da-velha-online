@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
+import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/constants/Numbers.dart';
+import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../models/User.dart';
 
 class MultiplayerHeader extends StatelessWidget {
@@ -41,7 +44,26 @@ class MultiplayerHeader extends StatelessWidget {
           end: const FractionalOffset(0.0, 1.0),
           stops: [0.0, 1.0]),
     );
+  }
 
+  getTimerBackground(){
+    if(this.currentTime <= 10 && this.currentTime % 2 != 0){
+      return AppColors.redPrimary;
+    }
+    return AppColors.backgroundGrey1;
+  }
+
+  String getTimerText(){
+    if(this.currentTime < AppNumbers.maxTimerValue && this.currentTime > AppNumbers.maxTimerValue - 5){
+      if(player1.id == CurrentUser.user.id){
+        return AppMessages.itsYourTurn;
+      }else{
+        return "É a vez de " + player2.nickname + "jogar";
+      }
+    }else if(this.currentTime == 0 || this.currentTime == AppNumbers.maxTimerValue){
+      return "--";
+    }
+    return this.currentTime.toString();
   }
 
 
@@ -111,9 +133,10 @@ class MultiplayerHeader extends StatelessWidget {
                       // ),
                       child: Container(
                         width: size.width * 0.1,
+                        height: size.height * 0.12,
                         padding: EdgeInsets.only(
-                          top: 10,
-                          bottom: 10,
+                          top: 12,
+                          bottom: 12,
                           left: 3,
                           right: 3,
                         ),
@@ -153,26 +176,32 @@ class MultiplayerHeader extends StatelessWidget {
                 ),
               ),
             ),
-            ClipRRect(
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(10),
-                bottomLeft: Radius.circular(10)
-              ),
-              child: Container(
-                width: size.width * 0.2,
-                height: size.height * 0.04,
-                color: AppColors.backgroundGrey1,
-                alignment: Alignment.center,
-                child: Text(
-                    this.currentTime.toString(),
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold
+
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(10),
+                      bottomLeft: Radius.circular(10)
+                  ),
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 300),
+                    padding: EdgeInsets.only(
+                      left: 30,
+                      right: 30
+                    ),
+                    height: size.height * 0.04,
+                    width: size.width * (getTimerText().length < 3? 0.3: 0.7),
+                    color: getTimerBackground(),
+                    alignment: Alignment.center,
+                    child: Text(
+                      getTimerText(),
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            )
           ],
         )
       ),

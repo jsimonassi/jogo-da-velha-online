@@ -13,6 +13,7 @@ class AppMessages {
   static const String losses ='Derrotas:';
   static const String redButtonAdd ='ADICIONAR';
   static const String initMatch ='Iniciando Partida';
+  static const String itsYourTurn ='É a sua vez';
 
 
   static const String initLogin = "ENTRAR";
