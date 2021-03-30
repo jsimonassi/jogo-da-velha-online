@@ -70,8 +70,8 @@ class _PreMatchState extends State<PreMatch> {
       if(currentLobby.player1 == CurrentUser.user.id){ //Só um pode apagar o Lobby
         await Api.deleteLobby(currentLobby);
       }
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer(currentMatch, _player1, _player2)));
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer(currentMatch, _player1, _player2)), (Route<dynamic> route) => false);
     }catch(e){
       print(e);
     }
@@ -105,7 +105,7 @@ class _PreMatchState extends State<PreMatch> {
         padding: EdgeInsets.only(top: 60),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/bg_gradient.jpg"),
+            image: AssetImage("assets/images/bg_gradient.jpg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -134,7 +134,7 @@ class _PreMatchState extends State<PreMatch> {
                       maxRadius: 60,
                       backgroundColor: AppColors.backgroundGrey2,
                       backgroundImage: _player1 != null && _player1.urlImage != null?
-                      NetworkImage(_player1.urlImage): ExactAssetImage('./assets/profile-icon.png'),
+                      NetworkImage(_player1.urlImage): ExactAssetImage('./assets/images/profile-icon.png'),
                     ),
                     Text(
                       _player1 != null? _player1.nickname : "",
@@ -151,7 +151,7 @@ class _PreMatchState extends State<PreMatch> {
                   width: size.width * 0.2,
                   height: size.height * 0.4,
                   padding: EdgeInsets.all(8),
-                  child: Image.asset('./assets/vs-icon.png'),
+                  child: Image.asset('./assets/images/vs-icon.png'),
                 ),
                 Expanded(child: Container()),
                 Column(
@@ -160,7 +160,7 @@ class _PreMatchState extends State<PreMatch> {
                       maxRadius: 60,
                       backgroundColor: AppColors.backgroundGrey2,
                       backgroundImage: _player2 != null && _player2.urlImage != null?
-                      NetworkImage(_player2.urlImage): ExactAssetImage('./assets/profile-icon.png'),
+                      NetworkImage(_player2.urlImage): ExactAssetImage('./assets/images/profile-icon.png'),
                     ),
                     Text(
                       _player2 != null? _player2.nickname : "",

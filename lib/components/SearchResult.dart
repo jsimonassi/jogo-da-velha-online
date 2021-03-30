@@ -36,7 +36,7 @@ class SearchResult extends StatelessWidget {
               left :10.00,
             ),
             child:CircleAvatar(
-              backgroundImage: this.urlImage != null?NetworkImage(this.urlImage):ExactAssetImage('./assets/profile-icon.png'),
+              backgroundImage: this.urlImage != null?NetworkImage(this.urlImage):ExactAssetImage('./assets/images/profile-icon.png'),
               backgroundColor: AppColors.backgroundGrey1,
               radius: 50.00,
             )  ,

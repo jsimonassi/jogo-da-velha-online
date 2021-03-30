@@ -59,9 +59,8 @@ class _SignUpPageState extends State<SignUpPage> {
               if (Navigator.canPop(context)){
                     Navigator.pop(context);
                     }
-                      //Todo: Remover outras telas da pilha
-                    Navigator.push(context,
-                    MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()));
+                    Navigator.pushAndRemoveUntil(context,
+                    MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()), (Route<dynamic> route) => false);
             }));
       }
     }catch(e){
@@ -91,7 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
       return NetworkImage(_imageUrlPath);
     else if(_imageLocalProvider != null)
       return FileImage(File(_imageLocalProvider));
-    return ExactAssetImage("assets/profile-icon.png");
+    return ExactAssetImage("assets/images/profile-icon.png");
   }
 
   Future<void> _pickerImage() async { //Todo: Apenas rascunho
@@ -112,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/bg_gradient.jpg"),
+            image: AssetImage("assets/images/bg_gradient.jpg"),
             fit: BoxFit.cover,
           ),
         ),

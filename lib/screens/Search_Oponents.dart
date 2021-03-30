@@ -21,33 +21,39 @@ class _Search_OponentsState extends State<Search_Oponents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: Text(AppMessages.searchTitle),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  showSearch(context: context, delegate: DataSearch());
-                })
-          ],
-        ),
-        body: Column(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: Text(AppMessages.searchTitle),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                //Todo: Buscar jogador pela string passada
+                showSearch(context: context, delegate: DataSearch());
+              })
+        ],
+      ),
+      body: Column(
           //padding: EdgeInsets.only(top: 60, left: 40, right: 40),
           children: <Widget>[
             SizedBox(
               height: 30.00,
             ),
-            SearchResult(CurrentUser.user.urlImage, CurrentUser.user.nickname, CurrentUser.user.name, 4, 3,
-                AppMessages.redButtonAdd, ()=>{}, ()=>{})
+            SearchResult(
+                CurrentUser.user.urlImage,
+                CurrentUser.user.nickname,
+                CurrentUser.user.name,
+                4,
+                3,
+                AppMessages.redButtonAdd,
+                () => {},
+                () => {})
           ]),
-          //decoration: BoxDecoration(
-            //image: DecorationImage(
-              //image: AssetImage("assets/bg_gradient.jpg"),
-              //fit: BoxFit.cover,
-
-
-        );
+      //decoration: BoxDecoration(
+      //image: DecorationImage(
+      //image: AssetImage("assets/bg_gradient.jpg"),
+      //fit: BoxFit.cover,
+    );
   }
 }
 
@@ -81,25 +87,32 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     return Container(
-      height: 100.00,
-      width: 100.00,
-      child: SearchResult(CurrentUser.user.urlImage, CurrentUser.user.nickname, CurrentUser.user.name, 4, 3,
-          AppMessages.redButtonAdd, ()=>{}, ()=>{})
-
-
-    );
+        height: 100.00,
+        width: 100.00,
+        child: SearchResult(
+            CurrentUser.user.urlImage,
+            CurrentUser.user.nickname,
+            CurrentUser.user.name,
+            4,
+            3,
+            AppMessages.redButtonAdd,
+            () => {},
+            () => {}));
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final suggestionList = query.isEmpty ? RecentSearches : PlayersList.where((p) => p.startsWith(query)).toList();
+    final suggestionList = query.isEmpty
+        ? RecentSearches
+        : PlayersList.where((p) => p.startsWith(query)).toList();
 
-    return ListView.builder(itemBuilder: (context, index) => ListTile(
-      onTap: (){
-        showResults(context);
-      },
-        leading: Icon(Icons.account_circle),
-        title: Text(suggestionList[index]),
-    ));
+    return ListView.builder(
+        itemBuilder: (context, index) => ListTile(
+              onTap: () {
+                showResults(context);
+              },
+              leading: Icon(Icons.account_circle),
+              title: Text(suggestionList[index]),
+            ));
   }
 }
