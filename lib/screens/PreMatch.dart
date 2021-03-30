@@ -70,8 +70,8 @@ class _PreMatchState extends State<PreMatch> {
       if(currentLobby.player1 == CurrentUser.user.id){ //Só um pode apagar o Lobby
         await Api.deleteLobby(currentLobby);
       }
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer(currentMatch, _player1, _player2)));
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (BuildContext context) => GameMultiplayer(currentMatch, _player1, _player2)), (Route<dynamic> route) => false);
     }catch(e){
       print(e);
     }

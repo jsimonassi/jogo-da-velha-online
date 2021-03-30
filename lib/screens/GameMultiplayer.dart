@@ -83,7 +83,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   }
 
   makeAPlay(String key){
-    if(_currentMatch.playerOfTheRound == CurrentUser.user.id){
+    if(_currentMatch.playerOfTheRound == CurrentUser.user.id && _currentMatch.plays[key] == null){
       _currentMatch.setMatchPlays(key, _currentMatch.playerOfTheRound); //Atualiza currentMatch com jogada atual
       updateCurrentMatch(); //Manda atualização para o bd
       playAudioEffect("sounds/click.mp3");
@@ -113,6 +113,11 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
       }
       updateCurrentMatch();
     }
+    if(_currentMatch.winner != null){ //Fim de jogo
+      print("ACABOUU");
+      Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => GameResult()));
+    }
   }
 
   //Métodos de atualização do banco e listeners
@@ -133,11 +138,6 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
             _currentMatch.matchtoken = obj.data["matchtoken"];
             _currentMatch.timestamp = obj.data["timestamp"];
             _currentMatch.playerOfTheRound = obj.data["player_of_the_round"];
-
-            if(_currentMatch.winner != null){ //Fim de jogo
-              Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(builder: (BuildContext context) => GameResult(_currentMatch)), (Route<dynamic> route) => false);
-            }
           }
         }
       });
