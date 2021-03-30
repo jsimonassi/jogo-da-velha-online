@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/SearchResult.dart';
+import 'package:jogodavelha/services/Api.dart';
 
 import '../constants/Messages.dart';
 import '../constants/Messages.dart';
@@ -18,6 +19,8 @@ class Search_Oponents extends StatefulWidget {
 }
 
 class _Search_OponentsState extends State<Search_Oponents> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +61,7 @@ class _Search_OponentsState extends State<Search_Oponents> {
 }
 
 class DataSearch extends SearchDelegate<String> {
-  final PlayersList = ['Gustavo', 'leo'];
+  final PlayersList = ['gustavo', 'leo'];
   final RecentSearches = ['berna'];
 
   @override
@@ -104,7 +107,7 @@ class DataSearch extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     final suggestionList = query.isEmpty
         ? RecentSearches
-        : PlayersList.where((p) => p.startsWith(query)).toList();
+        : PlayersList;
 
     return ListView.builder(
         itemBuilder: (context, index) => ListTile(

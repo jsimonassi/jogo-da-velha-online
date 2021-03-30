@@ -101,6 +101,30 @@ class Api {
     }
   }
 
+  static Future<List<User>> ListUsers() async {
+    try {
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("users").getDocuments();
+      var list = querySnapshot.documents;
+      if(list.isEmpty) return null;
+      List<User> response = [];
+      for(int i =0; i < list.length; i++){
+        Map<String, dynamic> infos = list[i].data;
+        User user = new User();
+        user.name = infos["name"];
+        user.password = infos["password"];
+        user.email = infos["email"];
+        user.nickname = infos["nickname"];
+        user.urlImage = infos["urlImage"];
+        user.id = infos["id"];
+        response.add(user);
+      }
+      return response;
+    } catch (e) {
+      print(e);
+      throw FormatException(e.code);
+    }
+  }
+
   static Future<void> updateLobby(LobbyModel newLobby) async {
     try {
       Firestore db = Firestore.instance; //Instancia de Firestore
