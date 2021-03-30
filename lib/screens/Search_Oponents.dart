@@ -23,6 +23,7 @@ class Search_Oponents extends StatelessWidget {
             IconButton(
                 icon: Icon(Icons.search),
                 onPressed: () {
+                  //Todo: Buscar jogador pela string passada
                   showSearch(context: context, delegate: DataSearch());
                 })
           ],
@@ -75,15 +76,12 @@ class DataSearch extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Container(
-      height: 100.00,
-      width: 100.00,
-      child: Card(
-        color: Colors.red,
-        child: Center(
-          child: Text(query),
-        ),
-      ),
+    return ListView.builder(
+        itemCount: listaJogadores.length,
+        itemBuilder: (context, indice){
+          SearchResult(CurrentUser.user.urlImage, listaJogadores[indice], CurrentUser.user.name, 4, 3,
+              AppMessages.redButtonAdd, ()=>{}, ()=>{});
+        }
     );
   }
 

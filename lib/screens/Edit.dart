@@ -81,7 +81,7 @@ class _EditPageState extends State<EditPage> {
       return NetworkImage(CurrentUser.user.urlImage);
     else if(_imageLocalProvider != null)
       return FileImage(File(_imageLocalProvider));
-    return ExactAssetImage("assets/profile-icon.png");
+    return ExactAssetImage("assets/images/profile-icon.png");
   }
 
   Future<void> _pickerImage() async { //Todo: Apenas rascunho
@@ -105,7 +105,7 @@ class _EditPageState extends State<EditPage> {
           ),
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/bg_gradient.jpg"),
+              image: AssetImage("assets/images/bg_gradient.jpg"),
               fit: BoxFit.cover,
             ),
           ),

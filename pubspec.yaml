@@ -35,6 +35,8 @@ dependencies:
   cloud_firestore: ^0.12.9+5
   firebase_storage: ^3.1.6
   image_picker: ^0.6.7+4
+  audioplayers: ^0.18.2
+
 
 dev_dependencies:
   flutter_test:
@@ -53,13 +55,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/bg_gradient.jpg
-     - assets/logo-small.png
-     - assets/profile-icon.png
-     - assets/vs-icon.png
-     - assets/go_back-icon.png
-     - assets/o-icon.png
-     - assets/x-icon.png
+     - assets/images/bg_gradient.jpg
+     - assets/images/logo-small.png
+     - assets/images/profile-icon.png
+     - assets/images/vs-icon.png
+     - assets/images/go_back-icon.png
+     - assets/images/o-icon.png
+     - assets/images/x-icon.png
+     - assets/sounds/song-good-stars.mp3
+     - assets/sounds/click.mp3
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

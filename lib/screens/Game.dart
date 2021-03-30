@@ -158,7 +158,7 @@ class _GameState extends State<Game> {
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        image: AssetImage("assets/bg_gradient.jpg"),
+                        image: AssetImage("assets/images/bg_gradient.jpg"),
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -167,7 +167,7 @@ class _GameState extends State<Game> {
                       children: <Widget>[
                         Container(
                           height: size.height * 0.18, //Todo: Muito ruim
-                          child: MultiplayerHeader(CurrentUser.user, CurrentUser.user, false, _currentTime),
+                         // child: MultiplayerHeader(CurrentUser.user, CurrentUser.user, false, _currentTime),
                         ),
                         Container(
                           height: size.height * 0.42, //Todo: Muito ruim

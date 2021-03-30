@@ -23,9 +23,9 @@ class TableElement extends StatelessWidget {
 
   getXorO(){
     if(wasPressed() && wasPressedByP1()){ //Quem pressionou foi o player 1?
-     return Image.asset('./assets/x-icon.png');
+     return Image.asset('./assets/images/x-icon.png');
     }else if(wasPressed()) { //Quem pressionou foi o Player 2?
-      return Image.asset('./assets/o-icon.png');
+      return Image.asset('./assets/images/o-icon.png');
     }
     return null; //Ninguém pressionou
   }

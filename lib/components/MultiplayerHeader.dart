@@ -11,12 +11,14 @@ class MultiplayerHeader extends StatelessWidget {
   User player1;
   User player2;
   bool isPlayerOfTheRound;
+  String playerOfTheRound;
   int currentTime;
 
-  MultiplayerHeader(User player1, User player2, bool isPlayerOfTheRound, int currentTime){
+  MultiplayerHeader(User player1, User player2, String playerOfTheRound, int currentTime){
     this.player1 = player1;
     this.player2 = player2;
-    this.isPlayerOfTheRound = isPlayerOfTheRound;
+    this.isPlayerOfTheRound = playerOfTheRound == player1.id? true: false;
+    this.playerOfTheRound = playerOfTheRound;
     this.currentTime = currentTime;
   }
 
@@ -55,10 +57,10 @@ class MultiplayerHeader extends StatelessWidget {
 
   String getTimerText(){
     if(this.currentTime < AppNumbers.maxTimerValue && this.currentTime > AppNumbers.maxTimerValue - 5){
-      if(player1.id == CurrentUser.user.id){
+      if(this.playerOfTheRound == CurrentUser.user.id){
         return AppMessages.itsYourTurn;
       }else{
-        return "É a vez de " + player2.nickname + "jogar";
+        return "É a vez de " + player2.nickname;
       }
     }else if(this.currentTime == 0 || this.currentTime == AppNumbers.maxTimerValue){
       return "--";
@@ -108,7 +110,7 @@ class MultiplayerHeader extends StatelessWidget {
                           children: <Widget> [
                             CircleAvatar(
                               backgroundImage: this.player1.urlImage == null?
-                              ExactAssetImage("assets/profile-icon.png") : NetworkImage(this.player1.urlImage),
+                              ExactAssetImage("assets/images/profile-icon.png") : NetworkImage(this.player1.urlImage),
                               maxRadius: 20,
                               backgroundColor: AppColors.backgroundGrey1,
                             ),
@@ -141,7 +143,7 @@ class MultiplayerHeader extends StatelessWidget {
                           right: 3,
                         ),
                         color: AppColors.backgroundGrey2,
-                        child: Image.asset('./assets/vs-icon.png'),
+                        child: Image.asset('./assets/images/vs-icon.png'),
                       ),
                     ),
                     Expanded(
@@ -156,7 +158,7 @@ class MultiplayerHeader extends StatelessWidget {
                           children: <Widget> [
                             CircleAvatar(
                               backgroundImage: this.player2.urlImage == null?
-                              ExactAssetImage("assets/profile-icon.png") : NetworkImage(this.player2.urlImage),
+                              ExactAssetImage("assets/images/profile-icon.png") : NetworkImage(this.player2.urlImage),
                               maxRadius: 20,
                               backgroundColor: AppColors.backgroundGrey1,
                             ),

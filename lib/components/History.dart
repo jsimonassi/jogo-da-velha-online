@@ -38,7 +38,7 @@ class History extends StatelessWidget {
                 CircleAvatar(
                   maxRadius: 36.0,
                   backgroundImage: this.player1.urlImage == null ?
-                  ExactAssetImage('./assets/profile-icon.png') :
+                  ExactAssetImage('./assets/images/profile-icon.png') :
                   NetworkImage(this.player1.urlImage)
                 ),
                 SizedBox(
@@ -88,7 +88,7 @@ class History extends StatelessWidget {
               CircleAvatar(
                 maxRadius: 36.0,
                 backgroundImage: this.player2.urlImage == null ?
-                ExactAssetImage('./assets/profile-icon.png') :
+                ExactAssetImage('./assets/images/profile-icon.png') :
                 NetworkImage(this.player2.urlImage)
               ),
           ]),

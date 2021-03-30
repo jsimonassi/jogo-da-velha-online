@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/bg_gradient.jpg"),
+          image: AssetImage("assets/images/bg_gradient.jpg"),
           fit: BoxFit.cover,
         ),
       ),
@@ -42,7 +42,7 @@ class _HomeState extends State<Home> {
                 height: size.height * 0.15,
                 color: AppColors.backgroundGrey2,
                 child: Image.asset(
-              "assets/logo-small.png",
+              "assets/images/logo-small.png",
               width: size.width * 0.4,
             )),
             Container(
@@ -58,7 +58,7 @@ class _HomeState extends State<Home> {
                     ),
                     CircleAvatar(
                       backgroundImage: CurrentUser.user.urlImage == null? 
-                      ExactAssetImage("assets/profile-icon.png") : NetworkImage(CurrentUser.user.urlImage),
+                      ExactAssetImage("assets/images/profile-icon.png") : NetworkImage(CurrentUser.user.urlImage),
                       maxRadius: 36.0,
                       backgroundColor: AppColors.backgroundGrey2,
                     ),

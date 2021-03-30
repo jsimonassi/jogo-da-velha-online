@@ -129,7 +129,7 @@ class _LobbyState extends State<Lobby> {
       padding: EdgeInsets.only(top: 60),
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: AssetImage("assets/bg_gradient.jpg"),
+          image: AssetImage("assets/images/bg_gradient.jpg"),
           fit: BoxFit.cover,
         ),
       ),
@@ -165,7 +165,7 @@ class _LobbyState extends State<Lobby> {
             radius: 80,
             backgroundImage: _player1 != null && _player1.urlImage != null
                 ? NetworkImage(_player1.urlImage)
-                : ExactAssetImage('./assets/profile-icon.png'),
+                : ExactAssetImage('./assets/images/profile-icon.png'),
           ),
           SizedBox(
             height: size.height * 0.01,
@@ -183,7 +183,7 @@ class _LobbyState extends State<Lobby> {
             radius: 80,
             backgroundImage: _player2 != null && _player2.urlImage != null
                 ? NetworkImage(_player2.urlImage)
-                : ExactAssetImage('./assets/profile-icon.png'),
+                : ExactAssetImage('./assets/images/profile-icon.png'),
           ),
           Text(
             _player2 != null && _player2.nickname != null? _player2.nickname : '',

@@ -42,8 +42,8 @@ class _LoginPageState extends State<LoginPage> {
             _controllerEmail.text, _controllerPassword.text);
         if (CurrentUser.user != null) {
           Loading.disableLoading(context);
-          Navigator.push(context,
-              MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()));
+          Navigator.pushAndRemoveUntil(context,
+              MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()), (Route<dynamic> route) => false);
         }
         else{
           Loading.disableLoading(context);
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: EdgeInsets.only(top: 60, left: 40, right: 40),
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage("assets/bg_gradient.jpg"),
+            image: AssetImage("assets/images/bg_gradient.jpg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               width: 128,
               height: 128,
-              child: Image.asset("assets/logo-small.png"),
+              child: Image.asset("assets/images/logo-small.png"),
             ),
             SizedBox(
               //Apenas para colocar um espaço entre a imagem e o input

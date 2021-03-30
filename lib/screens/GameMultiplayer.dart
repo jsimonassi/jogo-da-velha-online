@@ -6,11 +6,15 @@ import 'package:jogodavelha/components/TableElement.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Numbers.dart';
 import 'package:jogodavelha/services/Api.dart';
+import 'package:jogodavelha/services/CheckWinner.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../models/User.dart';
 import '../models/Match.dart';
 import '../components/ChatMessage.dart';
 import '../constants/Messages.dart';
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
+import '../screens/GameResult.dart';
 
 class GameMultiplayer extends StatefulWidget {
   Match currentMatch;
@@ -33,6 +37,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   Timer _timer; //Objeto da thread de tempo
   int _currentTime = 0; //Tempo atual
   Stream<DocumentSnapshot> _stream;
+  AudioPlayer audioController;
 
   _GameMultiplayerState(this._currentMatch, this._player1, this._player2);
 
@@ -40,6 +45,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   void initState() {
     initTimer();
     initListener();
+    playMusic();
     super.initState();
   }
 
@@ -60,6 +66,16 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
     );
   }
 
+  playMusic() async {
+    AudioCache cache = new AudioCache();
+    audioController =  await cache.loop("sounds/song-good-stars.mp3");
+  }
+
+  playAudioEffect(String audioPath) async {
+    AudioCache cache = new AudioCache();
+    audioController =  await cache.play(audioPath);
+  }
+
   // Métodos de controle da partida
   alterPlayerOfTheRound(){
     _currentMatch.playerOfTheRound = _currentMatch.playerOfTheRound == _player1.id? _player2.id : _player1.id;
@@ -67,11 +83,36 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   }
 
   makeAPlay(String key){
-    _currentMatch.setMatchPlays(key, _currentMatch.playerOfTheRound); //Atualiza currentMatch com jogada atual
-    updateCurrentMatch(); //Manda atualização para o bd
-    setState(() {
-      _currentTime = 0;  //Seta timer da rodada p/ 0 e troca de jogador
-    });
+    if(_currentMatch.playerOfTheRound == CurrentUser.user.id){
+      _currentMatch.setMatchPlays(key, _currentMatch.playerOfTheRound); //Atualiza currentMatch com jogada atual
+      updateCurrentMatch(); //Manda atualização para o bd
+      playAudioEffect("sounds/click.mp3");
+      checkWinner();
+      setState(() {
+        _currentTime = 0;  //Seta timer da rodada p/ 0 e troca de jogador
+      });
+    }
+  }
+
+
+  checkWinner(){
+    var winner = CheckWinner(_player1.id, _player2.id, _currentMatch).check();
+    if(winner != null){
+      if(winner.contains(_player1.id)){
+        setState(() {
+          _currentMatch.winner = _player1.id;
+        });
+      }else if(winner.contains(_player2.id)){
+        setState(() {
+          _currentMatch.winner = _player2.id;
+        });
+      }else{
+        setState(() {
+          _currentMatch.winner = "velha";
+        });
+      }
+      updateCurrentMatch();
+    }
   }
 
   //Métodos de atualização do banco e listeners
@@ -88,10 +129,15 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
             _currentMatch.player1Id = obj.data["player1id"];
             _currentMatch.player2Id = obj.data["player2id"];
             _currentMatch.winner = obj.data["winner"];
-            _currentMatch.plays = obj.data["plays"];
+            _currentMatch.plays = Map<String, dynamic>.from(obj["plays"]);
             _currentMatch.matchtoken = obj.data["matchtoken"];
             _currentMatch.timestamp = obj.data["timestamp"];
             _currentMatch.playerOfTheRound = obj.data["player_of_the_round"];
+
+            if(_currentMatch.winner != null){ //Fim de jogo
+              Navigator.pushAndRemoveUntil(context,
+                  MaterialPageRoute(builder: (BuildContext context) => GameResult(_currentMatch)), (Route<dynamic> route) => false);
+            }
           }
         }
       });
@@ -110,6 +156,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
         _stream = null;
       });
     }
+    audioController.stop();
     super.dispose();
   }
 
@@ -219,7 +266,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
                 child: Container(
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage("assets/bg_gradient.jpg"),
+                      image: AssetImage("assets/images/bg_gradient.jpg"),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -228,7 +275,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
                     children: <Widget>[
                       Container(
                         height: size.height * 0.18, //Todo: Muito ruim
-                        child: MultiplayerHeader(_player1, _player2, _currentMatch.playerOfTheRound == _player1.id? true: false, _currentTime),
+                        child: MultiplayerHeader(_player1, _player2, _currentMatch.playerOfTheRound, _currentTime),
                       ),
                       Container(
                         height: size.height * 0.42, //Todo: Muito ruim
