@@ -8,11 +8,16 @@ import '../storage/CurrentUser.dart';
 import '../storage/CurrentUser.dart';
 import '../storage/CurrentUser.dart';
 
-class Search_Oponents extends StatelessWidget {
+class Search_Oponents extends StatefulWidget {
   //Todo: Mudar para Statefull
   //Todo: Não usar AppBar, Fazer tudo no body (O componente do bernardo tem um exemplo de row)
   // Todo: DataSearch não precisa ser uma classe
 
+  @override
+  _Search_OponentsState createState() => _Search_OponentsState();
+}
+
+class _Search_OponentsState extends State<Search_Oponents> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,8 +52,8 @@ class Search_Oponents extends StatelessWidget {
 }
 
 class DataSearch extends SearchDelegate<String> {
-  final listaJogadores = ['gustavo', 'leo'];
-  final buscaRecentes = ['berna'];
+  final PlayersList = ['Gustavo', 'leo'];
+  final RecentSearches = ['berna'];
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -78,19 +83,23 @@ class DataSearch extends SearchDelegate<String> {
     return Container(
       height: 100.00,
       width: 100.00,
-      child: Card(
-        color: Colors.red,
-        child: Center(
-          child: Text(query),
-        ),
-      ),
+      child: SearchResult(CurrentUser.user.urlImage, CurrentUser.user.nickname, CurrentUser.user.name, 4, 3,
+          AppMessages.redButtonAdd, ()=>{}, ()=>{})
+
+
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return SearchResult(CurrentUser.user.urlImage, CurrentUser.user.nickname, CurrentUser.user.name, 4, 3,
-        AppMessages.redButtonAdd, ()=>{}, ()=>{});
+    final suggestionList = query.isEmpty ? RecentSearches : PlayersList.where((p) => p.startsWith(query)).toList();
 
+    return ListView.builder(itemBuilder: (context, index) => ListTile(
+      onTap: (){
+        showResults(context);
+      },
+        leading: Icon(Icons.account_circle),
+        title: Text(suggestionList[index]),
+    ));
   }
 }
