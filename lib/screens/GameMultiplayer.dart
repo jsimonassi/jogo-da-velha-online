@@ -115,8 +115,16 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
     }
     if(_currentMatch.winner != null){ //Fim de jogo
       print("ACABOUU");
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => GameResult()));
+      if(_currentMatch.winner.contains("velha")){
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (BuildContext context) => GameResult(null)),  (Route<dynamic> route) => false);
+      }else {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (BuildContext context) =>
+                GameResult(_currentMatch.winner == _player1.id
+                    ? _player1
+                    : _player2)), (Route<dynamic> route) => false);
+      }
     }
   }
 
