@@ -15,6 +15,10 @@ class AppMessages {
   static const String initMatch ='Iniciando Partida';
   static const String itsYourTurn ='É a sua vez';
   static const String endOfMatch ='Fim de Jogo!';
+  static const String winner ='Vencedor:';
+  static const String old ='Velha';
+  static const String home ='INÍCIO';
+  static const String playAgain ='JOGAR NOVAMENTE';
 
   static const String initLogin = "ENTRAR";
   static const String singUpMessage = "Não tem uma conta? Cadastre-se!";
@@ -33,8 +37,8 @@ class AppMessages {
 
 
   //Bot infos
-  static const String botName = "bot";
-  static const String botNickname = botName;
+  static const String botName = "Bot";
+  static const String botNickname = "Bot";
 
   //Error Messages
   static const String inputBlank = "Este campo é obrigatório";

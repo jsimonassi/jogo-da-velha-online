@@ -8,6 +8,8 @@ void main() => runApp(new MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    //Todo: Recuperar com algum tipo de Shared Preferences do Flutter o usuário logado e gerar uma instância de Bot
+
     return new MaterialApp(
       title: AppMessages.appTitle,
       debugShowCheckedModeBanner: false,

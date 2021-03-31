@@ -62,12 +62,4 @@ class User {
   set nickname(String value) {
     _nickname = value;
   }
-
-  User generateBot(){
-    //Todo: Bots customizados? Implementar lógica aqui!
-    User bot = User();
-    bot.name = AppMessages.botName;
-    bot.nickname = AppMessages.botNickname;
-    return bot;
-  }
 }

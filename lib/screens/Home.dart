@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/History.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/models/LobbyModel.dart';
 import 'package:jogodavelha/models/User.dart';
 import 'package:jogodavelha/screens/GameMultiplayer.dart';
+import 'package:jogodavelha/screens/PreMatch.dart';
 import 'package:jogodavelha/services/Api.dart';
 import '../storage/CurrentUser.dart';
+import '../storage/Bot.dart';
 import '../components/RedButton.dart';
 import '../screens/Game.dart';
 import '../screens/Lobby.dart';
@@ -22,6 +25,14 @@ class _HomeState extends State<Home> {
   //   var resultado = await Api.getMatches(CurrentUser.user);
   //   print(resultado);
   // }
+
+  startTraining(){
+    LobbyModel trainingLobby = new LobbyModel();
+    trainingLobby.player1 = CurrentUser.user.id;
+    trainingLobby.player2 = Bot.botInfos.id;
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => PreMatch(trainingLobby)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,8 +100,7 @@ class _HomeState extends State<Home> {
             Container(
               width: size.width * 0.8,
               margin: EdgeInsets.only(bottom: 10),
-              child: RedButton(AppMessages.newTraining, () => {Navigator.push(context,
-                  MaterialPageRoute(builder: (BuildContext context) => Game()))}),
+              child: RedButton(AppMessages.newTraining, () => startTraining()),
             ),
             Container(
               child: History(CurrentUser.user, CurrentUser.user, 33, null),

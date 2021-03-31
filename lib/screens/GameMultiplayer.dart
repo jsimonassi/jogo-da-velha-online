@@ -33,7 +33,6 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   User _player1;
   User _player2;
   Match _currentMatch;
-  User bot = User().generateBot();
   Timer _timer; //Objeto da thread de tempo
   int _currentTime = 0; //Tempo atual
   Stream<DocumentSnapshot> _stream;
@@ -115,8 +114,16 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
     }
     if(_currentMatch.winner != null){ //Fim de jogo
       print("ACABOUU");
-      Navigator.push(context,
-          MaterialPageRoute(builder: (BuildContext context) => GameResult()));
+      if(_currentMatch.winner.contains("velha")){
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (BuildContext context) => GameResult(null)),  (Route<dynamic> route) => false);
+      }else {
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (BuildContext context) =>
+                GameResult(_currentMatch.winner == _player1.id
+                    ? _player1
+                    : _player2)), (Route<dynamic> route) => false);
+      }
     }
   }
 
