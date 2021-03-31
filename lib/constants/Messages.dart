@@ -37,8 +37,8 @@ class AppMessages {
 
 
   //Bot infos
-  static const String botName = "bot";
-  static const String botNickname = botName;
+  static const String botName = "Bot";
+  static const String botNickname = "Bot";
 
   //Error Messages
   static const String inputBlank = "Este campo é obrigatório";

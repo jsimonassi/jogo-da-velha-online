@@ -33,7 +33,6 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   User _player1;
   User _player2;
   Match _currentMatch;
-  User bot = User().generateBot();
   Timer _timer; //Objeto da thread de tempo
   int _currentTime = 0; //Tempo atual
   Stream<DocumentSnapshot> _stream;

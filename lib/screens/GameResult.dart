@@ -66,6 +66,7 @@ class _GameResultState extends State<GameResult> {
                 height: size.height * 0.05),
             CircleAvatar(
               maxRadius: 80,
+              backgroundColor: AppColors.backgroundGrey2,
               backgroundImage: getProfileImage(),
             ),
             SizedBox(
@@ -79,12 +80,12 @@ class _GameResultState extends State<GameResult> {
               ),
             ),
             Expanded(child: Container()),
-            RedButton(AppMessages.playAgain, () {
-              Navigator.pushAndRemoveUntil(context,
-                  MaterialPageRoute(builder: (BuildContext context) => Lobby()),  (Route<dynamic> route) => false);
-            }),
-            SizedBox(
-                height: size.height * 0.03),
+            // RedButton(AppMessages.playAgain, () {
+            //   Navigator.pushAndRemoveUntil(context,
+            //       MaterialPageRoute(builder: (BuildContext context) => Lobby()),  (Route<dynamic> route) => false);
+            // }),
+            // SizedBox(
+            //     height: size.height * 0.03),
             RedButton(AppMessages.home, () {
               Navigator.pushAndRemoveUntil(context,
                   MaterialPageRoute(builder: (BuildContext context) => MenuNavigation()),  (Route<dynamic> route) => false);

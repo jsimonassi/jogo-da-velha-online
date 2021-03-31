@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/LobbyModel.dart';
 import '../models/Match.dart';
+import '../storage/Bot.dart';
 /*
 Credenciais do Firebase:
 Email: g04vermelhouff@gmail.com
@@ -64,6 +65,7 @@ class Api {
       var result = await auth.signInWithEmailAndPassword(
           email: email, password: password);
         CurrentUser.user = await getUser(result.user.uid); //Set usuário atual
+        Bot.botInfos = Bot.generateBot();
         return CurrentUser.user;
     } catch (e) {
       String error = e.code != null? e.code : '';
