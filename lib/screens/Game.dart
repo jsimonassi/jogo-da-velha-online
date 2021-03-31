@@ -199,7 +199,19 @@ class _GameState extends State<Game> {
                       Container(
                         height: size.height * 0.42, //Todo: Muito ruim
                         child: gameArea,
-                      )
+                      ),
+                      SizedBox(
+                        height: size.height * 0.02,
+                      ),
+                      Container(
+                        height: size.height * 0.2,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: ExactAssetImage('./assets/images/logo-low.png')
+                          ),
+                        ),
+                      ),
+                      Expanded(child: Container()),
                     ],
                   ),
                 )
