@@ -5,6 +5,7 @@ import 'package:jogodavelha/components/MultiplayerHeader.dart';
 import 'package:jogodavelha/components/TableElement.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Numbers.dart';
+import 'package:jogodavelha/models/Message.dart';
 import 'package:jogodavelha/services/Api.dart';
 import 'package:jogodavelha/services/CheckWinner.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
@@ -37,15 +38,27 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   int _currentTime = 0; //Tempo atual
   Stream<DocumentSnapshot> _stream;
   AudioPlayer audioController;
+  TextEditingController _controllerMessage = TextEditingController();
 
   _GameMultiplayerState(this._currentMatch, this._player1, this._player2);
 
+
   @override
   void initState() {
+    createListenerForChat();
     initTimer();
     initListener();
     playMusic();
     super.initState();
+  }
+
+  void createListenerForChat() {
+    Stream<QuerySnapshot> stream = Api.createListenerForChat(_currentMatch.matchtoken);
+    stream.listen((querySnapshot) {
+      querySnapshot.documentChanges.forEach((change) {
+        print(change);
+      });
+    });
   }
 
   initTimer()  { //Apenas um contatador pra tudo. Evite criar outro!
@@ -169,6 +182,22 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
     super.dispose();
   }
 
+
+  addMessage() async{
+    try{
+      Message message = new Message();
+      message.idGame = _currentMatch.matchtoken;
+      message.message = _controllerMessage.text;
+      message.timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+      message.idUser = CurrentUser.user.id;
+      await  Api.addChat(message);
+
+    }
+    catch(e){
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -191,6 +220,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
         ]),
       ],
     );
+
 
     var chat = ListView(
       //shrinkWrap: true, //Que comando mágico é esse???
@@ -235,6 +265,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
               ),
               height: 50,
               child: TextField(
+                controller: _controllerMessage,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     border: InputBorder.none,
@@ -257,7 +288,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
         IconButton(
             icon: const Icon(Icons.send),
             color: Colors.white,
-            onPressed: () => {})
+            onPressed: (){addMessage();})
       ],
     );
 
@@ -306,4 +337,5 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
       ),
     );
   }
+
 }
