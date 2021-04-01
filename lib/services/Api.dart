@@ -182,7 +182,7 @@ class Api {
 
   static Future<List<Match>> getMatches(User user) async {
     try {
-      QuerySnapshot querySnapshot = await Firestore.instance.collection("matches").where("player1", isEqualTo: user.id).getDocuments();
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("matches").getDocuments();
       var list = querySnapshot.documents;
       if(list.isEmpty) return null;
       List<Match> response = [];

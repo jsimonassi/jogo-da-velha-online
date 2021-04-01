@@ -12,13 +12,11 @@ class History extends StatelessWidget {
 
   User player1;
   User player2;
-  int matchNumber;
   Match match;
 
-  History(player1, player2, matchNumber, match) {
+  History(player1, player2, match) {
     this.player1 = player1;
     this.player2 = player2;
-    this.matchNumber = matchNumber;
     this.match = match;
   }
 
@@ -48,14 +46,7 @@ class History extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                  Text(
-                    "Partida #" + this.matchNumber.toString(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    )
-                  ),
+
                   Text(
                       "Vs. " + this.player2.nickname,
                       style: TextStyle(
@@ -75,7 +66,10 @@ class History extends StatelessWidget {
                       fontSize: 12,
                     )
                   ),
-                  Text(
+                    SizedBox(
+                      height: 3,
+                    ),
+                    Text(
                     "VENCEU",
                     //this.match.winner,
                     style: TextStyle(
