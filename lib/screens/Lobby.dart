@@ -108,7 +108,6 @@ class _LobbyState extends State<Lobby> {
             _player1 = null;
             _player2 = null;
           });
-          createLobby();
         }
       }
     });

@@ -122,6 +122,7 @@ class _GameState extends State<Game> {
     }
     if(_currentMatch.winner != null){ //Fim de jogo
       print("ACABOUU");
+      audioController.stop();
       if(_currentMatch.winner.contains("velha")){
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (BuildContext context) => GameResult(null)),  (Route<dynamic> route) => false);

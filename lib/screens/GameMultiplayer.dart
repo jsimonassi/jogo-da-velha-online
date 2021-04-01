@@ -72,7 +72,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
 
   playAudioEffect(String audioPath) async {
     AudioCache cache = new AudioCache();
-    audioController =  await cache.play(audioPath);
+    await cache.play(audioPath);
   }
 
   // Métodos de controle da partida
@@ -97,6 +97,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   checkWinner(){
     var winner = CheckWinner(_player1.id, _player2.id, _currentMatch).check();
     if(winner != null){
+      audioController.stop();
       if(winner.contains(_player1.id)){
         setState(() {
           _currentMatch.winner = _player1.id;
@@ -145,6 +146,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
             _currentMatch.matchtoken = obj.data["matchtoken"];
             _currentMatch.timestamp = obj.data["timestamp"];
             _currentMatch.playerOfTheRound = obj.data["player_of_the_round"];
+            checkWinner();
           }
         }
       });
