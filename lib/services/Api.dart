@@ -189,8 +189,8 @@ class Api {
       for(int i =0; i < list.length; i++){
         Map<String, dynamic> infos = list[i].data;
         var newMatch = Match();
-        newMatch.player1Id = infos["player1"];
-        newMatch.player2Id = infos["player2"];
+        newMatch.player1Id = infos["player1id"];
+        newMatch.player2Id = infos["player2id"];
         newMatch.winner = infos["winner"];
         newMatch.timestamp = infos["timestamp"];
         newMatch.matchtoken = infos["matchtoken"];

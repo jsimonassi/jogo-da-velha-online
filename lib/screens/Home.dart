@@ -3,10 +3,16 @@ import 'package:jogodavelha/components/History.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/models/LobbyModel.dart';
+import 'package:jogodavelha/models/RecentMatches.dart';
 import 'package:jogodavelha/models/User.dart';
 import 'package:jogodavelha/screens/GameMultiplayer.dart';
 import 'package:jogodavelha/screens/PreMatch.dart';
 import 'package:jogodavelha/services/Api.dart';
+import 'package:jogodavelha/storage/RecentMatch.dart';
+import 'package:jogodavelha/storage/RecentMatch.dart';
+import 'package:jogodavelha/storage/RecentMatch.dart';
+import 'package:jogodavelha/storage/RecentMatch.dart';
+import 'package:jogodavelha/storage/RecentMatch.dart';
 import '../storage/CurrentUser.dart';
 import '../storage/Bot.dart';
 import '../components/RedButton.dart';
@@ -25,11 +31,11 @@ class _HomeState extends State<Home> {
   //   var resultado = await Api.getMatches(CurrentUser.user);
   //   print(resultado);
   // }
-List<Match> _listRecentMatches;
+
 
   @override
   void initState() {
-    getMacthes();
+    RecentMatch.getMacthes();
     super.initState();
   }
   startTraining(){
@@ -41,21 +47,15 @@ List<Match> _listRecentMatches;
   }
 
 
-  getMacthes() async{
-    var result = await Api.getMatches(CurrentUser.user);
-    if (result != null){
-      setState(() {
-        _listRecentMatches= result;
-      });
-    }
-  }
+
+
 
 
   buildListView(){
     return ListView.builder(
-        itemCount: _listRecentMatches == null?0:_listRecentMatches.length,
+        itemCount: RecentMatch.listRecentMatches == null?0:RecentMatch.listRecentMatches.length,
         itemBuilder:( BuildContext context, int index) {
-          return History(CurrentUser.user, CurrentUser.user, _listRecentMatches[index]);
+          return History(RecentMatch.listRecentMatches[index].player1, RecentMatch.listRecentMatches[index].player2, RecentMatch.listRecentMatches[index].match);
         }
     );
 
