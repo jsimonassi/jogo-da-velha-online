@@ -39,7 +39,8 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   Stream<DocumentSnapshot> _stream;
   AudioPlayer audioController;
   TextEditingController _controllerMessage = TextEditingController();
-  List<Message> _listRecentMessages;
+  List<Message> _listRecentMessages = [];
+  ScrollController _listViewController = ScrollController();
 
   _GameMultiplayerState(this._currentMatch, this._player1, this._player2);
 
@@ -64,6 +65,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
               message.idUser = change.document.data["id_user"];
               message.message = change.document.data["message"];
               _listRecentMessages.add(message);
+              _listViewController.jumpTo(_listViewController.position.maxScrollExtent);
           }
         });
       });
@@ -196,6 +198,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
 
   buildListView(){
     return ListView.builder(
+        controller: _listViewController,
         itemCount: _listRecentMessages == null?0:_listRecentMessages.length,
         itemBuilder:(BuildContext context, int index) {
           return ChatMessage(
@@ -215,8 +218,8 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
       message.message = _controllerMessage.text;
       message.timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
       message.idUser = CurrentUser.user.id;
+      _controllerMessage.clear();
       await  Api.addChat(message);
-
     }
     catch(e){
       print(e);
