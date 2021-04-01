@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/models/FriendRequest.dart';
 import 'package:jogodavelha/screens/Lobby.dart';
 import '../storage/CurrentUser.dart';
 import '../models/User.dart';
@@ -10,6 +11,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/LobbyModel.dart';
 import '../models/Match.dart';
 import '../storage/Bot.dart';
+import '../models/FriendRequest.dart';
+
 /*
 Credenciais do Firebase:
 Email: g04vermelhouff@gmail.com
@@ -212,6 +215,53 @@ class Api {
           .document(match.matchtoken)
           .snapshots();
     }  catch (e) {
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
+
+  static Future<void> sendFriendRequest(FriendRequest request) async {
+    try {
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      return await db
+          .collection("friendRequests") //Desce em Users
+          .document(request.token) // O nome do documento do usuário é o ID dele
+          .setData(request.toMap());
+    } catch (e) {
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
+  static Future<List<FriendRequest>> getFriendRequests(User user) async {
+    try {
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("friendRequests").where("to", isEqualTo: user.id).getDocuments();
+      var list = querySnapshot.documents;
+      if(list.isEmpty) return null;
+      List<FriendRequest> response = [];
+      for(int i =0; i < list.length; i++){
+        Map<String, dynamic> infos = list[i].data;
+        var newFriendRequest = FriendRequest(infos["from"], infos["to"], infos["id"]);
+        response.add(newFriendRequest);
+      }
+      return response;
+    } catch (e) {
+      print(e);
+      throw FormatException(e.code);
+    }
+  }
+
+  static Future<void> sendFriendRequest(FriendRequest request) async {
+    try {
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      return await db
+          .collection("friendRequests") //Desce em Users
+          .document(request.token) // O nome do documento do usuário é o ID dele
+          .setData(request.toMap());
+    } catch (e) {
       String error = e.code != null? e.code : '';
       print("Errorrr $e");
       throw FormatException(AppMessages.undefinedError); //Exception não mapeada
