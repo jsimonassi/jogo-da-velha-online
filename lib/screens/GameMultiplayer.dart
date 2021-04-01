@@ -39,9 +39,9 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   Stream<DocumentSnapshot> _stream;
   AudioPlayer audioController;
   TextEditingController _controllerMessage = TextEditingController();
+  List<Message> _listRecentMessages;
 
   _GameMultiplayerState(this._currentMatch, this._player1, this._player2);
-
 
   @override
   void initState() {
@@ -53,12 +53,24 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   }
 
   void createListenerForChat() {
-    Stream<QuerySnapshot> stream = Api.createListenerForChat(_currentMatch.matchtoken);
-    stream.listen((querySnapshot) {
-      querySnapshot.documentChanges.forEach((change) {
-        print(change);
+    try{
+      Stream<QuerySnapshot> stream = Api.createListenerForChat(_currentMatch.matchtoken);
+      stream.listen((querySnapshot) {
+        querySnapshot.documentChanges.forEach((change) {
+          if(change.document.exists) {
+              Message message = new Message();
+              message.timeStamp = change.document.data["time_stamp"];
+              message.idGame = change.document.data["id_game"];
+              message.idUser = change.document.data["id_user"];
+              message.message = change.document.data["message"];
+              _listRecentMessages.add(message);
+          }
+        });
       });
-    });
+    }
+    catch(e){
+      print(e);
+    }
   }
 
   initTimer()  { //Apenas um contatador pra tudo. Evite criar outro!
@@ -182,6 +194,19 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
     super.dispose();
   }
 
+  buildListView(){
+    return ListView.builder(
+        itemCount: _listRecentMessages == null?0:_listRecentMessages.length,
+        itemBuilder:(BuildContext context, int index) {
+          return ChatMessage(
+            messageType: _listRecentMessages[index].idUser == CurrentUser.user.id ? MessageType.sent: MessageType.received,
+            message: _listRecentMessages[index].message,
+            backgroundColor: _listRecentMessages[index].idUser == CurrentUser.user.id ?AppColors.redPrimary: Colors.black,
+            textColor: Colors.white,
+          );
+        }
+    );
+  }
 
   addMessage() async{
     try{
@@ -218,38 +243,6 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
           TableElement("c2", _currentMatch, _currentTime, () => {makeAPlay("c2")}),
           TableElement("c3", _currentMatch, _currentTime, () => {makeAPlay("c3")}),
         ]),
-      ],
-    );
-
-
-    var chat = ListView(
-      //shrinkWrap: true, //Que comando mágico é esse???
-      children: <Widget>[
-        ChatMessage(
-//Todo: Deverá ser adicionado em tempo de execução
-          messageType: MessageType.sent,
-          message: "Muito legal esse jogo!",
-          backgroundColor: AppColors.redPrimary,
-          textColor: Colors.white,
-        ),
-        ChatMessage(
-          messageType: MessageType.received,
-          message: "É sim, mas eu vou te ganhar boboca",
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-        ),
-        ChatMessage(
-          messageType: MessageType.sent,
-          message: "Só desenvolvedor bolado",
-          backgroundColor: AppColors.redPrimary,
-          textColor: Colors.white,
-        ),
-        ChatMessage(
-          messageType: MessageType.sent,
-          message: "Turminha nota mil",
-          backgroundColor: AppColors.redPrimary,
-          textColor: Colors.white,
-        ),
       ],
     );
 
@@ -323,7 +316,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
                       ),
                       Container(
                         height: size.height * 0.27, //Todo: Muito ruim
-                        child: chat,
+                        child: buildListView(),
                       ),
                       Expanded(
                         child: chatInput,

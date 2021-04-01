@@ -58,8 +58,6 @@ List<Match> _listRecentMatches;
           return History(CurrentUser.user, CurrentUser.user, _listRecentMatches[index]);
         }
     );
-
-
   }
 
   @override
