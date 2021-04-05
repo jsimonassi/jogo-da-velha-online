@@ -1,17 +1,42 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/SearchResult.dart';
-
+import 'package:jogodavelha/models/FriendRequest.dart';
 import '../constants/Messages.dart';
 import '../constants/Messages.dart';
 import '../storage/CurrentUser.dart';
 import '../storage/CurrentUser.dart';
 import '../storage/CurrentUser.dart';
+import '../storage/Bot.dart';
+import '../models/User.dart';
+import '../services/Api.dart';
 
-class Search_Oponents extends StatelessWidget {
-  //Todo: Mudar para Statefull
-  //Todo: Não usar AppBar, Fazer tudo no body (O componente do bernardo tem um exemplo de row)
-  // Todo: DataSearch não precisa ser uma classe
+class SearchOpponents extends StatefulWidget {
+  @override
+  _SearchOpponentsState createState() => _SearchOpponentsState();
+}
+
+class _SearchOpponentsState extends State<SearchOpponents> {
+
+  sendFriendRequest(User newFriend) async{
+    try{
+      FriendRequest newRequest = new FriendRequest(CurrentUser.user.id, newFriend.id, null);
+      await Api.sendFriendRequest(newRequest);
+      print("Deu bom");
+    }catch(e){
+      print("Deu ruim $e");
+    }
+  }
+
+  searchFriendsRequest() async { //Deve retornar a lista de requisições do usuário
+    try{
+      var response = await Api.getFriendRequests(CurrentUser.user);
+      print("Deu bom");
+
+    }catch(e){
+      print("Deu ruim $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +60,13 @@ class Search_Oponents extends StatelessWidget {
               height: 30.00,
             ),
             SearchResult(CurrentUser.user.urlImage, CurrentUser.user.nickname, CurrentUser.user.name, 4, 3,
-                AppMessages.redButtonAdd, ()=>{}, ()=>{})
+                AppMessages.redButtonAdd, ()=>{sendFriendRequest(Bot.botInfos)}, () {sendFriendRequest(Bot.botInfos);}),
+            SearchResult(CurrentUser.user.urlImage, CurrentUser.user.nickname, CurrentUser.user.name, 4, 3,
+                AppMessages.redButtonAdd, ()=>{}, () {sendFriendRequest(Bot.botInfos);}),
+            SearchResult(CurrentUser.user.urlImage, CurrentUser.user.nickname, CurrentUser.user.name, 4, 3,
+                AppMessages.redButtonAdd, ()=>{}, () {sendFriendRequest(Bot.botInfos);}),
+            TextButton(onPressed: (){sendFriendRequest(Bot.botInfos);}, child: Text("Nova requisição")),
+            TextButton(onPressed: (){searchFriendsRequest();}, child: Text("Adicionar amigos")), //Todo: Ficar na tela que abre depois que chega a notificação
           ]),
           //decoration: BoxDecoration(
             //image: DecorationImage(
@@ -92,3 +123,8 @@ class DataSearch extends SearchDelegate<String> {
 
   }
 }
+
+
+
+
+

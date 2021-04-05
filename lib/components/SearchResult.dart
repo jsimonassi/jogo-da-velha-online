@@ -73,7 +73,8 @@ class SearchResult extends StatelessWidget {
                 Container(
                   height: 45.00,
                   width: 100.00,
-                  child: TextButton(onPressed:()=>{},
+                  child: TextButton(
+                    onPressed:()=>{firstButtonAction},
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
                     ),
@@ -124,7 +125,8 @@ class SearchResult extends StatelessWidget {
                 Container(
                   height: 45.00,
                   width: 100.00,
-                  child: TextButton(onPressed:()=>{},
+                  child: TextButton(
+                    onPressed:()=>{secondButtonAction},
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
                     ),
