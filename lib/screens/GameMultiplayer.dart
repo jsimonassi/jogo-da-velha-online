@@ -65,7 +65,9 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
               message.idUser = change.document.data["id_user"];
               message.message = change.document.data["message"];
               _listRecentMessages.add(message);
-              _listViewController.jumpTo(_listViewController.position.maxScrollExtent);
+              Timer(Duration(seconds: 1), (){
+                _listViewController.jumpTo(_listViewController.position.maxScrollExtent);
+              } );
           }
         });
       });
