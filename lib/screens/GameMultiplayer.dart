@@ -5,6 +5,7 @@ import 'package:jogodavelha/components/MultiplayerHeader.dart';
 import 'package:jogodavelha/components/TableElement.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Numbers.dart';
+import 'package:jogodavelha/models/Message.dart';
 import 'package:jogodavelha/services/Api.dart';
 import 'package:jogodavelha/services/CheckWinner.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
@@ -37,15 +38,43 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
   int _currentTime = 0; //Tempo atual
   Stream<DocumentSnapshot> _stream;
   AudioPlayer audioController;
+  TextEditingController _controllerMessage = TextEditingController();
+  List<Message> _listRecentMessages = [];
+  ScrollController _listViewController = ScrollController();
 
   _GameMultiplayerState(this._currentMatch, this._player1, this._player2);
 
   @override
   void initState() {
+    createListenerForChat();
     initTimer();
     initListener();
     playMusic();
     super.initState();
+  }
+
+  void createListenerForChat() {
+    try{
+      Stream<QuerySnapshot> stream = Api.createListenerForChat(_currentMatch.matchtoken);
+      stream.listen((querySnapshot) {
+        querySnapshot.documentChanges.forEach((change) {
+          if(change.document.exists) {
+              Message message = new Message();
+              message.timeStamp = change.document.data["time_stamp"];
+              message.idGame = change.document.data["id_game"];
+              message.idUser = change.document.data["id_user"];
+              message.message = change.document.data["message"];
+              _listRecentMessages.add(message);
+              Timer(Duration(seconds: 1), (){
+                _listViewController.jumpTo(_listViewController.position.maxScrollExtent);
+              } );
+          }
+        });
+      });
+    }
+    catch(e){
+      print(e);
+    }
   }
 
   initTimer()  { //Apenas um contatador pra tudo. Evite criar outro!
@@ -169,6 +198,36 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
     super.dispose();
   }
 
+  buildListView(){
+    return ListView.builder(
+        controller: _listViewController,
+        itemCount: _listRecentMessages == null?0:_listRecentMessages.length,
+        itemBuilder:(BuildContext context, int index) {
+          return ChatMessage(
+            messageType: _listRecentMessages[index].idUser == CurrentUser.user.id ? MessageType.sent: MessageType.received,
+            message: _listRecentMessages[index].message,
+            backgroundColor: _listRecentMessages[index].idUser == CurrentUser.user.id ?AppColors.redPrimary: Colors.black,
+            textColor: Colors.white,
+          );
+        }
+    );
+  }
+
+  addMessage() async{
+    try{
+      Message message = new Message();
+      message.idGame = _currentMatch.matchtoken;
+      message.message = _controllerMessage.text;
+      message.timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
+      message.idUser = CurrentUser.user.id;
+      _controllerMessage.clear();
+      await  Api.addChat(message);
+    }
+    catch(e){
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -192,37 +251,6 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
       ],
     );
 
-    var chat = ListView(
-      //shrinkWrap: true, //Que comando mágico é esse???
-      children: <Widget>[
-        ChatMessage(
-//Todo: Deverá ser adicionado em tempo de execução
-          messageType: MessageType.sent,
-          message: "Muito legal esse jogo!",
-          backgroundColor: AppColors.redPrimary,
-          textColor: Colors.white,
-        ),
-        ChatMessage(
-          messageType: MessageType.received,
-          message: "É sim, mas eu vou te ganhar boboca",
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-        ),
-        ChatMessage(
-          messageType: MessageType.sent,
-          message: "Só desenvolvedor bolado",
-          backgroundColor: AppColors.redPrimary,
-          textColor: Colors.white,
-        ),
-        ChatMessage(
-          messageType: MessageType.sent,
-          message: "Turminha nota mil",
-          backgroundColor: AppColors.redPrimary,
-          textColor: Colors.white,
-        ),
-      ],
-    );
-
     var chatInput = Row(
       children: <Widget>[
         Expanded(
@@ -235,6 +263,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
               ),
               height: 50,
               child: TextField(
+                controller: _controllerMessage,
                 keyboardType: TextInputType.text,
                 decoration: InputDecoration(
                     border: InputBorder.none,
@@ -257,7 +286,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
         IconButton(
             icon: const Icon(Icons.send),
             color: Colors.white,
-            onPressed: () => {})
+            onPressed: (){addMessage();})
       ],
     );
 
@@ -292,7 +321,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
                       ),
                       Container(
                         height: size.height * 0.27, //Todo: Muito ruim
-                        child: chat,
+                        child: buildListView(),
                       ),
                       Expanded(
                         child: chatInput,
@@ -306,4 +335,5 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
       ),
     );
   }
+
 }

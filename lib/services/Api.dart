@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/models/Message.dart';
 import 'package:jogodavelha/screens/Lobby.dart';
 import '../storage/CurrentUser.dart';
 import '../models/User.dart';
@@ -10,6 +11,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/LobbyModel.dart';
 import '../models/Match.dart';
 import '../storage/Bot.dart';
+import '../models/Message.dart';
+import 'package:uuid/uuid.dart';
+
 /*
 Credenciais do Firebase:
 Email: g04vermelhouff@gmail.com
@@ -116,6 +120,36 @@ class Api {
       throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
+  static Future<void> addChat(Message message) async {
+    try {
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      return await db
+          .collection("messages") //Desce em messages
+          .document(message.idGame)
+          .collection("game_messages")
+          .document(Uuid().v4()) // O nome do documento de mensagens
+          .setData(message.toMap());
+    } catch (e) {
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
+  static Stream<QuerySnapshot> createListenerForChat(String matchToken) {
+    try {
+      return Firestore.instance
+          .collection("messages")
+          .document(matchToken)
+          .collection("game_messages")
+          .snapshots();
+    }  catch (e) {
+      String error = e.code != null? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
 
   static Future<void> deleteLobby(LobbyModel lobby) async {
     try {
@@ -217,5 +251,6 @@ class Api {
       throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
+
 
 }

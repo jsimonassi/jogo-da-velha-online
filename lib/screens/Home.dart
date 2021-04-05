@@ -58,8 +58,6 @@ class _HomeState extends State<Home> {
           return History(RecentMatch.listRecentMatches[index].player1, RecentMatch.listRecentMatches[index].player2, RecentMatch.listRecentMatches[index].match);
         }
     );
-
-
   }
 
   @override
