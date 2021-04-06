@@ -112,6 +112,32 @@ class Api {
     }
   }
 
+  static Future<List<User>> getUsersByKey(String key) async {
+    try {
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("users").where("name", isGreaterThanOrEqualTo: key).getDocuments();//Todo: Pesquisa muitooo ruim - Firebase dificultou aqui
+      var list = querySnapshot.documents;
+      if (list.isEmpty) return null;
+      List<User> response = [];
+      for (int i = 0; i < list.length; i++) {
+        if(list[i].data["id"] != CurrentUser.user.id) {
+          User user = new User();
+          user.name = list[i].data["name"];
+          user.password = list[i].data["password"];
+          user.email = list[i].data["email"];
+          user.nickname = list[i].data["nickname"];
+          user.urlImage = list[i].data["urlImage"];
+          user.id = list[i].data["id"];
+          response.add(user);
+        }
+      }
+      return response;
+    } catch (e) {
+      String error = e.code != null ? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
   static Future<void> updateLobby(LobbyModel newLobby) async {
     try {
       Firestore db = Firestore.instance; //Instancia de Firestore

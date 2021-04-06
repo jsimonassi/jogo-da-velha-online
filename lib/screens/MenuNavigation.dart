@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/screens/Edit.dart';
-import 'package:jogodavelha/screens/Search_Opponents.dart';
+import 'package:jogodavelha/screens/Search.dart';
 import '../screens/Home.dart';
 
 class MenuNavigation extends StatefulWidget {
@@ -17,7 +17,7 @@ class _MenuNavigationState extends State<MenuNavigation> {
 
   final tabs = [
     Center(child: Home()),
-    Center(child: SearchOpponents()),
+    Center(child: Search()),
     Center(child: EditPage()),
   ];
 

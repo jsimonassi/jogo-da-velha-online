@@ -51,7 +51,7 @@ class SearchResult extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'nickname',
+                  this.nickname,
                   style: TextStyle(
                     fontSize: 25.00,
                     fontWeight: FontWeight.bold,

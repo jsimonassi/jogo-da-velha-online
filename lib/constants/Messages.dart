@@ -30,6 +30,9 @@ class AppMessages {
   static const String saveSuccess = "Conta criada!";
   static const String updateSuccess = "Conta atualizada!";
   static const String hello = "Olá, ";
+  static const String searchPlaceholder = "Pesquisar";
+  static const String friendsList = "Lista de amigos:";
+
 
   static const String newGame = "NOVA PARTIDA";
   static const String newTraining = "TREINAR";
