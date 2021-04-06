@@ -51,7 +51,7 @@ class History extends StatelessWidget {
                   children: <Widget>[
 
                   Text(
-                      "Vs. " + this.player2.nickname,
+                      "Vs. " + (this.match.player1Id == CurrentUser.user.id? this.player2.nickname:this.player1.nickname),
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -63,7 +63,10 @@ class History extends StatelessWidget {
                   ),
                   Text(
                     this.match.timestamp != null?
-                    new DateFormat('dd-MM-yyyy hh:mm a').format(new DateTime.fromMillisecondsSinceEpoch(int.parse(this.match.timestamp))).toString():
+                    new DateFormat('dd-MM-yyyy hh:mm a')
+                        .format(new DateTime.fromMillisecondsSinceEpoch(
+                        int.parse(this.match.timestamp))
+                        .subtract(Duration(hours: 3))).toString():
                     "",
                       style: TextStyle(
                       color: Colors.white,
