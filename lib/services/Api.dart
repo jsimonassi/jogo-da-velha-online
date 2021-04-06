@@ -4,7 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/models/Message.dart';
 import 'package:jogodavelha/models/FriendRequest.dart';
-import 'package:jogodavelha/screens/Lobby.dart';
+import 'package:jogodavelha/storage/RecentMatch.dart';
 import '../storage/CurrentUser.dart';
 import '../models/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,7 +12,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/LobbyModel.dart';
 import '../models/Match.dart';
 import '../storage/Bot.dart';
-import '../models/Message.dart';
 import 'package:uuid/uuid.dart';
 import '../models/FriendRequest.dart';
 
@@ -228,9 +227,10 @@ class Api {
 
   static Future<List<Match>> getMatches(User user) async {
     try {
-      QuerySnapshot querySnapshot =
-          await Firestore.instance.collection("matches").getDocuments();
+      QuerySnapshot querySnapshot = await Firestore.instance.collection("matches").where("player1id", isEqualTo: user.id).getDocuments();//Partidas que eu sou Player 1
       var list = querySnapshot.documents;
+      QuerySnapshot querySnapshot2 = await Firestore.instance.collection("matches").where("player2id", isEqualTo: user.id).getDocuments();//Partidas que eu sou Player 2
+      list.addAll(querySnapshot2.documents);//Junta os dois resultados (Única forma que encontrei de fazer um or. Deve ter algo mais elegante que isso).
       if (list.isEmpty) return null;
       List<Match> response = [];
       for (int i = 0; i < list.length; i++) {
@@ -259,20 +259,6 @@ class Api {
           .collection("matches")
           .document(match.matchtoken)
           .snapshots();
-    } catch (e) {
-      String error = e.code != null ? e.code : '';
-      print("Errorrr $e");
-      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
-    }
-  }
-
-  static Future<void> sendFriendRequest(FriendRequest request) async {
-    try {
-      Firestore db = Firestore.instance; //Instancia de Firestore
-      return await db
-          .collection("friendRequests") //Desce em Users
-          .document(request.token) // O nome do documento do usuário é o ID dele
-          .setData(request.toMap());
     } catch (e) {
       String error = e.code != null ? e.code : '';
       print("Errorrr $e");

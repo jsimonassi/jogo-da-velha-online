@@ -26,16 +26,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  // getMatches() async
-  // {
-  //   var resultado = await Api.getMatches(CurrentUser.user);
-  //   print(resultado);
-  // }
 
+  bool _isLoading = true;
 
   @override
   void initState() {
-    RecentMatch.getMacthes();
+    getRecentMatchesList();
     super.initState();
   }
   startTraining(){
@@ -46,10 +42,14 @@ class _HomeState extends State<Home> {
         MaterialPageRoute(builder: (BuildContext context) => PreMatch(trainingLobby)));
   }
 
-
-
-
-
+  getRecentMatchesList() async {
+    if(RecentMatch.listRecentMatches.isEmpty){
+      await RecentMatch.getMacthes();
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   buildListView(){
     return ListView.builder(
@@ -57,6 +57,16 @@ class _HomeState extends State<Home> {
         itemBuilder:( BuildContext context, int index) {
           return History(RecentMatch.listRecentMatches[index].player1, RecentMatch.listRecentMatches[index].player2, RecentMatch.listRecentMatches[index].match);
         }
+    );
+  }
+
+  loadingIndicator(){
+    return Column(
+      children: <Widget>[
+        Expanded(child: Container()),
+        CircularProgressIndicator(),
+        Expanded(child: Container())
+      ],
     );
   }
 
@@ -130,9 +140,8 @@ class _HomeState extends State<Home> {
                 child: RedButton(AppMessages.newTraining, () => startTraining()),
               ),
               Expanded(
-                child: buildListView(),
+                child: _isLoading? loadingIndicator():buildListView(),
               )
-
             ],
           ),
         ),

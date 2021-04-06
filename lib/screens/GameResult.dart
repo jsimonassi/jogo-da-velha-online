@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/RedButton.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
-import 'package:jogodavelha/screens/Lobby.dart';
 import 'package:jogodavelha/screens/MenuNavigation.dart';
+import 'package:jogodavelha/storage/RecentMatch.dart';
 import '../models/User.dart';
 
 User winner;
@@ -19,6 +19,12 @@ class GameResult extends StatefulWidget {
 }
 
 class _GameResultState extends State<GameResult> {
+
+  @override
+  void initState() {
+    RecentMatch.getMacthes();
+    super.initState();
+  }
 
   getProfileImage(){
     if(winner == null){

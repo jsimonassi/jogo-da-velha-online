@@ -1,6 +1,8 @@
 import 'package:jogodavelha/constants/Colors.dart';
+import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/models/Match.dart';
-
+import 'package:jogodavelha/storage/CurrentUser.dart';
+import 'package:intl/intl.dart';
 import '../models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,7 @@ class History extends StatelessWidget {
   }
 
   Widget build(BuildContext context) {
+    //Intl.defaultLocale = 'pt_BR';
     return Container(
       alignment: Alignment.center,
       child: Container(
@@ -59,8 +62,9 @@ class History extends StatelessWidget {
                     height: 3,
                   ),
                   Text(
-                      "15/03/2021 - 22:27",
-                      //this.match.timestamp,
+                    this.match.timestamp != null?
+                    new DateFormat('dd-MM-yyyy hh:mm a').format(new DateTime.fromMillisecondsSinceEpoch(int.parse(this.match.timestamp))).toString():
+                    "",
                       style: TextStyle(
                       color: Colors.white,
                       fontSize: 12,
@@ -70,8 +74,7 @@ class History extends StatelessWidget {
                       height: 3,
                     ),
                     Text(
-                    "VENCEU",
-                    //this.match.winner,
+                    this.match.winner == CurrentUser.user.id? AppMessages.win: AppMessages.lose,
                     style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,

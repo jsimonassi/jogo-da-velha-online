@@ -34,6 +34,9 @@ class AppMessages {
   static const String newGame = "NOVA PARTIDA";
   static const String newTraining = "TREINAR";
   static const String findUsers = "Encontrando jogadores para a partida...";
+  static const String win = "VENCEU";
+  static const String lose = "PERDEU";
+
 
 
   //Bot infos
