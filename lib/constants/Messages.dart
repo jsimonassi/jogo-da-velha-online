@@ -32,6 +32,7 @@ class AppMessages {
   static const String hello = "Olá, ";
   static const String searchPlaceholder = "Pesquisar";
   static const String friendsList = "Lista de amigos:";
+  static const String friendRequestSend = "Solicitação de amizade enviada!";
 
 
   static const String newGame = "NOVA PARTIDA";

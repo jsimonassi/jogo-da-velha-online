@@ -295,7 +295,7 @@ class Api {
   static Future<List<FriendRequest>> getFriendRequests(User user) async {
     try {
       QuerySnapshot querySnapshot = await Firestore.instance
-          .collection("friendRequests")
+          .collection("friend_requests")
           .where("to", isEqualTo: user.id)
           .getDocuments();
       var list = querySnapshot.documents;
@@ -318,7 +318,7 @@ class Api {
     try {
       Firestore db = Firestore.instance; //Instancia de Firestore
       return await db
-          .collection("friendRequests") //Desce em Users
+          .collection("friend_requests") //Desce em Users
           .document(request.token) // O nome do documento do usuário é o ID dele
           .setData(request.toMap());
     } catch (e) {

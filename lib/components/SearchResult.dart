@@ -74,7 +74,7 @@ class SearchResult extends StatelessWidget {
                   height: 45.00,
                   width: 100.00,
                   child: TextButton(
-                    onPressed:()=>{firstButtonAction},
+                    onPressed:this.firstButtonAction,
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
                     ),
@@ -126,10 +126,10 @@ class SearchResult extends StatelessWidget {
                   height: 45.00,
                   width: 100.00,
                   child: TextButton(
-                    onPressed:()=>{secondButtonAction},
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
                     ),
+                    onPressed: this.secondButtonAction,
                     child: Text(
                       AppMessages.redButtonAdd,
                       style: TextStyle(

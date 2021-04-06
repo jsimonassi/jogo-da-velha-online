@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:jogodavelha/components/ModalDialog.dart';
 import 'package:jogodavelha/components/SearchResult.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/models/FriendRequest.dart';
@@ -25,7 +26,10 @@ class _SearchState extends State<Search> {
       FriendRequest newRequest = new FriendRequest(
           CurrentUser.user.id, newFriend.id, null);
       await Api.sendFriendRequest(newRequest);
-      print("Deu bom");
+      showDialog(
+          context: context,
+          builder: (_) => new ModalDialog(AppMessages.friendRequestSend, "Aguarde " + newFriend.nickname+" aceitar sua solicitação.",
+                  () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
     } catch (e) {
       print("Deu ruim $e");
     }
@@ -70,7 +74,7 @@ class _SearchState extends State<Search> {
         itemBuilder:( BuildContext context, int index) {
           return SearchResult(_searchedUsers[index].urlImage, _searchedUsers[index].nickname,
               _searchedUsers[index].name, 10,
-              10, "Adicionar", () => {}, () => {});
+              10, "Adicionar", () {sendFriendRequest(_searchedUsers[index]);}, () => {});
         }
     );
   }
