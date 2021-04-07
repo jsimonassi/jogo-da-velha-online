@@ -14,9 +14,10 @@ import '../models/Match.dart';
 import '../storage/Bot.dart';
 import 'package:uuid/uuid.dart';
 import '../models/FriendRequest.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 /*
-Credenciais do Firebase:
+Credenciais do Firebase e OneSignal:
 Email: g04vermelhouff@gmail.com
 Senha: UFF@alunos88
  */
@@ -43,6 +44,10 @@ class Api {
     //Todo: Deve retornar user
     try {
       Firestore db = Firestore.instance; //Instancia de Firestore
+      OSPermissionSubscriptionState status = await OneSignal.shared.getPermissionSubscriptionState();
+      if(status != null){
+        newUser.pushId = status.subscriptionStatus.userId;
+      }
       return await db
           .collection("users") //Desce em Users
           .document(newUser.id) // O nome do documento do usuário é o ID dele
@@ -104,6 +109,9 @@ class Api {
       user.nickname = infos["nickname"];
       user.urlImage = infos["urlImage"];
       user.id = infos["id"];
+      user.wins = infos["wins"];
+      user.losses = infos["losses"];
+      user.pushId = infos["push_id"];
       return user;
     } catch (e) {
       String error = e.code != null ? e.code : '';
@@ -127,6 +135,9 @@ class Api {
           user.nickname = list[i].data["nickname"];
           user.urlImage = list[i].data["urlImage"];
           user.id = list[i].data["id"];
+          user.wins =list[i].data["wins"];
+          user.losses = list[i].data["losses"];
+          user.pushId = list[i].data["push_id"];
           response.add(user);
         }
       }
@@ -304,7 +315,7 @@ class Api {
       for (int i = 0; i < list.length; i++) {
         Map<String, dynamic> infos = list[i].data;
         var newFriendRequest =
-            FriendRequest(infos["from"], infos["to"], infos["id"]);
+            FriendRequest(infos["from"], infos["to"], infos["from_notification_id"], infos["id"]);
         response.add(newFriendRequest);
       }
       return response;
@@ -317,14 +328,37 @@ class Api {
   static Future<void> sendFriendRequest(FriendRequest request) async {
     try {
       Firestore db = Firestore.instance; //Instancia de Firestore
-      return await db
+      await db
           .collection("friend_requests") //Desce em Users
           .document(request.token) // O nome do documento do usuário é o ID dele
           .setData(request.toMap());
+
+      await sendNotification(request);
+
     } catch (e) {
       String error = e.code != null ? e.code : '';
       print("Errorrr $e");
       throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
+
+  static Future<void> sendNotification(FriendRequest request) async {
+    try {
+      if(request.idNotificationUserTo == null) return;
+      return await OneSignal.shared.postNotification(
+        OSCreateNotification(playerIds: [request.idNotificationUserTo],
+            content: CurrentUser.user.nickname + AppMessages.friendRequestReceivedBody,
+            heading: AppMessages.friendRequestReceivedTitle,
+            bigPicture: "https://firebasestorage.googleapis.com/v0/b/jogo-da-velha-ac9b0.appspot.com/o/notification.png?alt=media&token=dc3003a7-b00a-47ec-b61d-75885c39d3bf",
+            androidSmallIcon: "https://firebasestorage.googleapis.com/v0/b/jogo-da-velha-ac9b0.appspot.com/o/logo.png?alt=media&token=679d2efe-fcfa-4b83-9e5e-7d40f38f8817",
+            androidLargeIcon: "https://firebasestorage.googleapis.com/v0/b/jogo-da-velha-ac9b0.appspot.com/o/logo.png?alt=media&token=679d2efe-fcfa-4b83-9e5e-7d40f38f8817",
+        )
+      );
+    } catch (e) {
+      String error = e.code != null ? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
 }

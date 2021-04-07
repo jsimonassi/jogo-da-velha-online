@@ -24,22 +24,12 @@ class _SearchState extends State<Search> {
   sendFriendRequest(User newFriend) async {
     try {
       FriendRequest newRequest = new FriendRequest(
-          CurrentUser.user.id, newFriend.id, null);
+          CurrentUser.user.id, newFriend.id, newFriend.pushId, null);
       await Api.sendFriendRequest(newRequest);
       showDialog(
           context: context,
           builder: (_) => new ModalDialog(AppMessages.friendRequestSend, "Aguarde " + newFriend.nickname+" aceitar sua solicitação.",
                   () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
-    } catch (e) {
-      print("Deu ruim $e");
-    }
-  }
-
-  searchFriendsRequest() async {
-    //Deve retornar a lista de requisições do usuário
-    try {
-      var response = await Api.getFriendRequests(CurrentUser.user);
-      print("Deu bom");
     } catch (e) {
       print("Deu ruim $e");
     }

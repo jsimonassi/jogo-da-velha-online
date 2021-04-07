@@ -3,21 +3,24 @@ import 'package:uuid/uuid.dart';
 class FriendRequest{
 
   String _token;
-  String _idFrom;
-  String _idTo;
+  String _idUserFrom;
+  String _idUserTo;
+  String _idNotificationUserTo;
   String _text;
 
-  FriendRequest(from, to, token){
+  FriendRequest(from, to, notificationId, token){
     this._token = token != null? token: Uuid().v4();
-    this._idFrom = from;
-    this._idTo = to;
+    this._idUserFrom = from;
+    this._idUserTo = to;
+    this._idNotificationUserTo = notificationId;
   }
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
       "id" : this.token,
-      "from": this._idFrom,
-      "to": this._idTo
+      "from": this._idUserFrom,
+      "to": this._idUserTo,
+      "from_notification_id": this._idNotificationUserTo,
     };
     return map;
   }
@@ -28,16 +31,22 @@ class FriendRequest{
     _text = value;
   }
 
-  String get idTo => _idTo;
+  String get idNotificationUserTo => _idNotificationUserTo;
 
-  set idTo(String value) {
-    _idTo = value;
+  set idNotificationUserTo(String value) {
+    _idNotificationUserTo = value;
   }
 
-  String get idFrom => _idFrom;
+  String get idUserTo => _idUserTo;
 
-  set idFrom(String value) {
-    _idFrom = value;
+  set idUserTo(String value) {
+    _idUserTo = value;
+  }
+
+  String get idUserFrom => _idUserFrom;
+
+  set idUserFrom(String value) {
+    _idUserFrom = value;
   }
 
   String get token => _token;

@@ -8,6 +8,9 @@ class User {
   String _email;
   String _urlImage;
   String _password;
+  String _pushId;
+  int _wins = 0;
+  int _losses = 0;
 
   //Contrutor padrão. Crie outros, se necessário.
   User();
@@ -21,7 +24,10 @@ class User {
       "email" : this._email,
       "nickname": this._nickname,
       "urlImage": this._urlImage,
-      "password": this._password
+      "password": this._password,
+      "push_id": this._pushId,
+      "wins": this._wins,
+      "losses": this._losses,
     };
     return map;
   }
@@ -61,5 +67,23 @@ class User {
 
   set nickname(String value) {
     _nickname = value;
+  }
+
+  int get losses => _losses;
+
+  set losses(int value) {
+    _losses = value;
+  }
+
+  int get wins => _wins;
+
+  set wins(int value) {
+    _wins = value;
+  }
+
+  String get pushId => _pushId;
+
+  set pushId(String value) {
+    _pushId = value;
   }
 }

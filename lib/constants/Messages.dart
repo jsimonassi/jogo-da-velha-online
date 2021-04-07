@@ -33,6 +33,8 @@ class AppMessages {
   static const String searchPlaceholder = "Pesquisar";
   static const String friendsList = "Lista de amigos:";
   static const String friendRequestSend = "Solicitação de amizade enviada!";
+  static const String friendRequestReceivedBody = " enviou uma solicitação de amizade pra você!";
+  static const String friendRequestReceivedTitle = "Nova solicitação de amizade";
 
 
   static const String newGame = "NOVA PARTIDA";
