@@ -58,7 +58,17 @@ class _LobbyState extends State<Lobby> {
     try {
       List<LobbyModel> lobbys = await Api.getLobbys();  // Verificar se já existe Lobby
       if (lobbys != null && lobbys.isNotEmpty) { //Já existe um Lobby criado. Entrar no mesmo:
-        currentLobby = lobbys[0]; //Lobby atual é setado
+        for(int i = 0; i < lobbys.length; i++)
+          {
+            if((_player1 != null && _player2 == null) || (_player1 == null && _player2 != null))
+            {
+              currentLobby = lobbys[0]; //Lobby atual é setado
+            }
+            else
+            {
+              currentLobby = lobbys[i++]; //Lobby atual é setado
+            }
+          }
         currentLobby.player2 = CurrentUser.user.id; //Informação que estava faltando é o player2
         await Api.updateLobby(currentLobby);//Agora eu sou o player 2 desse Lobby
         createListener();

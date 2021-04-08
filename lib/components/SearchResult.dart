@@ -41,52 +41,60 @@ class SearchResult extends StatelessWidget {
               radius: 50.00,
             )  ,
           ),
-          Container(
-            padding: EdgeInsets.only(
-              top: 20.00,
-              left: 10.00,
-            ),
+          Flexible(
+            flex: 3,
+            child: Container(
+              padding: EdgeInsets.only(
+                top: 20.00,
+                left: 10.00,
+              ),
 
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  this.nickname,
-                  style: TextStyle(
-                    fontSize: 25.00,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(
-                  height: 5.00,
-                ),
-                Text(
-                  this.nome,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-                SizedBox(
-                  height: 20.00,
-                ),
-                Container(
-                  height: 45.00,
-                  width: 100.00,
-                  child: TextButton(
-                    onPressed:this.firstButtonAction,
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
-                    ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Flexible(
+                    fit: FlexFit.loose,
                     child: Text(
-                      AppMessages.redButton,
+                      this.nickname,
                       style: TextStyle(
-                          color: Colors.white
+                        fontSize: 25.00,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ),
-                )
-              ],
+                  SizedBox(
+                    height: 5.00,
+                  ),
+                  Flexible(
+                    child: Text(
+                      this.nome,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20.00,
+                  ),
+                  Container(
+                    height: 45.00,
+                    width: 100.00,
+                    child: TextButton(
+                      onPressed:this.firstButtonAction,
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
+                      ),
+                      child: Text(
+                        AppMessages.redButton,
+                        style: TextStyle(
+                            color: Colors.white
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
           Expanded(child: Container()),
