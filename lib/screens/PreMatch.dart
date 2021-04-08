@@ -76,8 +76,8 @@ class _PreMatchState extends State<PreMatch> {
       currentMatch.timestamp = DateTime.now().millisecondsSinceEpoch.toString();
 
       if(_player2.id != Bot.botInfos.id){ //Não é treino
-        await Api.updateMatch(currentMatch);
         if(currentLobby.player1 == CurrentUser.user.id){ //Só um pode apagar o Lobby
+          await Api.updateMatch(currentMatch);
           await Api.deleteLobby(currentLobby);
         }
         Navigator.pushAndRemoveUntil(context,
