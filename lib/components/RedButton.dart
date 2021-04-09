@@ -18,10 +18,6 @@ class RedButton extends StatelessWidget {
 
     return new Container(
       height: 45,
-      padding: EdgeInsets.only(
-        right: 40,
-        left: 40,
-      ),
       child: TextButton(onPressed: this.callback,
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),

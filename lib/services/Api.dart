@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/models/Message.dart';
 import 'package:jogodavelha/models/FriendRequest.dart';
+import 'package:jogodavelha/models/Notification.dart';
+import 'package:jogodavelha/storage/NotificationsStore.dart';
 import 'package:jogodavelha/storage/RecentMatch.dart';
 import '../storage/CurrentUser.dart';
 import '../models/User.dart';
@@ -78,6 +80,7 @@ class Api {
           email: email, password: password);
       CurrentUser.user = await getUser(result.user.uid); //Set usuário atual
       Bot.botInfos = Bot.generateBot();
+      await NotificationStore.refreshNotificationsList();
       return CurrentUser.user;
     } catch (e) {
       String error = e.code != null ? e.code : '';
@@ -303,38 +306,11 @@ class Api {
     }
   }
 
-  static Future<List<FriendRequest>> getFriendRequests(User user) async {
-    try {
-      QuerySnapshot querySnapshot = await Firestore.instance
-          .collection("friend_requests")
-          .where("to", isEqualTo: user.id)
-          .getDocuments();
-      var list = querySnapshot.documents;
-      if (list.isEmpty) return null;
-      List<FriendRequest> response = [];
-      for (int i = 0; i < list.length; i++) {
-        Map<String, dynamic> infos = list[i].data;
-        var newFriendRequest =
-            FriendRequest(infos["from"], infos["to"], infos["from_notification_id"], infos["id"]);
-        response.add(newFriendRequest);
-      }
-      return response;
-    } catch (e) {
-      print(e);
-      throw FormatException(e.code);
-    }
-  }
-
   static Future<void> sendFriendRequest(FriendRequest request) async {
     try {
-      Firestore db = Firestore.instance; //Instancia de Firestore
-      await db
-          .collection("friend_requests") //Desce em Users
-          .document(request.token) // O nome do documento do usuário é o ID dele
-          .setData(request.toMap());
-
-      await sendNotification(request);
-
+      await sendPushNotification(request); //Envia pushNotification para o usuário do amiguinho
+      Notification notification = new Notification(0, request.idUserFrom, request.idUserTo, "Quer ser seu amigo.", null); //Envia notificação para o BD para ser recuperada posteriormente
+      await addNotification(notification);
     } catch (e) {
       String error = e.code != null ? e.code : '';
       print("Errorrr $e");
@@ -342,7 +318,7 @@ class Api {
     }
   }
 
-  static Future<void> sendNotification(FriendRequest request) async {
+  static Future<void> sendPushNotification(FriendRequest request) async {
     try {
       if(request.idNotificationUserTo == null) return;
       return await OneSignal.shared.postNotification(
@@ -354,6 +330,58 @@ class Api {
             androidLargeIcon: "https://firebasestorage.googleapis.com/v0/b/jogo-da-velha-ac9b0.appspot.com/o/logo.png?alt=media&token=679d2efe-fcfa-4b83-9e5e-7d40f38f8817",
         )
       );
+    } catch (e) {
+      String error = e.code != null ? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
+  static Future<void> addNotification(Notification notification) async {
+    try {
+      if(notification.userTo != null){
+        Firestore db = Firestore.instance; //Instancia de Firestore
+        await db
+            .collection("notifications") //Desce em Users
+            .document(notification.id) // O nome do documento do usuário é o ID dele
+            .setData(notification.toMap());
+      }
+    } catch (e) {
+      String error = e.code != null ? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
+
+  static Future<List<Notification>> getNotifications(User user) async {
+    try {
+      QuerySnapshot querySnapshot = await Firestore.instance
+          .collection("notifications")
+          .where("to", isEqualTo: user.id)
+          .getDocuments();
+      var list = querySnapshot.documents;
+      if (list.isEmpty) return null;
+      List<Notification> response = [];
+      for (int i = 0; i < list.length; i++) {
+        Map<String, dynamic> infos = list[i].data;
+        var newNotification = new Notification(infos["type"], infos["from"], infos["to"], infos["text"], infos["id"]);
+        response.add(newNotification);
+      }
+      return response;
+    } catch (e) {
+      print(e);
+      throw FormatException(e.code);
+    }
+  }
+
+  static Future<void> deleteNotification(String notificationId) async {
+    try {
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      return await db
+          .collection("notifications") //Desce em Users
+          .document(notificationId) // O nome do documento do usuário é o ID dele
+          .delete();
     } catch (e) {
       String error = e.code != null ? e.code : '';
       print("Errorrr $e");

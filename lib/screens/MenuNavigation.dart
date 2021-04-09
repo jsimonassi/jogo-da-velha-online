@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/screens/Edit.dart';
 import 'package:jogodavelha/screens/Search.dart';
+import 'package:jogodavelha/storage/NotificationsStore.dart';
 import '../screens/Home.dart';
+import '../screens/Notifications.dart';
 
 class MenuNavigation extends StatefulWidget {
 
@@ -14,10 +16,44 @@ class MenuNavigation extends StatefulWidget {
 class _MenuNavigationState extends State<MenuNavigation> {
 
   int _currentIndex = 0;
+  bool _hasNotification = false;
+
+  @override
+  void initState() {
+    if(NotificationStore.listRecentNotifications.length > 0){
+      setState(() {
+        _hasNotification = true;
+      });
+    }else{
+      setState(() {
+        _hasNotification = false;
+      });
+    }
+    super.initState();
+  }
+
+  getNotificationIcon(){
+    if(_hasNotification){
+      return new Stack(
+          children: <Widget>[
+            new Icon(Icons.notifications),
+            new Positioned(  // draw a red marble
+              top: 0.0,
+              right: 0.0,
+              child: new Icon(Icons.brightness_1, size: 10.0, //Todo: Deve ser exibido baseado na lista de notificações
+                  color: Colors.redAccent),
+            )
+          ]
+      );
+    }
+
+    return new Icon(Icons.notifications);
+  }
 
   final tabs = [
     Center(child: Home()),
     Center(child: Search()),
+    Center(child: Notifications()),
     Center(child: EditPage()),
   ];
 
@@ -41,16 +77,22 @@ class _MenuNavigationState extends State<MenuNavigation> {
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: "Home",
+              backgroundColor: Colors.red
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.play_arrow),
               label: 'Play',
               backgroundColor: Colors.red
           ),
+            BottomNavigationBarItem(
+                icon: getNotificationIcon(),
+                label: 'Notificações',
+                backgroundColor: Colors.red
+            ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person),
+              icon: Icon(Icons.notifications),
               label: 'Perfil',
-              backgroundColor: Colors.red
+              backgroundColor: Colors.red,
           ),
           ],
         onTap: (index){
