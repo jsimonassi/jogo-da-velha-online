@@ -42,14 +42,36 @@ class _NotificationsState extends State<Notifications> {
     await Api.deleteNotification(notification.notification.id);
   }
 
+  rejectFriendRequest(notification){
+    deleteNotification(notification);
+  }
+
+  acceptFriendRequest(notification){
+    //Todo: Adicionar amigo
+    try{
+
+    }catch(e){
+
+    }finally{
+      deleteNotification(notification);
+    }
+
+  }
+
   buildListView(){
+    if(NotificationStore.listRecentNotifications.length <= 0){
+      return Text("Sem novas notificações",
+      style: TextStyle(
+        color: Colors.white,
+      ),);
+    }
     return ListView.builder(
         itemCount: NotificationStore.listRecentNotifications == null?0:NotificationStore.listRecentNotifications.length,
         itemBuilder:( BuildContext context, int index) {
           return AddFriend(NotificationStore.listRecentNotifications[index].user,
                   () {deleteNotification(NotificationStore.listRecentNotifications[index]);},
-              null, null);
-          //this._newFriend, this._closeNotificationCallback, this._rejectRequestCallback, this._acceptRequestCallback
+                  () {rejectFriendRequest(NotificationStore.listRecentNotifications[index]);},
+                  () {acceptFriendRequest(NotificationStore.listRecentNotifications[index]);});
         }
     );
   }
