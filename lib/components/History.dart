@@ -3,6 +3,7 @@ import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/models/Match.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import 'package:intl/intl.dart';
+import 'package:marquee_text/marquee_text.dart';
 import '../models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,13 +51,17 @@ class History extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
 
-                  Text(
-                      "Vs. " + (this.match.player1Id == CurrentUser.user.id? this.player2.nickname:this.player1.nickname),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      )
+                  Container(
+                    width: 100,
+                    child: MarqueeText(
+                        text: "Vs. " + (this.match.player1Id == CurrentUser.user.id? this.player2.nickname:this.player1.nickname),
+                        speed: 25,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        )
+                    ),
                   ),
                   SizedBox(
                     height: 3,

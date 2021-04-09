@@ -38,6 +38,7 @@ dependencies:
   audioplayers: ^0.18.2
   intl: ^0.17.0
   onesignal_flutter: ^2.3.4
+  marquee_text: ^2.0.0
 
 dev_dependencies:
   flutter_test:

@@ -13,6 +13,7 @@ import 'package:jogodavelha/storage/RecentMatch.dart';
 import 'package:jogodavelha/storage/RecentMatch.dart';
 import 'package:jogodavelha/storage/RecentMatch.dart';
 import 'package:jogodavelha/storage/RecentMatch.dart';
+import 'package:marquee_text/marquee_text.dart';
 import '../storage/CurrentUser.dart';
 import '../storage/Bot.dart';
 import '../components/RedButton.dart';
@@ -113,13 +114,17 @@ class _HomeState extends State<Home> {
                       SizedBox(
                         width: 20,
                       ),
-                      Text(
-                        AppMessages.hello + CurrentUser.user.nickname,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 24,
-                            decoration: TextDecoration.none),
+                      Container(
+                        width: 200,
+                        child: MarqueeText(
+                          text: AppMessages.hello + CurrentUser.user.nickname,
+                          speed: 30,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 24,
+                              decoration: TextDecoration.none),
+                        ),
                       )
                     ],
                   )),
