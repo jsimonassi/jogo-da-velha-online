@@ -30,7 +30,7 @@ class _LobbyState extends State<Lobby> {
 
   @override
   void initState() {
-    createLobby();
+    searchLobby();
     super.initState();
   }
 
@@ -54,30 +54,45 @@ class _LobbyState extends State<Lobby> {
     }
   }
 
-  createLobby() async { //Todo: Validar muito isso aqui!!
+  createLobby() async {
+    try{
+      var newLobby = new LobbyModel();
+      newLobby.player1 = CurrentUser.user.id; //Eu sou o player 1 do Lobby
+      currentLobby = newLobby; //Atualiza LobbyCorrente
+      await Api.updateLobby(newLobby);
+      createListener(); //Cria listener pra esperar outro jogador
+    }catch(e){
+      print(e);
+    }
+  }
+
+  searchLobby() async { //Todo: Validar muito isso aqui!!
     try {
       List<LobbyModel> lobbys = await Api.getLobbys();  // Verificar se já existe Lobby
+      bool isFull = false; //Diz se todos os lobbys estão cheios
       if (lobbys != null && lobbys.isNotEmpty) { //Já existe um Lobby criado. Entrar no mesmo:
-        for(int i = 0; i < lobbys.length; i++)
-          {
-            if((_player1 != null && _player2 == null) || (_player1 == null && _player2 != null))
-            {
-              currentLobby = lobbys[0]; //Lobby atual é setado
+        for(int i = 0; i < lobbys.length; i++){
+            if(lobbys[i].player1 != null && lobbys[i].player2 == null){
+              currentLobby = lobbys[i]; //Lobby atual é setado
+              currentLobby.player2 = CurrentUser.user.id; //Informação que estava faltando é o player2
+              isFull = false;
+              break;
+            }else if(lobbys[i].player1 == null && lobbys[i].player2 != null) {
+              currentLobby = lobbys[i]; //Lobby atual é setado
+              currentLobby.player1 = CurrentUser.user.id;
+              isFull = false;
+              break;
             }
-            else
-            {
-              currentLobby = lobbys[i++]; //Lobby atual é setado
-            }
+            isFull = true;
           }
-        currentLobby.player2 = CurrentUser.user.id; //Informação que estava faltando é o player2
+        if(isFull) { //Caso em que existe lobby, mas estão cheios
+          createLobby();
+          return;
+        }
         await Api.updateLobby(currentLobby);//Agora eu sou o player 2 desse Lobby
         createListener();
       } else {  //Não existe Lobby Criado. Vou fazer o meu!
-        var newLobby = new LobbyModel();
-        newLobby.player1 = CurrentUser.user.id; //Eu sou o player 1 do Lobby
-        currentLobby = newLobby; //Atualiza LobbyCorrente  //Todo: Deve criar listner aqui
-        await Api.updateLobby(newLobby);
-        createListener(); //Cria listener pra esperar outro jogador
+        createLobby();
       }
     } catch (e) {
       print(e);
