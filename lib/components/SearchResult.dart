@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:marquee_text/marquee_text.dart';
 
 import '../constants/Colors.dart';
 import '../constants/Colors.dart';
@@ -41,60 +42,56 @@ class SearchResult extends StatelessWidget {
               radius: 50.00,
             )  ,
           ),
-          Flexible(
-            flex: 3,
-            child: Container(
-              padding: EdgeInsets.only(
-                top: 20.00,
-                left: 10.00,
-              ),
+          Container(
+            padding: EdgeInsets.only(
+              top: 20.00,
+              left: 10.00,
+            ),
 
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Flexible(
-                    fit: FlexFit.loose,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 100,
+                  child: MarqueeText(
+                    text: this.nickname,
+                    style: TextStyle(
+                      fontSize: 25.00,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    speed: 30,
+                  ),
+                ),
+                SizedBox(
+                  height: 5.00,
+                ),
+                Text(
+                  this.nome,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(
+                  height: 20.00,
+                ),
+                Container(
+                  height: 45.00,
+                  width: 100.00,
+                  child: TextButton(
+                    onPressed:this.firstButtonAction,
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
+                    ),
                     child: Text(
-                      this.nickname,
+                      AppMessages.redButton,
                       style: TextStyle(
-                        fontSize: 25.00,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                          color: Colors.white
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 5.00,
-                  ),
-                  Flexible(
-                    child: Text(
-                      this.nome,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20.00,
-                  ),
-                  Container(
-                    height: 45.00,
-                    width: 100.00,
-                    child: TextButton(
-                      onPressed:this.firstButtonAction,
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
-                      ),
-                      child: Text(
-                        AppMessages.redButton,
-                        style: TextStyle(
-                            color: Colors.white
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
           ),
           Expanded(child: Container()),
