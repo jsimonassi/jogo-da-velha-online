@@ -1,5 +1,7 @@
 import 'package:jogodavelha/constants/Messages.dart';
 
+///Classe que modela um usuário.
+///Obs: Um bot usado na partida local também é um usuário (Ver storage/History)
 class User {
   //Atributos do usuário podem ser alterados, desde que seja alterado o toMap()
   String _id;

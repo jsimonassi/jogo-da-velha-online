@@ -3,14 +3,12 @@
  */
 
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/screens/GameMultiplayer.dart';
 import 'package:jogodavelha/screens/Game.dart';
-import 'package:jogodavelha/screens/Lobby.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../models/LobbyModel.dart';
 import '../models/User.dart';
@@ -18,6 +16,9 @@ import '../models/Match.dart';
 import '../services/Api.dart';
 import '../storage/Bot.dart';
 
+/// Tela exibida antes da partida.
+/// Existe apenas para apagar o lobby e criar no banco um componente de partida.
+/// Ela também é útil para evitar problemas com os atrasos de resposta da rede.
 LobbyModel currentLobby;
 
 class PreMatch extends StatefulWidget {

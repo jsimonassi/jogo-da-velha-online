@@ -2,6 +2,9 @@ import 'package:jogodavelha/services/Api.dart';
 import '../models/RecentMatches.dart';
 import 'CurrentUser.dart';
 
+///Lista de partidas recentes.
+///É declarada estática pois é preciso atualizar rápidamente a Home após uma partida.
+///Para não depender da rede, essa foi a solução.
 class RecentMatch{
   static List<RecentMatches> listRecentMatches =[];
 

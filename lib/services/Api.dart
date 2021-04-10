@@ -7,7 +7,6 @@ import 'package:jogodavelha/models/Message.dart';
 import 'package:jogodavelha/models/FriendRequest.dart';
 import 'package:jogodavelha/models/Notification.dart';
 import 'package:jogodavelha/storage/NotificationsStore.dart';
-import 'package:jogodavelha/storage/RecentMatch.dart';
 import '../storage/CurrentUser.dart';
 import '../models/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,6 +24,8 @@ Email: g04vermelhouff@gmail.com
 Senha: UFF@alunos88
  */
 
+///Classe responsável por tratar todas as requisições a API,
+///Seja ela firebase, OneSignal ou quaisquer outros serviços de terceiros.
 class Api {
   static Future<AuthResult> registerUser(User newUser) async {
     try {

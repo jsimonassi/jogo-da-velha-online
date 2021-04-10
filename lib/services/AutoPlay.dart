@@ -1,6 +1,8 @@
 import 'dart:math';
 import '../models/Match.dart';
 
+///Gerencia as jogadas do bot
+///Uma inteligência artificial não muito inteligente.
 class AutoPlay{
 
   static String makeABotPlay(Match currentMatch){

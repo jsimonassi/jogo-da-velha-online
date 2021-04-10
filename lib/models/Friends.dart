@@ -1,3 +1,5 @@
+
+///Classe que modela um amigo no banco de dados.
 class Friend {
 
   String _friendId; //Id do amigo

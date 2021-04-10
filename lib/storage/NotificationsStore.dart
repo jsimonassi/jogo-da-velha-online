@@ -3,6 +3,10 @@ import 'package:jogodavelha/services/Api.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../models/User.dart';
 
+///Lista de notificações. É estática pois a central de notificações e o Menu de navigação
+///precisam ter visão sobre a mesma.
+///Menu de navegação: Exibi ponto vermelho quando existe alguma notificação;
+///Central de notificação: Exibi notificações do App.
 class NotificationStore{
   static List<NotificationHelper> listRecentNotifications =[]; //Contem a notificação e o usuário que mandou
 

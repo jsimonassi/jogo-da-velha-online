@@ -7,6 +7,9 @@ Loading.enableLoading(context) e para remover Loading.disableLoading(context);
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 
+///Componente de loading circular
+///(Tela com opacidade baixa e carregamento usada em momentos que o app depende
+///de uma resposta do servidor)
 class Loading{
   static enableLoading(BuildContext context){
     showDialog(

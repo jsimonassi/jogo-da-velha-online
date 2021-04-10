@@ -9,6 +9,7 @@ import '../storage/CurrentUser.dart';
 import '../models/User.dart';
 import '../services/Api.dart';
 
+///Tela chamada no menu de "Play", mas é uma tela que busca e lista os usuários/amigos.
 class Search extends StatefulWidget {
   @override
   _SearchState createState() => _SearchState();
@@ -89,8 +90,8 @@ class _SearchState extends State<Search> {
         itemCount: _friendsList.length,
         itemBuilder:( BuildContext context, int index) {
           return SearchResult(_friendsList[index].urlImage, _friendsList[index].nickname,
-              _friendsList[index].name, 10,
-              10, "Adicionar", () => {}, () => {});
+              _friendsList[index].name, _friendsList[index].wins,
+              _friendsList[index].losses, "Adicionar", () => {}, () => {});
         }
     );
   }

@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:marquee_text/marquee_text.dart';
 
@@ -9,6 +7,7 @@ import '../constants/Colors.dart';
 import '../constants/Messages.dart';
 import 'RedButton.dart';
 
+///Componente de resultado de busca ao usuário.
 class SearchResult extends StatelessWidget {
   String urlImage;
   String nickname;
@@ -29,7 +28,12 @@ class SearchResult extends StatelessWidget {
     return Container(
       color: AppColors.backgroundGrey2,
       width: size.width,
-      height: 150.00,
+      height: 100.00,
+      padding: EdgeInsets.only(
+        top: 5,
+        bottom: 5,
+        right: 20
+      ),
       child: Row(
         children: [
           Container(
@@ -39,12 +43,11 @@ class SearchResult extends StatelessWidget {
             child:CircleAvatar(
               backgroundImage: this.urlImage != null?NetworkImage(this.urlImage):ExactAssetImage('./assets/images/profile-icon.png'),
               backgroundColor: AppColors.backgroundGrey1,
-              radius: 50.00,
+              radius: 40.00,
             )  ,
           ),
           Container(
             padding: EdgeInsets.only(
-              top: 20.00,
               left: 10.00,
             ),
 
@@ -56,7 +59,7 @@ class SearchResult extends StatelessWidget {
                   child: MarqueeText(
                     text: this.nickname,
                     style: TextStyle(
-                      fontSize: 25.00,
+                      fontSize: 18.00,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -72,11 +75,9 @@ class SearchResult extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(
-                  height: 20.00,
-                ),
+                Expanded(child: Container()),
                 Container(
-                  height: 45.00,
+                  height: 35,
                   width: 100.00,
                   child: TextButton(
                     onPressed:this.firstButtonAction,
@@ -90,25 +91,20 @@ class SearchResult extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
+                ),
+                Expanded(child: Container()),
               ],
             ),
           ),
           Expanded(child: Container()),
           Container(
-            padding: EdgeInsets.only(
-              top: 20.00,
-              left: 10.00,
-              right: 10.00,
-            ),
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
                   AppMessages.wins + this.wins.toString(),
                   style: TextStyle(
-                    fontSize: 20.00,
+                    fontSize: 16.00,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -119,16 +115,14 @@ class SearchResult extends StatelessWidget {
                 Text(
                   AppMessages.losses + this.losses.toString(),
                   style: TextStyle(
-                    fontSize: 20.00,
+                    fontSize: 16.00,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(
-                  height: 20.00,
-                ),
+                Expanded(child: Container()),
                 Container(
-                  height: 45.00,
+                  height: 35.00,
                   width: 100.00,
                   child: TextButton(
                     style: ButtonStyle(
@@ -142,11 +136,11 @@ class SearchResult extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
+                ),
+                Expanded(child: Container()),
               ],
             ),
           )
-
         ],
       ),
     );

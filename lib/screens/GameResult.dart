@@ -3,15 +3,21 @@ import 'package:jogodavelha/components/RedButton.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/screens/MenuNavigation.dart';
+import 'package:jogodavelha/storage/CurrentUser.dart';
 import 'package:jogodavelha/storage/RecentMatch.dart';
 import '../models/User.dart';
+import '../services/Api.dart';
+
+///Tela que exibe o resultado da partida
 
 User winner;
+User loser;
 
 class GameResult extends StatefulWidget {
 
-  GameResult(User matchWinner){
+  GameResult(User matchWinner, User matchLoser){
     winner= matchWinner;
+    loser = matchLoser;
   }
 
   @override
@@ -23,7 +29,25 @@ class _GameResultState extends State<GameResult> {
   @override
   void initState() {
     RecentMatch.getMacthes();
+    updateUsers();
     super.initState();
+  }
+
+  updateUsers() async {
+    if((winner != null && loser != null) && (winner.id != '00' && loser.id != '00')){ //Não deu velha e não era um treino
+      try{
+        if(CurrentUser.user.id == winner.id){ //Apenas uma pessoa atualiza
+          print("Eu vou atualizar: ");
+          print(CurrentUser.user.nickname);
+          winner.wins = winner.wins+1;
+          loser.losses = loser.losses+1;
+          await Api.updateUser(winner);
+          await Api.updateUser(loser);
+        }
+      }catch(e){
+        print(e);
+      }
+    }
   }
 
   getProfileImage(){

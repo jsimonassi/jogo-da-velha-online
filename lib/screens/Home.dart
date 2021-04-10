@@ -3,24 +3,15 @@ import 'package:jogodavelha/components/History.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/models/LobbyModel.dart';
-import 'package:jogodavelha/models/RecentMatches.dart';
-import 'package:jogodavelha/models/User.dart';
-import 'package:jogodavelha/screens/GameMultiplayer.dart';
 import 'package:jogodavelha/screens/PreMatch.dart';
-import 'package:jogodavelha/services/Api.dart';
-import 'package:jogodavelha/storage/RecentMatch.dart';
-import 'package:jogodavelha/storage/RecentMatch.dart';
-import 'package:jogodavelha/storage/RecentMatch.dart';
-import 'package:jogodavelha/storage/RecentMatch.dart';
 import 'package:jogodavelha/storage/RecentMatch.dart';
 import 'package:marquee_text/marquee_text.dart';
 import '../storage/CurrentUser.dart';
 import '../storage/Bot.dart';
 import '../components/RedButton.dart';
-import '../screens/Game.dart';
 import '../screens/Lobby.dart';
-import 'package:jogodavelha/services/Api.dart';
-import '../models/Match.dart';
+
+///Tela de Home da aplicação.
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();

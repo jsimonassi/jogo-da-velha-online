@@ -1,11 +1,12 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/RedButton.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import '../models/User.dart';
 
+
+///Componente exibido na tela de notificações quando uma
+///solicitação de amizade é recebida.
 class AddFriend extends StatelessWidget {
   User _newFriend;
   VoidCallback _acceptRequestCallback;

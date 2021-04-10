@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import '../models/Match.dart';
 
+///Elemento da tabela do game.
+///Botão que mostra X ou O de acordo com a escolha do usuário.
 class TableElement extends StatelessWidget {
 
   String id; //Identifica qual é o botão

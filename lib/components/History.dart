@@ -9,9 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../constants/Colors.dart';
 
+///Componente de histórico de partida.
+///Até o momento é usado na Home para a lista de partidas recentes
 class History extends StatelessWidget {
-  //var image1 =
-   //   'https://esportes.estadao.com.br/blogs/crop/1200x1200/robson-morelli/wp-content/uploads/sites/37/2020/08/neymar_170820203236.jpg';
 
   User player1;
   User player2;

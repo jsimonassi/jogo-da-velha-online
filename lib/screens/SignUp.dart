@@ -12,6 +12,7 @@ import '../components/ModalDialog.dart';
 import '../screens/MenuNavigation.dart';
 import '../components/Loading.dart';
 
+///Tela de criação de criação de conta.
 class SignUpPage extends StatefulWidget {
   @override
   _SignUpPageState createState() => _SignUpPageState();

@@ -18,6 +18,7 @@ import 'package:audioplayers/audioplayers.dart';
 import '../screens/GameResult.dart';
 import '../storage/Bot.dart';
 
+///Tela do Game Local, isto é, vs Bot.
 class Game extends StatefulWidget {
   Match currentMatch;
   User player1;
@@ -125,13 +126,15 @@ class _GameState extends State<Game> {
       audioController.stop();
       if(_currentMatch.winner.contains("velha")){
         Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (BuildContext context) => GameResult(null)),  (Route<dynamic> route) => false);
+            MaterialPageRoute(builder: (BuildContext context) => GameResult(null, null)),  (Route<dynamic> route) => false);
       }else {
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (BuildContext context) =>
                 GameResult(_currentMatch.winner == _player1.id
                     ? _player1
-                    : _player2)), (Route<dynamic> route) => false);
+                    : _player2, _currentMatch.winner == _player1.id
+                    ? _player2
+                    : _player1)), (Route<dynamic> route) => false);
       }
     }
   }

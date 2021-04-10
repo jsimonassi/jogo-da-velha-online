@@ -7,6 +7,11 @@ import 'package:jogodavelha/storage/NotificationsStore.dart';
 import '../screens/Home.dart';
 import '../screens/Notifications.dart';
 
+///Bottom menu da aplicação.
+///Gerencia os contextos gerais das rotas.
+///Obs: Não temos um arquivos de rotas configurado explicitamente.
+///O fluxo de mudança de tela é feito semelhante ao android nativo,
+///isto é, adicionando e removendo telas da stack.
 class MenuNavigation extends StatefulWidget {
 
   @override

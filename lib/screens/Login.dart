@@ -9,6 +9,7 @@ import '../components/ModalDialog.dart';
 import '../services/Api.dart';
 import '../components/Loading.dart';
 
+///Tela de Login e ponto de entrada da aplicação
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => new _LoginPageState();

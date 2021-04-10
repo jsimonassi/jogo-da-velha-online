@@ -9,12 +9,11 @@ import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import '../components/RedButton.dart';
 import '../services/Api.dart';
-import '../components/SnackBar.dart';
-import '../screens/Login.dart';
 import '../storage/CurrentUser.dart';
 import 'package:jogodavelha/components/ModalDialog.dart';
 import 'package:jogodavelha/components/Loading.dart';
 
+///Tela de edição das informações do usuário
 class EditPage extends StatefulWidget {
   @override
   _EditPageState createState() => _EditPageState();

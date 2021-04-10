@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-
 enum MessageType { sent, received }
 
+///Componente de balão de mensagem do chat
 class ChatMessage extends StatelessWidget {
   final String message;
   final MessageType messageType;

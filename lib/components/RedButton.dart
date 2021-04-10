@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 
+///Botão vermelho no estilo do app.
 class RedButton extends StatelessWidget {
 
   String buttonTitle;

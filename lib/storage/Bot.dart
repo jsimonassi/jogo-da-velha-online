@@ -1,6 +1,7 @@
 import 'package:jogodavelha/models/User.dart';
 import '../constants/Messages.dart';
 
+///Bot geral da aplicação. bem como métodos de manipulação do mesmo.
 class Bot extends User{
 
   static User botInfos;

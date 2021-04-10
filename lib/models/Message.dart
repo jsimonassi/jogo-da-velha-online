@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+///Classe que representa uma mensagem do chat
 class Message {
 
   String _idUser;
   String _message;
   String _timeStamp;
-  String _idGame;
+  String _idGame;//As mensagens estão diretamente relacionadas a partida em questão
 
   Message();
 

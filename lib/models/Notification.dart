@@ -6,6 +6,8 @@ import 'package:uuid/uuid.dart';
 /// 1: Infos,
 /// 2: Desafios
 
+///Classe que representa uma notificação enviada aos demais usuários: Firebase + OneSignal
+///Esta classe é usada principalmente na central de notificações
 class Notification{
   int _type;
   String _userTo; //Pra quem vai a notificação

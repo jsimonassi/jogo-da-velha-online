@@ -1,3 +1,5 @@
+
+///Constantes das mensagens exibidas no App
 class AppMessages {
   //Todo: Todas as constantes deveriam ser maiusculas. Dei mole :/
   static const String appTitle = "Jogo da velha - online";

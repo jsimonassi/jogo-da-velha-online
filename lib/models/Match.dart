@@ -1,3 +1,5 @@
+
+///Classe que representa uma partida, seja ela online ou local.
 class Match {
 
   String _player1Id;

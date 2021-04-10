@@ -1,5 +1,6 @@
 import '../models/Match.dart';
 
+///Verifica o ganhador da partida.
 class CheckWinner{
 
   String player1;

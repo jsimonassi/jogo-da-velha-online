@@ -15,6 +15,9 @@ import '../services/Api.dart';
 import '../models/LobbyModel.dart';
 import '../models/User.dart';
 //Todo: Acho que tratei todos os cenários, mas é bom validar com a equipe.
+
+///Tela de Lobby.
+///Nesta tela o usuário é capaz de encontrar um novo oponente para a partida.
 class Lobby extends StatefulWidget {
   @override
   _LobbyState createState() => _LobbyState();

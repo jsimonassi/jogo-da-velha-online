@@ -17,6 +17,8 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../screens/GameResult.dart';
 
+
+///Tela do Game Multiplayer.
 class GameMultiplayer extends StatefulWidget {
   Match currentMatch;
   User player1;
@@ -115,7 +117,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
       _currentMatch.setMatchPlays(key, _currentMatch.playerOfTheRound); //Atualiza currentMatch com jogada atual
       updateCurrentMatch(); //Manda atualização para o bd
       playAudioEffect("sounds/click.mp3");
-      checkWinner();
+      //checkWinner();
       setState(() {
         _currentTime = 0;  //Seta timer da rodada p/ 0 e troca de jogador
       });
@@ -124,6 +126,7 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
 
 
   checkWinner(){
+    if(_currentMatch.winner != null) return; //Corrigindo bug de chamar a tela de result várias vezes.
     var winner = CheckWinner(_player1.id, _player2.id, _currentMatch).check();
     if(winner != null){
       audioController.stop();
@@ -146,13 +149,15 @@ class _GameMultiplayerState extends State<GameMultiplayer> {
       print("ACABOUU");
       if(_currentMatch.winner.contains("velha")){
         Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (BuildContext context) => GameResult(null)),  (Route<dynamic> route) => false);
+            MaterialPageRoute(builder: (BuildContext context) => GameResult(null, null)),  (Route<dynamic> route) => false);
       }else {
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (BuildContext context) =>
                 GameResult(_currentMatch.winner == _player1.id
                     ? _player1
-                    : _player2)), (Route<dynamic> route) => false);
+                    : _player2, _currentMatch.winner == _player1.id
+                    ? _player2
+                    : _player1)), (Route<dynamic> route) => false);
       }
     }
   }

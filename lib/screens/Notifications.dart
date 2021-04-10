@@ -2,16 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/AddFriend.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/models/Friends.dart';
-import 'package:jogodavelha/screens/MenuNavigation.dart';
-import 'package:jogodavelha/screens/SignUp.dart';
-import 'package:jogodavelha/storage/CurrentUser.dart';
-import '../constants/Colors.dart';
-import '../components/RedButton.dart';
 import '../components/ModalDialog.dart';
 import '../services/Api.dart';
-import '../components/Loading.dart';
 import '../storage/NotificationsStore.dart';
 
+///Central de notificações do App
 class Notifications extends StatefulWidget {
   @override
   _NotificationsState createState() => _NotificationsState();

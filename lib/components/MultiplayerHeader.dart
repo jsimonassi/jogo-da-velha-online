@@ -6,6 +6,9 @@ import 'package:jogodavelha/constants/Numbers.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../models/User.dart';
 
+///Cabeçalho exibido nas partidas.
+///Responsável por exibir informações sobre quem é o jogador da partida,
+///cronometro, entre outras informações relevantes.
 class MultiplayerHeader extends StatelessWidget {
 
   User player1;

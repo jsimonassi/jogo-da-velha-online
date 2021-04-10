@@ -1,6 +1,7 @@
 import 'User.dart';
 import 'Match.dart';
 
+///Classe que modela as partidas recentes do usuário. (Ver componentes/History)
 class RecentMatches {
   Match _match;
   User _player1;

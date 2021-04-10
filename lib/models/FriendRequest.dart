@@ -1,5 +1,6 @@
 import 'package:uuid/uuid.dart';
 
+///Classe que modela um objeto de solicitação de amizade
 class FriendRequest{
 
   String _token;

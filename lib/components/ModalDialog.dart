@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 
+///Modal de alertas.
+///Toda trataiva de erro e notificação rápida ao usuário, usa esse componente.
 class ModalDialog extends StatelessWidget {
   final title;
   final content;

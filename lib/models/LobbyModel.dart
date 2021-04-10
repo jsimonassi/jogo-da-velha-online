@@ -1,5 +1,7 @@
 import 'package:uuid/uuid.dart';
 
+///LobbyModel é uma sala onde o usuário aguarda outros oponentes no modo online.
+///Esta classe representa sua estruturação no Banco de Dados.
 class LobbyModel {
 
   String _token;
