@@ -21,6 +21,21 @@ class _SearchState extends State<Search> {
   List<User> _searchedUsers = [];
   List<User> _friendsList = [];
 
+  @override
+  void initState() {
+    getFriends();
+    super.initState();
+  }
+
+  getFriends() async {
+    var response = await Api.getFriendsByUser(CurrentUser.user);
+    if(response.isNotEmpty){
+      setState(() {
+        _friendsList = response;
+      });
+    }
+  }
+
   sendFriendRequest(User newFriend) async {
     try {
       FriendRequest newRequest = new FriendRequest(
@@ -187,7 +202,6 @@ class _SearchState extends State<Search> {
                     color: AppColors.backgroundGrey1,
                     width: size.width,
                     height: _friendsList.isEmpty? 0: 20, //Tem cara de gambiarra
-                    padding: EdgeInsets.all(5),
                     child: Text(
                     AppMessages.friendsList,
                       style: TextStyle(

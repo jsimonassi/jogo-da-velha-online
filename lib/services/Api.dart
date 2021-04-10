@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/models/Friends.dart';
 import 'package:jogodavelha/models/Message.dart';
 import 'package:jogodavelha/models/FriendRequest.dart';
 import 'package:jogodavelha/models/Notification.dart';
@@ -386,6 +387,54 @@ class Api {
       String error = e.code != null ? e.code : '';
       print("Errorrr $e");
       throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
+  static Future<void> addFriend(Friend newFriend) async {
+    try {
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      await db //Adiciona para o usuário logado
+          .collection("friends_relationship") //Listas de amigos
+          .document(CurrentUser.user.id)      //Todos os amigos do usuário logado
+          .collection("friends")              //Desce em friends
+          .document(newFriend.friendId)       //Cada documento é um amigo
+          .setData(newFriend.toMap());
+
+      Friend friend2 = new Friend(CurrentUser.user.id, DateTime.now().millisecondsSinceEpoch.toString());
+      return await db //Adiciona pra quem fez a solicitação
+          .collection("friends_relationship") //Listas de amigos
+          .document(newFriend.friendId)      //Todos os amigos do usuário que fez a solicitação
+          .collection("friends")              //Desce em friends
+          .document(CurrentUser.user.id)       //Adiciona o usuário logado como amigo de quem solicitou
+          .setData(friend2.toMap());
+    } catch (e) {
+      String error = e.code != null ? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
+  static Future<List<User>> getFriendsByUser(User user) async {
+    try {
+      QuerySnapshot querySnapshot = await Firestore.instance
+          .collection("friends_relationship") //Listas de amigos
+          .document(user.id)      //Todos os amigos do usuário passado como parâmetro
+          .collection("friends")  //Desce em friends
+          .getDocuments();        //Recupera amigos
+      var list = querySnapshot.documents;
+      if (list.isEmpty) return null;
+      List<User> response = [];
+      for (int i = 0; i < list.length; i++) {
+        Map<String, dynamic> infos = list[i].data;
+        User friend = await getUser(infos["friend_id"]);
+        if(friend != null){
+          response.add(friend);
+        }
+      }
+      return response;
+    } catch (e) {
+      print(e);
+      throw FormatException(e.code);
     }
   }
 

@@ -40,6 +40,9 @@ class AppMessages {
   static const String addFriendMsg = "Quer ser seu amigo.";
   static const String acceptFriend = "ACEITAR";
   static const String rejectFriend = "RECUSAR";
+  static const String addWithSucces = "Vocês são amigos agora.";
+  static const String modalFriendTitle = "Adicionado!";
+
 
   static const String newGame = "NOVA PARTIDA";
   static const String newTraining = "TREINAR";

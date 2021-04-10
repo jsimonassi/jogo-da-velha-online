@@ -1,26 +1,27 @@
-class Friends{
-  String _idUser;
-  List<String> _friendsList;
+class Friend {
 
-  Friends(this._idUser, this._friendsList){}
+  String _friendId; //Id do amigo
+  String _dateInitFriendship; //Data de início da amizade
+
+  Friend(this._friendId, this._dateInitFriendship);
 
   Map<String, dynamic> toMap(){
     Map<String, dynamic> map = {
-      "idUser" : this._idUser,
-      "friendslist": this._friendsList,
+      "friend_id" : this._friendId,
+      "init_friendship": this._dateInitFriendship,
     };
     return map;
   }
 
-  String get idUser => _idUser;
+  String get dateInitFriendship => _dateInitFriendship;
 
-  List<String> get friendslist => _friendsList;
-
-  set friendslist(List<String> value) {
-    _friendsList = value;
+  set dateInitFriendship(String value) {
+    _dateInitFriendship = value;
   }
 
-  set idUser(String value) {
-    _idUser = value;
+  String get friendId => _friendId;
+
+  set friendId(String value) {
+    _friendId = value;
   }
 }

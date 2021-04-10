@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/AddFriend.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/models/Friends.dart';
 import 'package:jogodavelha/screens/MenuNavigation.dart';
 import 'package:jogodavelha/screens/SignUp.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
@@ -42,20 +43,27 @@ class _NotificationsState extends State<Notifications> {
     await Api.deleteNotification(notification.notification.id);
   }
 
-  rejectFriendRequest(notification){
+  rejectFriendRequest(NotificationHelper notification){
     deleteNotification(notification);
   }
 
-  acceptFriendRequest(notification){
-    //Todo: Adicionar amigo
+  acceptFriendRequest(NotificationHelper notification) async{
     try{
-
+      Friend newFriend = new Friend(notification.user.id, DateTime.now().millisecondsSinceEpoch.toString());
+      await Api.addFriend(newFriend);
+      showDialog(
+          context: context,
+          builder: (_) => new ModalDialog(AppMessages.modalFriendTitle, AppMessages.addWithSucces,
+                  () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
     }catch(e){
-
+      showDialog(
+          context: context,
+          builder: (_) => new ModalDialog(AppMessages.error, AppMessages.undefinedError,
+                  () => {if (Navigator.canPop(context)) Navigator.pop(context)}));
+      print(e);
     }finally{
       deleteNotification(notification);
     }
-
   }
 
   buildListView(){
