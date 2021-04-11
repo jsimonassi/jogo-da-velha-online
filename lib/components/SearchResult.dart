@@ -130,7 +130,7 @@ class SearchResult extends StatelessWidget {
                     ),
                     onPressed: this.secondButtonAction,
                     child: Text(
-                      AppMessages.redButtonAdd,
+                      secondButtonTitle,
                       style: TextStyle(
                           color: Colors.white
                       ),

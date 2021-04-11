@@ -96,6 +96,14 @@ class Api {
     }
   }
 
+  static Future<void> resetPassword() async {
+    try{
+      await  FirebaseAuth.instance.sendPasswordResetEmail(email: "jsimonassi@id.uff.br");//Mock pq o serviço de smtp ainda não foi configurado
+    }catch(e){
+      print(e);
+    }
+  }
+
   static Future<User> getUser(String uid) async {
     try {
       DocumentSnapshot snapshot = await Firestore.instance
@@ -436,6 +444,29 @@ class Api {
     } catch (e) {
       print(e);
       throw FormatException(e.code);
+    }
+  }
+
+  static Future<void> removeFriend(User friend) async {
+    try {
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      await db //Adiciona para o usuário logado
+          .collection("friends_relationship") //Listas de amigos
+          .document(CurrentUser.user.id)      //Todos os amigos do usuário logado
+          .collection("friends")              //Desce em friends
+          .document(friend.id)       //Cada documento é um amigo
+          .delete();                        //A pessoa deixa de ser meu amigo
+
+      return await db //Adiciona pra quem fez a solicitação
+          .collection("friends_relationship") //Listas de amigos
+          .document(friend.id)      //Todos os amigos do usuário que fez a solicitação
+          .collection("friends")              //Desce em friends
+          .document(CurrentUser.user.id)       //Adiciona o usuário logado como amigo de quem solicitou
+          .delete();                      //Eu deixo de ser amigo da pessoa
+    } catch (e) {
+      String error = e.code != null ? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
 

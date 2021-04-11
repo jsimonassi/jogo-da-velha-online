@@ -4,6 +4,7 @@ import 'package:jogodavelha/components/ModalDialog.dart';
 import 'package:jogodavelha/components/SearchResult.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/models/FriendRequest.dart';
+import 'package:jogodavelha/models/Friends.dart';
 import '../constants/Messages.dart';
 import '../storage/CurrentUser.dart';
 import '../models/User.dart';
@@ -30,7 +31,7 @@ class _SearchState extends State<Search> {
 
   getFriends() async {
     var response = await Api.getFriendsByUser(CurrentUser.user);
-    if(response.isNotEmpty){
+    if(response != null && response.isNotEmpty){
       setState(() {
         _friendsList = response;
       });
@@ -74,13 +75,24 @@ class _SearchState extends State<Search> {
     }
   }
 
+  removeFriend(User friend) async {
+    try{
+      await Api.removeFriend(friend);
+      setState(() {
+        _friendsList.remove(friend);
+      });
+    }catch(e){
+      print(e);
+    }
+  }
+
   buildListView(){
     return ListView.builder(
         itemCount: _searchedUsers.length,
         itemBuilder:( BuildContext context, int index) {
           return SearchResult(_searchedUsers[index].urlImage, _searchedUsers[index].nickname,
               _searchedUsers[index].name, 10,
-              10, "Adicionar", () {sendFriendRequest(_searchedUsers[index]);}, () => {});
+              10, AppMessages.addFriendButtonMsg, () {sendFriendRequest(_searchedUsers[index]);}, () => {});
         }
     );
   }
@@ -91,7 +103,7 @@ class _SearchState extends State<Search> {
         itemBuilder:( BuildContext context, int index) {
           return SearchResult(_friendsList[index].urlImage, _friendsList[index].nickname,
               _friendsList[index].name, _friendsList[index].wins,
-              _friendsList[index].losses, "Adicionar", () => {}, () => {});
+              _friendsList[index].losses, AppMessages.removeFriendButtonMsg, () {removeFriend(_friendsList[index]);}, () => {});
         }
     );
   }

@@ -74,6 +74,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return new Scaffold(
       body: Container(
         padding: EdgeInsets.only(top: 60, left: 40, right: 40),
@@ -185,9 +186,23 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.center,
                 child: TextButton(
                   child: Text(
+                    "Esqueci minha senha",
+                    style: TextStyle(
+                        color: Colors.white),
+                  ),
+                  onPressed: () {Api.resetPassword();},
+                )),
+            Container(
+              height: 1,
+              color: AppColors.whiteLowOpcacity,
+            ),
+            Container(
+                alignment: Alignment.center,
+                child: TextButton(
+                  child: Text(
                     AppMessages.singUpMessage,
                     style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.w400),
+                        color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   onPressed: () => {initSignUpFlux()},
                 ))

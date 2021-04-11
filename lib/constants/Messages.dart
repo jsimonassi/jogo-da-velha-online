@@ -37,6 +37,8 @@ class AppMessages {
   static const String friendRequestSend = "Solicitação de amizade enviada!";
   static const String friendRequestReceivedBody = " enviou uma solicitação de amizade pra você!";
   static const String friendRequestReceivedTitle = "Nova solicitação de amizade";
+  static const String addFriendButtonMsg = "ADICIONAR";
+  static const String removeFriendButtonMsg = "REMOVER";
 
   static const String notificationsScreenTitle = "Notificações";
   static const String addFriendMsg = "Quer ser seu amigo.";
