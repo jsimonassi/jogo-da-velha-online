@@ -98,7 +98,7 @@ class Api {
 
   static Future<void> resetPassword() async {
     try{
-      await  FirebaseAuth.instance.sendPasswordResetEmail(email: "jsimonassi@id.uff.br");//Mock pq o serviço de smtp ainda não foi configurado
+      //await  FirebaseAuth.instance.sendPasswordResetEmail(email: "jsimonassi@id.uff.br");//Mock pq o serviço de smtp ainda não foi configurado
     }catch(e){
       print(e);
     }

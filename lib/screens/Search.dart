@@ -86,13 +86,23 @@ class _SearchState extends State<Search> {
     }
   }
 
+  bool isFriend(User user){
+    for(int i = 0; i< _friendsList.length; i++){
+      if(_friendsList[i].id == user.id){
+        return true;
+      }
+    }
+    //return _friendsList.contains(user);
+    return false;
+  }
+
   buildListView(){
     return ListView.builder(
         itemCount: _searchedUsers.length,
         itemBuilder:( BuildContext context, int index) {
           return SearchResult(_searchedUsers[index].urlImage, _searchedUsers[index].nickname,
               _searchedUsers[index].name, 10,
-              10, AppMessages.addFriendButtonMsg, () {sendFriendRequest(_searchedUsers[index]);}, () => {});
+              10, AppMessages.addFriendButtonMsg, () {sendFriendRequest(_searchedUsers[index]);}, () => {}, !isFriend(_searchedUsers[index]));
         }
     );
   }
@@ -103,7 +113,7 @@ class _SearchState extends State<Search> {
         itemBuilder:( BuildContext context, int index) {
           return SearchResult(_friendsList[index].urlImage, _friendsList[index].nickname,
               _friendsList[index].name, _friendsList[index].wins,
-              _friendsList[index].losses, AppMessages.removeFriendButtonMsg, () {removeFriend(_friendsList[index]);}, () => {});
+              _friendsList[index].losses, AppMessages.removeFriendButtonMsg, () {removeFriend(_friendsList[index]);}, () => {}, true);
         }
     );
   }

@@ -17,10 +17,11 @@ class SearchResult extends StatelessWidget {
   String secondButtonTitle;
   VoidCallback secondButtonAction;
   VoidCallback firstButtonAction;
+  bool secondButtonIsEnabled;
 
 
   SearchResult(this.urlImage, this.nickname, this.nome, this.wins, this.losses,
-      this.secondButtonTitle, this.secondButtonAction, this.firstButtonAction);
+      this.secondButtonTitle, this.secondButtonAction, this.firstButtonAction, this.secondButtonIsEnabled);
 
   @override
   Widget build(BuildContext context) {
@@ -126,9 +127,9 @@ class SearchResult extends StatelessWidget {
                   width: 100.00,
                   child: TextButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
+                      backgroundColor: secondButtonIsEnabled? MaterialStateProperty.all<Color>(AppColors.redPrimary): MaterialStateProperty.all<Color>(AppColors.backgroundGrey1),
                     ),
-                    onPressed: this.secondButtonAction,
+                    onPressed: secondButtonIsEnabled? this.secondButtonAction: null,
                     child: Text(
                       secondButtonTitle,
                       style: TextStyle(
