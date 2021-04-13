@@ -12,6 +12,7 @@ import 'package:jogodavelha/screens/GameMultiplayer.dart';
 import 'package:jogodavelha/screens/Game.dart';
 import 'package:jogodavelha/screens/Lobby.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
+import 'package:marquee_text/marquee_text.dart';
 import '../models/LobbyModel.dart';
 import '../models/User.dart';
 import '../models/Match.dart';
@@ -150,12 +151,15 @@ class _PreMatchState extends State<PreMatch> {
                       backgroundImage: _player1 != null && _player1.urlImage != null?
                       NetworkImage(_player1.urlImage): ExactAssetImage('./assets/images/profile-icon.png'),
                     ),
-                    Text(
-                      _player1 != null? _player1.nickname : "",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold
+                    Container(
+                      width: 100,
+                      child: MarqueeText(
+                        text:_player1 != null? _player1.nickname : "",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold
+                        ),
                       ),
                     )
                   ],
@@ -176,12 +180,15 @@ class _PreMatchState extends State<PreMatch> {
                       backgroundImage: _player2 != null && _player2.urlImage != null?
                       NetworkImage(_player2.urlImage): ExactAssetImage('./assets/images/profile-icon.png'),
                     ),
-                    Text(
-                      _player2 != null? _player2.nickname : "",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold
+                    Container(
+                      width: 100,
+                      child: MarqueeText(
+                        text:_player2 != null? _player2.nickname : "",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold
+                        ),
                       ),
                     )
                   ],
