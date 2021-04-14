@@ -39,10 +39,12 @@ dependencies:
   intl: ^0.17.0
   onesignal_flutter: ^2.3.4
   marquee_text: ^2.0.0
+  flutter_dotenv: ^2.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -67,6 +69,8 @@ flutter:
      - assets/sounds/song-good-stars.mp3
      - assets/sounds/click.mp3
      - assets/images/logo-low.png
+     - .env_degub
+     - .env_release
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

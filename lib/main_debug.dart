@@ -3,8 +3,12 @@ import 'package:jogodavelha/constants/Colors.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import './screens/Login.dart';
 import './constants/Messages.dart';
-
-void main() => runApp(new MyApp());
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+//final Map<String, String> env = DotEnv().env;
+Future<void> main() async {
+  await DotEnv().load('.env_debug');
+  runApp(new MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
