@@ -7,7 +7,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:jogodavelha/models/User.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
+import 'package:jogodavelha/screens/Login.dart';
 import '../components/RedButton.dart';
+import '../components/GreyButton.dart';
 import '../services/Api.dart';
 import '../storage/CurrentUser.dart';
 import 'package:jogodavelha/components/ModalDialog.dart';
@@ -90,11 +92,22 @@ class _EditPageState extends State<EditPage> {
     });
   }
 
+  void logOut() async{
+    try{
+     await Api.logOut();
+      Navigator.pushAndRemoveUntil(context,
+          MaterialPageRoute(builder: (BuildContext context) =>  LoginPage()), (Route<dynamic> route) => false);
+    }
+    catch(e){
+    print("erroooor");
+    }
+  }
 
 
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
+    Size size = MediaQuery.of(context).size;
     return new Scaffold(
         body: Container(
           padding: EdgeInsets.only(
@@ -123,18 +136,18 @@ class _EditPageState extends State<EditPage> {
                   )
               ),
               SizedBox(
-                height: 30,
+                height: size.height*0.05,
               ),
               GestureDetector(
                 onTap: () => {_pickerImage()},
                 child: CircleAvatar(
                   backgroundColor: Colors.transparent,
                   backgroundImage: getProfileImage(),
-                  maxRadius: 80.0,
+                  maxRadius: 50.0,
                 ),
               ),
               SizedBox(
-                height: 50,
+                height:size.height*0.05,
               ),
               Container(
                 decoration: BoxDecoration(
@@ -170,7 +183,7 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height:size.height*0.025,
               ),
               Container(
                 decoration: BoxDecoration(
@@ -205,7 +218,7 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height:size.height*0.025,
               ),
               Container(
                 decoration: BoxDecoration(
@@ -241,7 +254,7 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height:size.height*0.025,
               ),
               Container(
                 decoration: BoxDecoration(
@@ -277,9 +290,13 @@ class _EditPageState extends State<EditPage> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height:size.height*0.05,
               ),
             RedButton(AppMessages.saveAccountButton, () => {updateUser(context)}),
+              SizedBox(
+                height:size.height*0.03,
+              ),
+              GreyButton(AppMessages.exitAccountButton, () => {logOut()}),
             ],
           ),
         )

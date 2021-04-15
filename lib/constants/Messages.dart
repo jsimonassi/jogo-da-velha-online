@@ -29,6 +29,7 @@ class AppMessages {
   static const String ok = "OK";
   static const String editAccount = "Editar Conta";
   static const String saveAccountButton = "SALVAR";
+  static const String exitAccountButton = "SAIR";
   static const String saveSuccess = "Conta criada!";
   static const String updateSuccess = "Conta atualizada!";
   static const String hello = "Olá, ";
