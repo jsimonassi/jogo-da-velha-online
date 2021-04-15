@@ -4,9 +4,12 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import './screens/Login.dart';
 import './constants/Messages.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-//final Map<String, String> env = DotEnv().env;
+
 Future<void> main() async {
-  await DotEnv().load('.env_debug');
+  //use flutter run --release em um dispositivo físico para usar as variáveis de produção
+  //use final Map<String, String> env = DotEnv().env; para acessar as variáveis de ambiente
+  const bool inProduction = const bool.fromEnvironment('dart.vm.product');
+  await DotEnv().load(inProduction ? '.env_release' : '.env_debug');
   runApp(new MyApp());
 }
 
