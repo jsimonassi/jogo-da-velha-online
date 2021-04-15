@@ -7,6 +7,7 @@ import 'package:jogodavelha/models/Message.dart';
 import 'package:jogodavelha/models/FriendRequest.dart';
 import 'package:jogodavelha/models/Notification.dart';
 import 'package:jogodavelha/storage/NotificationsStore.dart';
+import 'package:jogodavelha/storage/RecentMatch.dart';
 import '../storage/CurrentUser.dart';
 import '../models/User.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -99,6 +100,9 @@ class Api {
     try {
       await FirebaseAuth.instance.signOut();
       CurrentUser.user =null;
+      RecentMatch.listRecentMatches = [];
+      NotificationStore.listRecentNotifications = [];
+      Bot.botInfos = null;
     } catch (e) {
       String error = e.code != null ? e.code : '';
       print("Errorrr $e");
