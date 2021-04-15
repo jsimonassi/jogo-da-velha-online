@@ -10,6 +10,7 @@ import 'package:jogodavelha/components/Loading.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/screens/PreMatch.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
+import 'package:marquee_text/marquee_text.dart';
 import '../constants/Messages.dart';
 import '../services/Api.dart';
 import '../models/LobbyModel.dart';
@@ -197,10 +198,13 @@ class _LobbyState extends State<Lobby> {
           SizedBox(
             height: size.height * 0.01,
           ),
-          Text(
-            _player1 != null && _player1.nickname != null? _player1.nickname : '',
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),
+          Container(
+            width: 100,
+            child: MarqueeText(
+              text:_player1 != null && _player1.nickname != null? _player1.nickname : '',
+              style: TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),
+            ),
           ),
           SizedBox(
             height: size.height * 0.08,
@@ -212,10 +216,13 @@ class _LobbyState extends State<Lobby> {
                 ? NetworkImage(_player2.urlImage)
                 : ExactAssetImage('./assets/images/profile-icon.png'),
           ),
-          Text(
-            _player2 != null && _player2.nickname != null? _player2.nickname : '',
-            style: TextStyle(
-                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),
+          Container(
+            width: 100,
+            child: MarqueeText(
+              text:_player2 != null && _player2.nickname != null? _player2.nickname : '',
+              style: TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold, fontSize: 26),
+            ),
           ),
           Expanded(
               child: Container(
