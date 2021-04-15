@@ -95,6 +95,17 @@ class Api {
       throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
+  static Future<void> logOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      CurrentUser.user =null;
+    } catch (e) {
+      String error = e.code != null ? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
 
   static Future<void> resetPassword() async {
     try{
