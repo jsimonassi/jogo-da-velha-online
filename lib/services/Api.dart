@@ -18,6 +18,7 @@ import '../storage/Bot.dart';
 import 'package:uuid/uuid.dart';
 import '../models/FriendRequest.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import '../storage/Store.dart';
 
 /*
 Credenciais do Firebase e OneSignal:
@@ -82,8 +83,8 @@ class Api {
       var result = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       CurrentUser.user = await getUser(result.user.uid); //Set usuário atual
-      Bot.botInfos = Bot.generateBot();
       await NotificationStore.refreshNotificationsList();
+      await Store.save('last_user', CurrentUser.user); //Salva usuário logado em cache para login automático no futuro
       return CurrentUser.user;
     } catch (e) {
       String error = e.code != null ? e.code : '';

@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/services/Config.dart';
+import 'package:jogodavelha/storage/Bot.dart';
+import 'package:jogodavelha/storage/Store.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import './screens/Login.dart';
 
 Future<void> main() async {
   //use flutter run --release em um dispositivo físico para usar as variáveis de produção
   await Config.loadEnvironment(); //Carrega variáveis de acordo com o ambiente
+  Bot.botInfos = Bot.generateBot();//Gera bot
+  String user = await Store.retrieve('last_user');
+  print(user);
   runApp(new MyApp());
 }
 
