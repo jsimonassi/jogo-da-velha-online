@@ -133,7 +133,7 @@ class _HomeState extends State<Home> {
               Container(
                 width: size.width * 0.8,
                 margin: EdgeInsets.only(bottom: 10),
-                child: RedButton(AppMessages.newTraining, () => startTraining()),
+                child: RedButton(AppMessages.newTraining, () {startTraining();}),
               ),
               Expanded(
                 child: _isLoading? loadingIndicator():buildListView(),
