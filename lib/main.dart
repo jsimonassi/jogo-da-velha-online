@@ -9,7 +9,7 @@ Future<void> main() async {
   //use flutter run --release em um dispositivo físico para usar as variáveis de produção
   //use final Map<String, String> env = DotEnv().env; para acessar as variáveis de ambiente
   const bool inProduction = const bool.fromEnvironment('dart.vm.product');
-  await DotEnv().load(inProduction ? '.env_release' : '.env_debug');
+  await DotEnv().load(inProduction ? '.env.release' : '.env.debug');
   runApp(new MyApp());
 }
 
