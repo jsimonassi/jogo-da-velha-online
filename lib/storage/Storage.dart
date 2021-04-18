@@ -5,12 +5,12 @@ import 'dart:convert';
 
 ///Redux chorouu
 ///Memória persistente do app. Métodos de acesso ao DB Local. (Cache persistente)
-class Store {
+class Storage {
 
   ///Armazenar objeto
-  static Future<void> save(String key, Object value) async {
+  static Future<void> save(String key, Map<String, dynamic> values) async {
     try {
-      String jsonObject = jsonEncode(value);
+      String jsonObject = jsonEncode(values);
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString(key, jsonObject);
     } catch (e) {

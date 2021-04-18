@@ -8,6 +8,7 @@ import 'package:jogodavelha/models/User.dart';
 import 'package:jogodavelha/constants/Colors.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/screens/Login.dart';
+import 'package:jogodavelha/storage/Storage.dart';
 import '../components/RedButton.dart';
 import '../components/GreyButton.dart';
 import '../services/Api.dart';
@@ -95,6 +96,7 @@ class _EditPageState extends State<EditPage> {
   void logOut() async{
     try{
      await Api.logOut();
+     await Storage.clearAll();
       Navigator.pushAndRemoveUntil(context,
           MaterialPageRoute(builder: (BuildContext context) =>  LoginPage()), (Route<dynamic> route) => false);
     }

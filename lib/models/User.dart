@@ -34,6 +34,20 @@ class User {
     return map;
   }
 
+  User mapToUser(Map<String, dynamic> mapUser){
+    User user = new User();
+    user.name = mapUser["name"];
+    user.password = mapUser["password"];
+    user.email = mapUser["email"];
+    user.nickname = mapUser["nickname"];
+    user.urlImage = mapUser["urlImage"];
+    user.id = mapUser["id"];
+    user.wins = mapUser["wins"];
+    user.losses = mapUser["losses"];
+    user.pushId = mapUser["push_id"];
+    return user;
+  }
+
 
   String get id => _id;
 

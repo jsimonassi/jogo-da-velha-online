@@ -1,26 +1,45 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Colors.dart';
+import 'package:jogodavelha/models/User.dart';
+import 'package:jogodavelha/screens/MenuNavigation.dart';
 import 'package:jogodavelha/services/Config.dart';
 import 'package:jogodavelha/storage/Bot.dart';
-import 'package:jogodavelha/storage/Store.dart';
+import 'package:jogodavelha/storage/CurrentUser.dart';
+import 'package:jogodavelha/storage/NotificationsStore.dart';
+import 'package:jogodavelha/storage/Storage.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import './screens/Login.dart';
 
 Future<void> main() async {
-  //use flutter run --release em um dispositivo físico para usar as variáveis de produção
-  await Config.loadEnvironment(); //Carrega variáveis de acordo com o ambiente
-  Bot.botInfos = Bot.generateBot();//Gera bot
-  String user = await Store.retrieve('last_user');
-  print(user);
-  runApp(new MyApp());
+  try{
+    //use flutter run --release em um dispositivo físico para usar as variáveis de produção
+    await Config.loadEnvironment(); //Carrega variáveis de acordo com o ambiente
+
+    Bot.botInfos = Bot.generateBot();//Gera bot
+
+    String lastUser = await Storage.retrieve('last_user');
+    print(lastUser);
+    if(lastUser != null){
+      Map<String,dynamic> decodedUser = jsonDecode(lastUser);
+      CurrentUser.user = User().mapToUser(decodedUser);
+      await NotificationStore.refreshNotificationsList();
+    }
+
+    OneSignal.shared.init(Config.env['ONE_SIGNAL_KEY']); //OneSignal Push Notifications - Se for alterar, cuidado pra não quebrar as notificações ;)
+    OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
+
+  }catch(e){
+    print(e);
+  }finally{
+    runApp(new MyApp());
+  }
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //Todo: Recuperar com algum tipo de Shared Preferences do Flutter o usuário logado e gerar uma instância de Bot
-    OneSignal.shared.init(Config.env['ONE_SIGNAL_KEY']); //OneSignal Push Notifications - Se for alterar, cuidado pra não quebrar as notificações ;)
-    OneSignal.shared.setInFocusDisplayType(OSNotificationDisplayType.notification);
     return new MaterialApp(
       title: Config.env['APP_NAME'],
       debugShowCheckedModeBanner: Config.env['ENVIRONMENT'] == 'debug'? true: false,
@@ -28,7 +47,7 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.black,
         accentColor: AppColors.redPrimary,
       ),
-      home: new LoginPage(),
+      home: CurrentUser.user == null? new LoginPage(): new MenuNavigation(),
     );
   }
 }
