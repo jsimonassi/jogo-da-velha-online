@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/screens/MenuNavigation.dart';
+import 'package:jogodavelha/screens/ResetPassword.dart';
 import 'package:jogodavelha/screens/SignUp.dart';
 import 'package:jogodavelha/storage/CurrentUser.dart';
 import '../constants/Colors.dart';
@@ -70,6 +71,11 @@ class _LoginPageState extends State<LoginPage> {
   void initSignUpFlux() {
     Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => SignUpPage()));
+  }
+
+  void initResetPasswordFlux(){
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => ResetPassword()));
   }
 
   @override
@@ -186,11 +192,11 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.center,
                 child: TextButton(
                   child: Text(
-                    "Esqueci minha senha",
+                    AppMessages.resetPassword,
                     style: TextStyle(
                         color: Colors.white),
                   ),
-                  onPressed: () {Api.resetPassword();},
+                  onPressed: () {initResetPasswordFlux();},
                 )),
             Container(
               height: 1,

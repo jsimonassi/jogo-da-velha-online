@@ -112,11 +112,16 @@ class Api {
   }
 
 
-  static Future<void> resetPassword() async {
+  static Future<void> resetPassword(String email) async {
     try{
-      //await  FirebaseAuth.instance.sendPasswordResetEmail(email: "jsimonassi@id.uff.br");//Mock pq o serviço de smtp ainda não foi configurado
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
     }catch(e){
-      print(e);
+      String error = e.code != null ? e.code : '';
+      print("Errorrr $e");
+      if (error.contains('ERROR_INVALID_EMAIL')) {
+        throw FormatException(AppMessages.invalidEmail);
+      }
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
 

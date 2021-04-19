@@ -24,6 +24,12 @@ class AppMessages {
 
   static const String initLogin = "ENTRAR";
   static const String singUpMessage = "Não tem uma conta? Cadastre-se!";
+  static const String resetPassword = "Esqueci minha senha";
+  static const String resetPasswordTitle = "Redefinir senha";
+  static const String emailSendBtn = "REDEFINIR SENHA";
+  static const String resetPasswordDesc = "Um e-mail será enviado para sua conta com as instruções de redefinição de senha";
+  static const String emailSendTitle = "E-mail enviado!";
+  static const String emailSendMsg = "Verifique sua caixa de entrada e siga as instruções para redefinir sua senha.";
   static const String newAccount = "Nova Conta";
   static const String newAccountButton = "NOVA CONTA";
   static const String ok = "OK";
