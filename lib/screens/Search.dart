@@ -101,8 +101,8 @@ class _SearchState extends State<Search> {
         itemCount: _searchedUsers.length,
         itemBuilder:( BuildContext context, int index) {
           return SearchResult(_searchedUsers[index].urlImage, _searchedUsers[index].nickname,
-              _searchedUsers[index].name, 10,
-              10, AppMessages.addFriendButtonMsg, () {sendFriendRequest(_searchedUsers[index]);}, () => {}, !isFriend(_searchedUsers[index]));
+              _searchedUsers[index].name, _searchedUsers[index].wins,
+              _searchedUsers[index].losses, AppMessages.addFriendButtonMsg, () {sendFriendRequest(_searchedUsers[index]);}, () => {}, !isFriend(_searchedUsers[index]));
         }
     );
   }
