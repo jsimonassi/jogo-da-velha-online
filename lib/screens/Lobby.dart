@@ -19,7 +19,15 @@ import '../models/User.dart';
 
 ///Tela de Lobby.
 ///Nesta tela o usuário é capaz de encontrar um novo oponente para a partida.
+
+String challenge = "";
+
 class Lobby extends StatefulWidget {
+
+  Lobby(String friendId){
+    challenge = friendId;
+  }
+
   @override
   _LobbyState createState() => _LobbyState();
 }
@@ -50,8 +58,7 @@ class _LobbyState extends State<Lobby> {
 
   getTimeOutMessage() {
     if (_showNotFindMessage) {
-      return Expanded(
-          child: Container(
+      return Container(
         alignment: Alignment.center,
         padding: EdgeInsets.all(20),
         child: Text(
@@ -59,7 +66,7 @@ class _LobbyState extends State<Lobby> {
           style: TextStyle(color: Colors.white),
           textAlign: TextAlign.center,
         ),
-      ));
+      );
     }
     return Container();
   }
@@ -90,6 +97,7 @@ class _LobbyState extends State<Lobby> {
     try {
       var newLobby = new LobbyModel();
       newLobby.player1 = CurrentUser.user.id; //Eu sou o player 1 do Lobby
+      newLobby.challenge = challenge;// Se for desafio, aqui vai ter o id do novo usuário
       currentLobby = newLobby; //Atualiza LobbyCorrente
       await Api.updateLobby(newLobby);
       createListener(); //Cria listener pra esperar outro jogador
@@ -107,19 +115,29 @@ class _LobbyState extends State<Lobby> {
       if (lobbys != null && lobbys.isNotEmpty) {
         //Já existe um Lobby criado. Entrar no mesmo:
         for (int i = 0; i < lobbys.length; i++) {
-          if (lobbys[i].player1 != null && lobbys[i].player2 == null) {
-            currentLobby = lobbys[i]; //Lobby atual é setado
-            currentLobby.player2 = CurrentUser
-                .user.id; //Informação que estava faltando é o player2
-            isFull = false;
-            break;
-          } else if (lobbys[i].player1 == null && lobbys[i].player2 != null) {
-            currentLobby = lobbys[i]; //Lobby atual é setado
-            currentLobby.player1 = CurrentUser.user.id;
-            isFull = false;
-            break;
+          if(challenge == ""){
+            if (lobbys[i].player1 != null && lobbys[i].player2 == null) {
+              currentLobby = lobbys[i]; //Lobby atual é setado
+              currentLobby.player2 = CurrentUser
+                  .user.id; //Informação que estava faltando é o player2
+              isFull = false;
+              break;
+            } else if (lobbys[i].player1 == null && lobbys[i].player2 != null) {
+              currentLobby = lobbys[i]; //Lobby atual é setado
+              currentLobby.player1 = CurrentUser.user.id;
+              isFull = false;
+              break;
+            }
+            isFull = true;
+          }else{ //é um desafio
+            if(lobbys[i].challenge == CurrentUser.user.id){ //O desafio é pra mim?
+              currentLobby = lobbys[i]; //Lobby atual é setado
+              currentLobby.player2 = CurrentUser
+                  .user.id; //Informação que estava faltando é o player2
+              isFull = false;
+              break;
+            }
           }
-          isFull = true;
         }
         if (isFull) {
           //Caso em que existe lobby, mas estão cheios

@@ -9,6 +9,7 @@ import '../constants/Messages.dart';
 import '../storage/CurrentUser.dart';
 import '../models/User.dart';
 import '../services/Api.dart';
+import 'Lobby.dart';
 
 ///Tela chamada no menu de "Play", mas é uma tela que busca e lista os usuários/amigos.
 class Search extends StatefulWidget {
@@ -96,8 +97,14 @@ class _SearchState extends State<Search> {
     return false;
   }
 
-  challengeFriend(User friend){
-        
+  challengeFriend(User friend) async {
+    try{
+      Api.sendChallenge(friend);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (BuildContext context) => Lobby(friend.id)));
+    }catch(e){
+
+    }
   }
 
   buildListView(){

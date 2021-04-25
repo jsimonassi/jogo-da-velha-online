@@ -278,6 +278,7 @@ class Api {
         newLobby.token = infos["token"];
         newLobby.player1 = infos["player1"];
         newLobby.player2 = infos["player2"];
+        newLobby.challenge = infos["challenge"];
         response.add(newLobby);
       }
       return response;
@@ -367,6 +368,27 @@ class Api {
       throw FormatException(AppMessages.undefinedError); //Exception não mapeada
     }
   }
+
+  static Future<void> sendChallenge(User friend) async {
+    try {
+      //Textos mockados devem ser movidos para AppMensagens
+      Notification notification = new Notification(2, CurrentUser.user.id, friend.id," Desafiou você para uma partida", null); //Envia notificação para o BD para ser recuperada posteriormente
+      await addNotification(notification);
+      return await OneSignal.shared.postNotification(
+          OSCreateNotification(playerIds: [friend.pushId],
+            content: CurrentUser.user.nickname + "Desafiou você para uma partida",
+            heading: "Novo desafio!",
+            bigPicture: "https://firebasestorage.googleapis.com/v0/b/jogo-da-velha-ac9b0.appspot.com/o/notification.png?alt=media&token=dc3003a7-b00a-47ec-b61d-75885c39d3bf",
+            androidSmallIcon: "https://firebasestorage.googleapis.com/v0/b/jogo-da-velha-ac9b0.appspot.com/o/logo.png?alt=media&token=679d2efe-fcfa-4b83-9e5e-7d40f38f8817",
+            androidLargeIcon: "https://firebasestorage.googleapis.com/v0/b/jogo-da-velha-ac9b0.appspot.com/o/logo.png?alt=media&token=679d2efe-fcfa-4b83-9e5e-7d40f38f8817",
+          ));
+    } catch (e) {
+      String error = e.code != null ? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
 
   static Future<void> sendPushNotification(FriendRequest request) async {
     try {

@@ -7,6 +7,7 @@ class LobbyModel {
   String _token;
   String _player1;
   String _player2;
+  String _challenge;
 
   LobbyModel(){
     this._token = Uuid().v4();
@@ -17,6 +18,7 @@ class LobbyModel {
       "token" : this._token,
       "player1" : this._player1,
       "player2" : this._player2,
+      "challenge" : this._challenge,
     };
     return map;
   }
@@ -37,5 +39,11 @@ class LobbyModel {
 
   set token(String value) {
     _token = value;
+  }
+
+  String get challenge => _challenge;
+
+  set challenge(String value) {
+    _challenge = value;
   }
 }

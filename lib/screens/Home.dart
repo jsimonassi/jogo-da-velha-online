@@ -137,7 +137,7 @@ class _HomeState extends State<Home> {
               Container(
                 width: size.width * 0.8,
                 child: RedButton(AppMessages.newGame, () => {Navigator.push(context,
-                    MaterialPageRoute(builder: (BuildContext context) => Lobby()))}),
+                    MaterialPageRoute(builder: (BuildContext context) => Lobby("")))}),
               ),
               SizedBox(
                 height: size.height * 0.03,

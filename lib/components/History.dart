@@ -39,6 +39,7 @@ class History extends StatelessWidget {
             Row(children: <Widget>[
                 CircleAvatar(
                   maxRadius: 36.0,
+                  backgroundColor: AppColors.backgroundGrey2,
                   backgroundImage: this.player1.urlImage == null ?
                   ExactAssetImage('./assets/images/profile-icon.png') :
                   NetworkImage(this.player1.urlImage)
@@ -92,6 +93,7 @@ class History extends StatelessWidget {
               Expanded(child: Container()),
               CircleAvatar(
                 maxRadius: 36.0,
+                backgroundColor: AppColors.backgroundGrey2,
                 backgroundImage: this.player2.urlImage == null ?
                 ExactAssetImage('./assets/images/profile-icon.png') :
                 NetworkImage(this.player2.urlImage)

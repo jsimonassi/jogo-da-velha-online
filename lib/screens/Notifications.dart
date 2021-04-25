@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jogodavelha/components/AddFriend.dart';
+import 'package:jogodavelha/components/ChallengeFriend.dart';
 import 'package:jogodavelha/constants/Messages.dart';
 import 'package:jogodavelha/models/Friends.dart';
 import '../components/ModalDialog.dart';
 import '../services/Api.dart';
 import '../storage/NotificationsStore.dart';
+import 'Lobby.dart';
 
 ///Central de notificações do App
 class Notifications extends StatefulWidget {
@@ -61,6 +63,12 @@ class _NotificationsState extends State<Notifications> {
     }
   }
 
+  acceptChallenge(NotificationHelper notification){
+    deleteNotification(notification);
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => Lobby(""))); //Todo: Checar isso com multiplas partidas
+  }
+
   buildListView(){
     if(NotificationStore.listRecentNotifications.length <= 0){
       return Text("Sem novas notificações",
@@ -71,10 +79,16 @@ class _NotificationsState extends State<Notifications> {
     return ListView.builder(
         itemCount: NotificationStore.listRecentNotifications == null?0:NotificationStore.listRecentNotifications.length,
         itemBuilder:( BuildContext context, int index) {
-          return AddFriend(NotificationStore.listRecentNotifications[index].user,
+          return (NotificationStore.listRecentNotifications[index].notification.type == 0?
+                  AddFriend(NotificationStore.listRecentNotifications[index].user,
                   () {deleteNotification(NotificationStore.listRecentNotifications[index]);},
                   () {rejectFriendRequest(NotificationStore.listRecentNotifications[index]);},
-                  () {acceptFriendRequest(NotificationStore.listRecentNotifications[index]);});
+                  () {acceptFriendRequest(NotificationStore.listRecentNotifications[index]);}):
+
+                  ChallengeFriend(NotificationStore.listRecentNotifications[index].user,
+                  () {deleteNotification(NotificationStore.listRecentNotifications[index]);},
+                  () {rejectFriendRequest(NotificationStore.listRecentNotifications[index]);},
+                  () {acceptChallenge(NotificationStore.listRecentNotifications[index]);}));
         }
     );
   }
