@@ -1,8 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-/// Os arquivos de ambiente deveriam ser carregados automaticamente do build.gradle,
-/// mas ainda não consegui finalizar essa configuração.
+///Configura keys de acordo com o ambiente de execução (dev ou prod)
 class Config {
   static Map<String, String> env;
   static Future<void> loadEnvironment() async{
@@ -14,5 +13,4 @@ class Config {
       throw FlutterError("Config Variables error");
     }
   }
-
 }

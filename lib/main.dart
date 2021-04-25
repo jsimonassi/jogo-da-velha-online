@@ -19,7 +19,7 @@ Future<void> main() async {
 
     Bot.botInfos = Bot.generateBot();//Gera bot
 
-    String lastUser = await Storage.retrieve('last_user');
+    String lastUser = await Storage.retrieve('last_user'); //Recuperando último usuário logado para login automático
     print(lastUser);
     if(lastUser != null){
       Map<String,dynamic> decodedUser = jsonDecode(lastUser);
