@@ -9,6 +9,7 @@ class RecentMatch{
   static List<RecentMatches> listRecentMatches =[];
 
   static Future<bool> getMacthes() async {
+    listRecentMatches =[];
       var result = await Api.getMatches(CurrentUser.user);
       if (result != null) {
         for (int i = 0; i < result.length; i++) {
