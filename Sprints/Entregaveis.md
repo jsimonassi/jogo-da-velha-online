@@ -1,4 +1,4 @@
-V1.3
+V1.2
 
 Sprint1 - 17/03/2021:
 (Apenas tela - sem estar funcionando)
@@ -62,34 +62,35 @@ Sprint3 - 01/04/2021:
   Validação: 01/04 (Não é mentira!!)
 
 Sprint4 - 12/04/2021:
-    
     - Criar opção de logout na tela de Editar Conta (Pode ser apenas um botão abaixo do salvar escrito "sair"... algo do tipo).
-    Lembrar de resetar variáveis estáticas e deslogar do firebase auth: Léo Coreixas
-    
-    - Criar Shared Preferences para login automático (Lembrar de atualizar variáveis estáticas antes de iniciar o App).
+    Lembrar de resetar variáveis estáticas e deslogar do firebase auth: Léo Coreixas;
+
+   - Criar Shared Preferences para login automático (Lembrar de atualizar variáveis estáticas antes de iniciar o App).
     Além disso, quando o usuário possui um nome ou nick muito grande, o App quebra o layout todo. Deve ter algum atributo do text
     que diminui a fonte ou faz o texto escrollar pro lado quando ultrapassa um tamanho x. Se sobrar tempo, pesquisar sobre esse 
     atributo aí: Gustavo Luppi
-    
-    - Verificar e implementar (Se possível) o fluxo de levar um jogador para a tela de Lobby direto da tela de pesquisa.
-        Seu rival deve ser avisado do desafio, mas não queria fazer com push notifications pq vai dar muito trabalho e acho que
-        uma semana não é suficiente pra deixar 100%. Pensei em criar atributos na tabela de user pra dizer quando ele estiver online,
-        aí só vai ser possível desafiar um usuário que esteja online. Podemos criar um listener na home pra receber o desafio.
-        Aceito sugestões. - Jonatas;
-    
-    -  Jogar e testar todos os fluxos do App encontrando e corrigindo (Se possível) eventuais bugs. Fazer os fluxos mais esquisitos que
+
+   - Verificar e implementar (Se possível) o fluxo de levar um jogador para a tela de Lobby direto da tela de pesquisa.
+    Seu rival deve ser avisado do desafio, mas não queria fazer com push notifications pq vai dar muito trabalho e acho que
+    uma semana não é suficiente pra deixar 100%. Pensei em criar atributos na tabela de user pra dizer quando ele estiver online,
+    aí só vai ser possível desafiar um usuário que esteja online. Podemos criar um listener na home pra receber o desafio.
+    Aceito sugestões. - Jonatas;
+
+   -  Jogar e testar todos os fluxos do App encontrando e corrigindo (Se possível) eventuais bugs. Fazer os fluxos mais esquisitos que
     o professor pode imaginar fazer - Bernardo e Piu;
-    
-    - O método getUsersByKey no Api.dart está fazendo essa busca:
+
+   - O método getUsersByKey no Api.dart está fazendo essa busca:
     QuerySnapshot querySnapshot = await Firestore.instance.collection("users").where("name", isGreaterThanOrEqualTo: key).getDocuments();
     A ideia de usar isGreaterThanOrEqualTo é conseguir buscar uma substring da chave passada. 
     Exemplo: Se o nome do usuário é "Bernardo" e eu digito "Be" e dou o enter, o app deveria ser capaz de me retornar o 
     usuário Bernardo e todos os outros que começam com "Be", mas ele dá uma resposta bem zoada. Se não encontrarmos nada melhor,
     vai ficar assim mesmo, mas a pesquisa é válida.
-    
-    - Criar fluxo de adicionar novo amigo e enviar push notifications sobre solicitação de amizade. Criar tela de aceite da solicitação
+
+   - Criar fluxo de adicionar novo amigo e enviar push notifications sobre solicitação de amizade. Criar tela de aceite da solicitação
     e métodos para atualizar as tabelas de amigos: João Victor Simonassi.
     
 
-Sprint5(Final) - 14/04/2021:
-    Subida pra loja (Será??)
+Sprint5 - 14/04/2021:
+    Subida pra loja - João Victor Simonassi
+    
+Aproveitamos o aumento no prazo para corrigir alguns bugs e alinhar os ambientes para produção.
