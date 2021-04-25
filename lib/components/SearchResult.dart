@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marquee_text/marquee_text.dart';
-
-import '../constants/Colors.dart';
-import '../constants/Colors.dart';
 import '../constants/Colors.dart';
 import '../constants/Messages.dart';
-import 'RedButton.dart';
 
 ///Componente de resultado de busca ao usuário.
 class SearchResult extends StatelessWidget {
@@ -18,10 +14,11 @@ class SearchResult extends StatelessWidget {
   VoidCallback secondButtonAction;
   VoidCallback firstButtonAction;
   bool secondButtonIsEnabled;
+  bool firstButtonIsEnabled;
 
 
   SearchResult(this.urlImage, this.nickname, this.nome, this.wins, this.losses,
-      this.secondButtonTitle, this.secondButtonAction, this.firstButtonAction, this.secondButtonIsEnabled);
+      this.secondButtonTitle, this.secondButtonAction, this.firstButtonAction, this.secondButtonIsEnabled, this.firstButtonIsEnabled);
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +77,7 @@ class SearchResult extends StatelessWidget {
                 Container(
                   height: 35,
                   width: 100.00,
-                  child: TextButton(
+                  child: firstButtonIsEnabled? TextButton(
                     onPressed:this.firstButtonAction,
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(AppColors.redPrimary),
@@ -91,7 +88,7 @@ class SearchResult extends StatelessWidget {
                           color: Colors.white
                       ),
                     ),
-                  ),
+                  ): Container(),
                 ),
                 Expanded(child: Container()),
               ],

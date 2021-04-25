@@ -96,13 +96,17 @@ class _SearchState extends State<Search> {
     return false;
   }
 
+  challengeFriend(User friend){
+        
+  }
+
   buildListView(){
     return ListView.builder(
         itemCount: _searchedUsers.length,
         itemBuilder:( BuildContext context, int index) {
           return SearchResult(_searchedUsers[index].urlImage, _searchedUsers[index].nickname,
               _searchedUsers[index].name, _searchedUsers[index].wins,
-              _searchedUsers[index].losses, AppMessages.addFriendButtonMsg, () {sendFriendRequest(_searchedUsers[index]);}, () => {}, !isFriend(_searchedUsers[index]));
+              _searchedUsers[index].losses, AppMessages.addFriendButtonMsg, () {sendFriendRequest(_searchedUsers[index]);}, () => {}, !isFriend(_searchedUsers[index]), false);
         }
     );
   }
@@ -113,7 +117,7 @@ class _SearchState extends State<Search> {
         itemBuilder:( BuildContext context, int index) {
           return SearchResult(_friendsList[index].urlImage, _friendsList[index].nickname,
               _friendsList[index].name, _friendsList[index].wins,
-              _friendsList[index].losses, AppMessages.removeFriendButtonMsg, () {removeFriend(_friendsList[index]);}, () => {}, true);
+              _friendsList[index].losses, AppMessages.removeFriendButtonMsg, () {removeFriend(_friendsList[index]);}, () => {challengeFriend(_friendsList[index])}, true, true);
         }
     );
   }

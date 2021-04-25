@@ -10,6 +10,7 @@ import '../storage/CurrentUser.dart';
 import '../storage/Bot.dart';
 import '../components/RedButton.dart';
 import '../screens/Lobby.dart';
+import '../services/Api.dart';
 
 ///Tela de Home da aplicação.
 class Home extends StatefulWidget {
@@ -24,8 +25,19 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     getRecentMatchesList();
+    cleanOldLobbys();
     super.initState();
   }
+
+  cleanOldLobbys() async {
+    try{
+      await Api.deleteAllLobbysFromUser(CurrentUser.user);
+      print("Lobbys antigos deletados");
+    }catch(e){
+      print(e);
+    }
+  }
+
   startTraining(){
     LobbyModel trainingLobby = new LobbyModel();
     trainingLobby.player1 = CurrentUser.user.id;

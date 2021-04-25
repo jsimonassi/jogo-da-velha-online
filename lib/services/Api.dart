@@ -242,6 +242,25 @@ class Api {
     }
   }
 
+  static Future<void> deleteAllLobbysFromUser(User user) async {
+    try {
+      Firestore db = Firestore.instance; //Instancia de Firestore
+      QuerySnapshot response = await db.collection("lobbys").where("player1", isEqualTo: user.id).getDocuments();
+      for(DocumentSnapshot ds in response.documents){
+        ds.reference.delete();
+      }
+      response = await db.collection("lobbys").where("player2", isEqualTo: user.id).getDocuments();
+      for(DocumentSnapshot ds in response.documents){
+        ds.reference.delete();
+      }
+    } catch (e) {
+      String error = e.code != null ? e.code : '';
+      print("Errorrr $e");
+      throw FormatException(AppMessages.undefinedError); //Exception não mapeada
+    }
+  }
+
+
   static Future<List<LobbyModel>> getLobbys() async {
     try {
       QuerySnapshot querySnapshot =
