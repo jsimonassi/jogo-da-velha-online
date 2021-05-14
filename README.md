@@ -3,6 +3,9 @@
 Este aplicativo está sendo desenvolvido segundo a proposta elencada pelo professor Lauro Kozovits da disciplina de Laboratório de Programação Dispositivos Móveis - UFF.
 O objetivo é entender o funcionamento e modelagem de uma aplicação flutter.
 
+## Link da Play Store:
+https://play.google.com/store/apps/details?id=com.grupovermelho.jogodavelha
+
 ### Protótipo base
 
 Desenvolvemos as seguintes telas como base da aplicação:
@@ -30,6 +33,9 @@ Jonatas Alves - ​jonatasalves@id.uff.br
 
 This application is being developed according to the proposal listed by professor Lauro Kozovits of the discipline of Programming Laboratory for Mobile Devices - UFF.
 The goal is to understand the functioning and modeling of a flutter application.
+
+## Play Store Link:
+https://play.google.com/store/apps/details?id=com.grupovermelho.jogodavelha
 
 ### Base prototype
 
